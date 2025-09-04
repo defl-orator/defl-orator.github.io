@@ -45,10 +45,9 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text; text-fill-color: transparent;
         }
-        /* Отдельный стиль для эмодзи, чтобы он не наследовал цвет */
         .animated-subtitle-emoji {
-            -webkit-text-fill-color: initial; /* Сбрасываем цвет для webkit-браузеров */
-            color: var(--text-color); /* Устанавливаем обычный цвет текста */
+            -webkit-text-fill-color: initial;
+            color: var(--text-color);
         }
         
         .hero { text-align: center; padding: 100px 20px; }
@@ -78,7 +77,6 @@
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             border-radius: 20px; border: 1px solid transparent;
             background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05)) border-box;
-            /* ИСПРАВЛЕНИЕ 3: Добавлено стандартное свойство mask */
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out;
@@ -163,63 +161,36 @@
         .comparison-card-animated .strikethrough::after { width: 100%; }
         
         .animated-subtitle {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-top: -40px;
-            margin-bottom: 60px;
+            text-align: center; font-size: 2.5rem;
+            margin-top: -40px; margin-bottom: 60px;
             min-height: 1.2em; /* Предотвращает прыжки верстки */
         }
-
-        /* --- ФИНАЛЬНЫЕ СТИЛИ ДЛЯ БЛОКА С ЦЕНАМИ (ОЧИЩЕННЫЕ) --- */
+        
+        /* --- ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ЦЕН И ЗАГОЛОВКА "Я ДАЮ..." --- */
+        #features h2 {
+            font-size: 3rem; /* Стандартный размер для ПК */
+        }
         .pricing-card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            text-align: center;
+            display: flex; flex-direction: column;
+            height: 100%; text-align: center;
         }
-        .pricing-card.highlight { 
-            border: 2px solid var(--gradient-start); 
-        }
-        .pricing-card h3 { 
-            font-size: 1.8rem; 
-            margin-bottom: 20px; 
-        }
+        .pricing-card.highlight { border: 2px solid var(--gradient-start); }
+        .pricing-card h3 { font-size: 1.8rem; margin-bottom: 20px; }
         .pricing-card ul {
-            text-align: left;
-            list-style: none;
-            margin-bottom: 30px;
-            flex-grow: 1; /* Прижимает цену к низу */
+            text-align: left; list-style: none;
+            margin-bottom: 30px; flex-grow: 1; /* Прижимает цену к низу */
         }
-        .pricing-card li { 
-            margin-bottom: 12px; 
-        }
+        .pricing-card li { margin-bottom: 12px; }
         .price-tag {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-top: 20px;
-            color: var(--gradient-start);
+            font-size: 2.8rem; font-weight: 800;
+            margin-top: 20px; color: var(--gradient-start);
         }
         .promo-banner {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            background-color: var(--card-bg-solid);
-            border: 1px solid var(--gradient-start);
-            border-radius: 15px;
-            font-size: 1.1rem;
+            text-align: center; margin-top: 50px; padding: 20px;
+            background-color: var(--card-bg-solid); border: 1px solid var(--gradient-start);
+            border-radius: 15px; font-size: 1.1rem;
         }
-        .promo-banner strong {
-            color: var(--gradient-start);
-        }
-
-        .animated-subtitle {
-            font-size: 2rem; /* Уменьшаем шрифт подзаголовка на мобильных */
-            margin-top: -30px;
-            margin-bottom: 50px;
-        }
-        #features h2 {
-            font-size: 2.2rem; /* Значительно уменьшаем заголовок "Я даю..." на мобильных */
-        }
+        .promo-banner strong { color: var(--gradient-start); }
 
         footer { text-align: center; padding: 100px 20px; }
         .qr-code-section { margin-bottom: 50px; }
@@ -235,9 +206,20 @@
         @keyframes blink { from, to { border-color: transparent; } 50% { border-color: var(--text-secondary); } }
         
         @media (max-width: 768px) {
-            h1, .hero h1 { font-size: 2.8rem; } h2 { font-size: 2.2rem; }
+            h1, .hero h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.2rem; }
             section { padding: 80px 0; }
             .qr-code-section { display: none; }
+
+            /* ИСПРАВЛЕННЫЙ БЛОК ДЛЯ МОБИЛЬНЫХ */
+            .animated-subtitle {
+                font-size: 2rem;
+                margin-top: -30px;
+                margin-bottom: 50px;
+            }
+            #features h2 {
+                font-size: 2rem; /* НОВЫЙ, ЕЩЕ МЕНЬШИЙ РАЗМЕР */
+            }
         }
     </style>
 </head>
