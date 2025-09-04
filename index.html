@@ -13,13 +13,9 @@
 
     <style>
         :root {
-            --bg-color: #1A1A1A; 
-            --card-bg-solid: #1E1E1E;
-            --border-color: rgba(255, 255, 255, 0.1); 
-            --text-color: #F0F0F0;
-            --text-secondary: #a0a0b0; 
-            --gradient-start: #FFD23F; 
-            --gradient-end: #FFBF00;
+            --bg-color: #1A1A1A; --card-bg-solid: #1E1E1E;
+            --border-color: rgba(255, 255, 255, 0.1); --text-color: #F0F0F0;
+            --text-secondary: #a0a0b0; --gradient-start: #FFD23F; --gradient-end: #FFBF00;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -43,10 +39,11 @@
             background-clip: text; text-fill-color: transparent;
         }
         
-        /* --- СТИЛИ ШАПКИ --- */
         .hero { text-align: center; padding: 100px 20px; }
         .hero-logo { width: 150px; height: 150px; margin: 0 auto 30px; display: block; }
         .hero h1 { font-size: 4rem; margin-bottom: 25px; line-height: 1.2; text-shadow: 0 0 20px rgba(255, 210, 63, 0.2); }
+        /* ИЗМЕНЕНИЕ 1: Увеличиваем размер "без воды" */
+        .hero h1 .enlarged-text { font-size: 130%; }
         .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto 40px; color: var(--text-secondary); }
         .cta-button {
             display: inline-block; background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
@@ -56,43 +53,31 @@
         }
         .cta-button:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 210, 63, 0.3); }
         
-        /* --- НОВЫЙ ДИЗАЙН "LIQUID GLASS" --- */
         .glass-card {
-            border-radius: 20px; padding: 35px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative; overflow: hidden;
-            background-color: var(--card-bg-solid);
+            border-radius: 20px; padding: 35px; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; overflow: hidden; background-color: var(--card-bg-solid);
             border: 1px solid transparent;
-            /* Многослойный фон для эффекта глубины */
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(255, 210, 63, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(255, 100, 0, 0.1) 0%, transparent 50%),
                 var(--card-bg-solid);
-            background-clip: border-box;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            background-clip: border-box; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
-        /* Светящаяся рамка при наведении */
         .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 20px;
-            border: 1px solid transparent;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 20px; border: 1px solid transparent;
             background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05)) border-box;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: destination-out;
-            mask-composite: exclude;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
+            -webkit-mask-composite: destination-out; mask-composite: exclude;
+            opacity: 0.5; transition: opacity 0.3s ease;
         }
         .glass-card:hover::before { opacity: 1; }
         .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
 
-        .personas-grid, .features-grid, .screenshots-grid, .pricing-grid {
+        .personas-grid, .features-grid, .pricing-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
         }
         
-        /* --- СТИЛИ ДЛЯ НОВОГО БЛОКА АУДИТОРИИ --- */
         .persona-card h3 { font-size: 1.6rem; margin-bottom: 10px; text-align: center; }
         .persona-card .emoji { font-size: 3rem; margin-bottom: 15px; display: block; text-align: center; }
         .persona-comment {
@@ -111,6 +96,20 @@
 
         .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; } .feature-card p strong { color: var(--gradient-start); }
         
+        /* ИЗМЕНЕНИЕ 4: Порядок скриншотов */
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* Три колонки */
+            gap: 30px;
+        }
+        .screenshot-card:nth-child(1) { order: 1; } /* Готовый конспект */
+        .screenshot-card:nth-child(2) { order: 2; /* Умная лента в центре */ }
+        .screenshot-card:nth-child(3) { order: 3; } /* Заказ */
+        @media (max-width: 900px) { /* На средних экранах возвращаем обычный порядок */
+            .screenshots-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+            .screenshot-card:nth-child(1), .screenshot-card:nth-child(2), .screenshot-card:nth-child(3) { order: initial; }
+        }
+
         .screenshot-card { 
             padding: 0; border: none; background: transparent; 
             backdrop-filter: none; overflow: visible;
@@ -142,6 +141,7 @@
         .comparison-line p { font-size: 1rem; color: var(--text-secondary); }
         .final-value { color: var(--gradient-start); }
         .promo-note { font-weight: 700; margin-top: 5px; color: var(--text-color); }
+        /* ИЗМЕНЕНИЕ 5: Линия зачеркивания только на тексте */
         .strikethrough { position: relative; display: inline-block; }
         .strikethrough::after {
             content: ''; position: absolute; top: 50%; left: 0;
@@ -166,7 +166,7 @@
         footer h2 { font-size: 2.5rem; margin-bottom: 40px; }
         .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
-        .typing-effect { font-weight: bold; color: var(--gradient-start); border-right: 2px solid var(--text-secondary); animation: blink 0.7s step-end infinite; }
+        .typing-effect { font-weight: bold; color: var(--gradient-start); border-right: 2px solid var(--text-secondary); animation: blink 0.7s step-end infinite; padding-right: 2px; }
         @keyframes blink { from, to { border-color: transparent; } 50% { border-color: var(--text-secondary); } }
         
         @media (max-width: 768px) {
@@ -181,25 +181,24 @@
     <header class="hero">
         <div class="container">
             <img src="logo.png" alt="Логотип Конспектыш" class="hero-logo fade-in">
-            <!-- ИЗМЕНЕННЫЙ ЗАГОЛОВОК С ПЕРЕНОСАМИ СТРОК -->
-            <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации<br><br><span class="gradient-text">без воды</span>.</h1>
-            <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect"></span>. Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
+            <!-- ИЗМЕНЕНИЕ 1: Переносы и увеличенный текст -->
+            <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации<br><br><span class="gradient-text enlarged-text">без воды</span></h1>
+            <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect"></span> Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
             <a href="https://t.me/conspektishbot" class="cta-button fade-in">Я в Telegram</a>
         </div>
     </header>
 
     <main>
-        <!-- ПОЛНОСТЬЮ ПЕРЕДЕЛАННЫЙ БЛОК АУДИТОРИИ -->
         <section id="personas">
             <div class="container">
                 <h2 class="fade-in">Если это про тебя, то мы <span class="gradient-text">точно подружимся:</span>🤗</h2>
                 <div class="personas-grid">
-                    <!-- Карточка 1: Любознательный -->
                     <div class="glass-card fade-in">
                         <span class="emoji">🧐</span>
                         <h3>Ты — Любознательный</h3>
                         <div class="persona-comment">
-                            <p>"Хочется разобраться во всём — от истории Греции до последних трендов в бизнесе, но в сутках всего 24 часа 😔"</p>
+                            <!-- ИЗМЕНЕНИЕ 3: Переносы строк -->
+                            <p>"Хочется разобраться во всём — от истории Греции до последних трендов в бизнесе, <br>но в сутках всего 24 часа 😔"</p>
                         </div>
                         <div class="persona-arrow">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 19L18 13M12 19L6 13" stroke="var(--gradient-start)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -209,12 +208,12 @@
                         </div>
                     </div>
         
-                    <!-- Карточка 2: Легко отвлекается -->
                     <div class="glass-card fade-in">
                         <span class="emoji">🤪</span>
                         <h3>Ты — Легко отвлекаешься</h3>
                         <div class="persona-comment">
-                            <p>"Часовое видео или длинная статья — что-то нереальное после тиктока 😵‍💫"</p>
+                             <!-- ИЗМЕНЕНИЕ 3: Переносы строк -->
+                            <p>"Часовое видео или длинная статья — что-то нереальное <br>после тиктока 😵‍💫"</p>
                         </div>
                         <div class="persona-arrow">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 19L18 13M12 19L6 13" stroke="var(--gradient-start)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -224,7 +223,6 @@
                         </div>
                     </div>
         
-                    <!-- Карточка 3: Амбициозный Предприниматель -->
                     <div class="glass-card fade-in">
                         <span class="emoji">🚀</span>
                         <h3>Ты — Амбициозный Предприниматель</h3>
@@ -243,7 +241,13 @@
         </section>
         
         <section id="features"> <div class="container"> <h2 class="fade-in">Я даю не просто конспекты. <span class="gradient-text">Я даю время и пользу</span>.</h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊.</strong></p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉.</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔.</p></div> </div> </div> </section>
-        <section id="screenshots"> <div class="container"> <h2 class="fade-in">А теперь посмотри <span class="gradient-text">как это выглядит</span></h2> <div class="screenshots-grid"> <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-feed.jpg" alt="Скриншот ленты рекомендаций бота" class="screenshot-image"> </div> <h3>Умная лента</h3> </div> <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-summary.jpg" alt="Скриншот готового конспекта в боте" class="screenshot-image"> </div> <h3>Готовый конспект</h3> </div> <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-order.jpg" alt="Скриншот процесса заказа конспекта" class="screenshot-image"> </div> <h3>Заказ в 2 клика</h3> </div> </div> </div> </section>
+        
+        <!-- ИЗМЕНЕНИЕ 4: Порядок скриншотов изменен -->
+        <section id="screenshots"> <div class="container"> <h2 class="fade-in">А теперь посмотри <span class="gradient-text">как это выглядит</span></h2> <div class="screenshots-grid"> 
+            <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-summary.jpg" alt="Скриншот готового конспекта в боте" class="screenshot-image"> </div> <h3>Готовый конспект</h3> </div> 
+            <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-feed.jpg" alt="Скриншот ленты рекомендаций бота" class="screenshot-image"> </div> <h3>Умная лента</h3> </div> 
+            <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-order.jpg" alt="Скриншот процесса заказа конспекта" class="screenshot-image"> </div> <h3>Заказ в 2 клика</h3> </div> 
+        </div> </div> </section>
         
         <section id="comparison">
             <div class="container">
@@ -271,6 +275,7 @@
                         <div class="comparison-line final">
                             <span class="final-value">990 ₽</span>
                             <p>Безлимитный доступ ко всем конспектам</p>
+                            <!-- ИЗМЕНЕНИЕ 5: Акция жирная и на новой строке -->
                             <p class="promo-note"><strong>Акция до конца сентября!</strong></p>
                         </div>
                     </div>
@@ -278,6 +283,7 @@
             </div>
         </section>
 
+        <!-- ИЗМЕНЕНИЕ 6: Убраны комментарии из тарифов -->
         <section id="pricing"> <div class="container"> <h2 class="fade-in">А вот какие возможности у тебя есть</h2> <div class="pricing-grid"> <div class="pricing-card glass-card fade-in"> <h3>Стандарт</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Бесплатно</p> <ul> <li>✅ Все мои <strong>краткие</strong> конспекты</li> <li>✅ 2 бесплатных просмотра <strong>подробных</strong> конспектов и <strong>полезностей</strong> в неделю</li> <li>✅ Умная лента рекомендаций (прям как в тиктоке 😲)</li> </ul> </div> <div class="pricing-card glass-card highlight fade-in"> <h3>💎 Безлимит</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Навсегда</p> <ul> <li>🔥 <strong>Неограниченный</strong> доступ ко всей моей библиотеке подробных разборов и полезностей</li> <li>🔥 Лучший вклад в развитие самого себя!</li> </ul> </div> <div class="pricing-card glass-card fade-in"> <h3>📝 Заказы на конспект</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Отдельная покупка</p> <ul> <li>✅ Не нашел, что искал? Сделаю специально то, что ты хочешь!</li> <li>✅ Всё создаётся и проверяется лично мною, так что за качество можешь не переживать 😇</li> <li>✅ Доступно для покупки с любым статусом</li> </ul> </div> </div> </div> </section>
     </main>
 
@@ -287,18 +293,21 @@
                 <img src="qr-code.jpg" alt="QR-код для перехода в Telegram-бот Конспектыш" class="qr-code-image">
                 <p>Сканируй QR-код, чтобы перейти ко мне!</p>
             </div>
-            <h2 class="fade-in">Готов получать то, что нужно, а не <span class="gradient-text">нудятину</span>?</h2>
+            <!-- ИЗМЕНЕНИЕ 6: Новый анимированный футер -->
+            <h2 class="fade-in">Готов получать <span class="typing-effect"></span></h2>
             <a href="https://t.me/conspektishbot" class="cta-button fade-in">Тогда пошли в Телеграм</a>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Анимация появления элементов при прокрутке
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
             
+            // Анимация зачеркивания при прокрутке
             const comparisonObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -312,28 +321,48 @@
                 }
             });
 
-            const typingElement = document.querySelector('.typing-effect');
-            if (typingElement) {
-                const words = ["лекций", "видео", "книг", "документов"];
-                let wordIndex = 0, charIndex = 0, isDeleting = false;
-                function type() {
-                    const currentWord = words[wordIndex] + "."; // Точку добавляем динамически для курсора
-                    if (isDeleting) {
-                        typingElement.textContent = currentWord.substring(0, charIndex - 1); charIndex--;
-                        if (charIndex === 0) {
-                            isDeleting = false; wordIndex = (wordIndex + 1) % words.length;
-                            setTimeout(type, 500);
-                        } else { setTimeout(type, 100); }
-                    } else {
-                        typingElement.textContent = currentWord.substring(0, charIndex + 1); charIndex++;
-                        if (charIndex === currentWord.length) {
-                            isDeleting = true; setTimeout(type, 2000);
-                        } else { setTimeout(type, 150); }
-                    }
-                }
-                setTimeout(type, 500);
-            }
+            // Две независимые анимации печати
+            setupTypingAnimation('.hero .typing-effect', ["лекций", "видео", "книг", "документов"]);
+            setupTypingAnimation('footer .typing-effect', ["то, что нужно", "суть", "главное", "интересное", "лучшее"]);
         });
+
+        // ИЗМЕНЕНИЕ 2: Улучшенная функция для анимации печати
+        function setupTypingAnimation(selector, words) {
+            const typingElement = document.querySelector(selector);
+            if (!typingElement) return;
+
+            let wordIndex = 0, charIndex = 0, isDeleting = false;
+
+            function type() {
+                const currentWord = words[wordIndex];
+                let textToShow = '';
+
+                if (isDeleting) {
+                    textToShow = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    textToShow = currentWord.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                typingElement.textContent = textToShow;
+                typingElement.classList.toggle('gradient-text', !isDeleting && charIndex > 0);
+
+                let timeout = isDeleting ? 100 : 150;
+
+                if (!isDeleting && charIndex === currentWord.length) {
+                    isDeleting = true;
+                    timeout = 2000; // Пауза после печати
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                    timeout = 500; // Пауза перед новым словом
+                }
+                
+                setTimeout(type, timeout);
+            }
+            setTimeout(type, 500);
+        }
     </script>
 </body>
 </html>
