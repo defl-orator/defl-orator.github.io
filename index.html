@@ -63,7 +63,6 @@
         .persona-card h3 { font-size: 1.6rem; margin-bottom: 15px; } .persona-card p { font-style: italic; color: var(--text-secondary); }
         .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; } .feature-card p strong { color: var(--gradient-start); }
         
-        /* --- ИЗМЕНЕННЫЕ СТИЛИ ДЛЯ СКРИНШОТОВ --- */
         .screenshot-card { 
             padding: 0; border: none; background: transparent; 
             backdrop-filter: none; overflow: visible;
@@ -75,7 +74,6 @@
             border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            /* ЗАДАЕМ СООТНОШЕНИЕ СТОРОН, ЧТОБЫ ВСЕ БЛОКИ БЫЛИ ОДНОЙ ВЫСОТЫ */
             aspect-ratio: 9 / 16;
         }
         .screenshot-image-wrapper::before {
@@ -86,15 +84,30 @@
         }
         .screenshot-card:hover .screenshot-image-wrapper::before { left: 110%; }
         
-        .screenshot-image {
-            width: 100%; height: 100%; /* Заставляем картинку заполнить контейнер */
-            display: block;
-            /* ВПИСЫВАЕМ КАРТИНКУ БЕЗ ИСКАЖЕНИЙ */
-            object-fit: cover;
-        }
-
+        .screenshot-image { width: 100%; height: 100%; display: block; object-fit: cover; }
         .screenshot-card h3 { text-align: center; font-size: 1.3rem; margin-top: 25px; }
         
+        /* --- СТИЛИ ДЛЯ НОВОГО БЛОКА СРАВНЕНИЯ --- */
+        #comparison { background-color: #1A1A1A; }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .comparison-icon { font-size: 3rem; display: block; text-align: center; margin-bottom: 20px; }
+        .comparison-line { margin-top: 25px; padding-left: 20px; border-left: 3px solid var(--border-color); }
+        .comparison-line.original { opacity: 0.6; }
+        .comparison-line span { display: block; font-size: 2.5rem; font-weight: 800; line-height: 1.2; }
+        .comparison-line p { font-size: 1rem; color: var(--text-secondary); }
+        .final-value { color: var(--gradient-start); }
+        .strikethrough { position: relative; display: inline-block; }
+        .strikethrough::after {
+            content: ''; position: absolute; top: 50%; left: 0;
+            height: 3px; background-color: #ff5f56;
+            width: 0; transition: width 0.8s ease-out; transition-delay: 0.5s;
+        }
+        .comparison-card-animated .strikethrough::after { width: 100%; }
+
         .text-section { max-width: 750px; margin: 0 auto; text-align: center; }
         .text-section ul { list-style: none; text-align: left; margin-top: 30px; display: inline-block; }
         .text-section li { font-size: 1.1rem; margin-bottom: 15px; padding-left: 30px; position: relative; }
@@ -107,17 +120,12 @@
         .pricing-card .note { font-style: italic; color: var(--text-secondary); font-size: 0.9rem; }
         footer { text-align: center; padding: 100px 20px; }
         
-        /* --- ИЗМЕНЕННЫЕ СТИЛИ ДЛЯ QR-КОДА --- */
         .qr-code-section { margin-bottom: 50px; }
         .qr-code-image {
-            width: 180px;
-            height: auto; /* УБИРАЕМ ФИКСИРОВАННУЮ ВЫСОТУ */
-            border: 4px solid var(--card-bg);
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 180px; height: auto; border: 4px solid var(--card-bg);
+            border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .qr-code-section p { margin-top: 15px; color: var(--text-secondary); }
-
         footer h2 { font-size: 2.5rem; margin-bottom: 40px; }
         .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
@@ -125,14 +133,9 @@
         @keyframes blink { from, to { border-color: transparent; } 50% { border-color: var(--text-secondary); } }
         
         @media (max-width: 768px) {
-            h1, .hero h1 { font-size: 2.8rem; }
-            h2 { font-size: 2.2rem; }
+            h1, .hero h1 { font-size: 2.8rem; } h2 { font-size: 2.2rem; }
             section { padding: 80px 0; }
-            
-            /* ПРАВИЛО, КОТОРОЕ СКРЫВАЕТ QR-КОД НА МОБИЛЬНЫХ */
-            .qr-code-section {
-                display: none;
-            }
+            .qr-code-section { display: none; }
         }
     </style>
 </head>
@@ -150,28 +153,64 @@
     <main>
         <section id="personas">
             <div class="container">
-                <h2 class="fade-in">Если это про тебя, то мы <span class="gradient-text">точно подружимся 🤗:</span></h2>
+                <h2 class="fade-in">Если это про тебя, то мы <span class="gradient-text">точно подружимся:</span>🤗</h2>
                 <div class="personas-grid">
                     <div class="glass-card fade-in">
                         <span class="emoji">🧐</span>
                         <h3>Ты — Любознательный</h3>
-                        <p>"Хочется разобраться во всём — от истории Греции до последних трендов в бизнесе, но в сутках всего 24 часа 😔. Я помогу тебе быстро во всём разобраться без школьной/университетской тягомотины в интересной живой манере 🫂"</p>
+                        <p>"Хочется разобраться во всём — от истории Греции до последних трендов в бизнесе, но в сутках всего 24 часа 😔". Я помогу тебе быстро во всём разобраться без школьной/университетской тягомотины в интересной живой манере 🫂</p>
                     </div>
                     <div class="glass-card fade-in">
                         <span class="emoji">⏳</span>
                         <h3>Ты — Легко отвлекаешься</h3>
-                        <p>"Часовое видео или длинная статья — настоящий вызов в условиях существования тиктока 😵‍💫. Мы идеальная пара: убираю весь шум и даю чистую суть, которую ты усвоишь, не успев заскучать 😊"</p>
+                        <p>"Часовое видео или длинная статья — настоящий вызов в условиях существования тиктока 😵‍💫". Мы идеальная пара: убираю весь шум и даю чистую суть, которую ты усвоишь, не успев заскучать 😊</p>
                     </div>
                     <div class="glass-card fade-in">
                         <span class="emoji">🚀</span>
                         <h3>Ты — Амбициозный Предприниматель</h3>
-                        <p>"Тебе нужны не теории, а рабочие идеи, которые можно применить уже завтра 🫰. Я достаю из книг и видео всё что тебе нужно: все этапы, примеры и практические советы для твоего роста 👨‍💼"</p>
+                        <p>"Мне нужна не куча бумаги, а рабочие идеи и методы, которые можно применить уже завтра 👔." Я достаю из книг и видео всё что тебе нужно: все этапы, примеры и практические советы для твоего роста 🤓</p>
                     </div>
                 </div>
             </div>
         </section>
         <section id="features"> <div class="container"> <h2 class="fade-in">Я даю не просто конспекты. <span class="gradient-text">Я даю время и пользу.</span></h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊.</strong></p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉.</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔.</p></div> </div> </div> </section>
         <section id="screenshots"> <div class="container"> <h2 class="fade-in">Загляни ко мне <span class="gradient-text">"под капот"</span></h2> <div class="screenshots-grid"> <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-feed.jpg" alt="Скриншот ленты рекомендаций бота" class="screenshot-image"> </div> <h3>Умная лента</h3> </div> <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-summary.jpg" alt="Скриншот готового конспекта в боте" class="screenshot-image"> </div> <h3>Готовый конспект</h3> </div> <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-order.jpg" alt="Скриншот процесса заказа конспекта" class="screenshot-image"> </div> <h3>Заказ в 2 клика</h3> </div> </div> </div> </section>
+        
+        <!-- НОВЫЙ БЛОК СРАВНЕНИЯ -->
+        <section id="comparison">
+            <div class="container">
+                <h2 class="fade-in">Немного <span class="gradient-text">простой математики</span></h2>
+                <div class="comparison-grid">
+                    <!-- Блок сравнения Времени -->
+                    <div class="glass-card fade-in">
+                        <span class="comparison-icon">⏳</span>
+                        <h3>Твоё Время</h3>
+                        <div class="comparison-line original">
+                            <span class="strikethrough">~500 часов</span>
+                            <p>Нужно, чтобы прочитать/посмотреть все оригиналы в моей библиотеке</p>
+                        </div>
+                        <div class="comparison-line final">
+                            <span class="final-value">~10 часов</span>
+                            <p>Понадобится тебе, чтобы усвоить их суть с моей помощью</p>
+                        </div>
+                    </div>
+                    <!-- Блок сравнения Цены -->
+                    <div class="glass-card fade-in">
+                        <span class="comparison-icon">💸</span>
+                        <h3>Твои Деньги</h3>
+                        <div class="comparison-line original">
+                            <span class="strikethrough">~20 000 ₽</span>
+                            <p>Стоимость всех книг и материалов из моего каталога</p>
+                        </div>
+                        <div class="comparison-line final">
+                            <span class="final-value">990 ₽</span>
+                            <p>Безлимитный доступ ко всем конспектам (акция до конца сентября!)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="pricing"> <div class="container"> <h2 class="fade-in">А вот какие возможности у тебя есть</h2> <div class="pricing-grid"> <div class="pricing-card glass-card fade-in"> <h3>Стандарт</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Бесплатно</p> <ul> <li>✅ Все мои <strong>краткие</strong> конспекты</li> <li>✅ 2 бесплатных просмотра <strong>подробных</strong> конспектов и <strong>полезностей</strong> в неделю</li> <li>✅ Умная лента рекомендаций (прям как в тиктоке 😲)</li> </ul> <p class="note">Запросы на конспект можешь приобрести в магазине.</p> </div> <div class="pricing-card glass-card highlight fade-in"> <h3>💎 Безлимит</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Навсегда</p> <ul> <li>🔥 <strong>Неограниченный</strong> доступ ко всей моей библиотеке подробных разборов и полезностей</li> <li>🔥 Лучший вклад в моё развитие и в себя!</li> </ul> <p class="note">Доступ не включает создание новых конспектов на заказ.</p> </div> <div class="pricing-card glass-card fade-in"> <h3>📝 Заказы на конспект</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Отдельная покупка</p> <ul> <li>✅ Не нашел, что искал? Сделаю специально то что ты хочешь!</li> <li>✅ Всё создаётся и проверяется лично мною, так что за качество можешь не переживать 😇</li> <li>✅ Доступно для покупки с любым статусом</li> </ul> <p class="note">Приобретается в магазине в виде пакетов.</p> </div> </div> </div> </section>
     </main>
 
@@ -188,10 +227,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Анимация появления элементов при прокрутке
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
+            
+            // Анимация зачеркивания при прокрутке
+            const comparisonObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('comparison-card-animated');
+                    }
+                });
+            }, { threshold: 0.8 }); 
+            document.querySelectorAll('.glass-card').forEach(card => {
+                if (card.querySelector('.strikethrough')) {
+                    comparisonObserver.observe(card);
+                }
+            });
+
+            // Анимация печати
             const typingElement = document.querySelector('.typing-effect');
             if (typingElement) {
                 const words = ["лекций", "видео", "книг", "документов"];
