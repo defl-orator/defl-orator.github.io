@@ -43,17 +43,7 @@
         .hero-logo { width: 150px; height: 150px; margin: 0 auto 30px; display: block; }
         .hero h1 { font-size: 4rem; margin-bottom: 25px; line-height: 1.2; text-shadow: 0 0 20px rgba(255, 210, 63, 0.2); }
         .hero h1 .enlarged-text { font-size: 130%; }
-        /* ИЗМЕНЕНИЕ 1: Блок для анимации с фиксированной высотой */
-        .typing-container {
-            font-size: 1.25rem;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            color: var(--text-secondary);
-            height: 60px; /* Фиксированная высота, чтобы верстка не прыгала */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto 40px; color: var(--text-secondary); min-height: 2.5em; /* Предотвращает прыжки верстки */ }
         .cta-button {
             display: inline-block; background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             color: #1A1A1A; padding: 18px 35px; border-radius: 50px; text-decoration: none;
@@ -144,15 +134,10 @@
         .comparison-line span { display: inline-block; font-size: 2.5rem; font-weight: 800; line-height: 1.2; }
         .comparison-line p { font-size: 1rem; color: var(--text-secondary); }
         .final-value { color: var(--gradient-start); }
-        /* ИЗМЕНЕНИЕ 3: Стиль для акционной плашки */
         .promo-note { 
-            display: inline-block;
-            margin-top: 10px;
-            padding: 5px 15px;
+            display: inline-block; margin-top: 10px; padding: 5px 15px;
             background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            color: #1A1A1A;
-            border-radius: 8px;
-            font-weight: 700;
+            color: #1A1A1A; border-radius: 8px; font-weight: 700;
         }
         .strikethrough { position: relative; }
         .strikethrough::after {
@@ -171,7 +156,8 @@
         footer { text-align: center; padding: 100px 20px; }
         .qr-code-section { margin-bottom: 50px; }
         .qr-code-image {
-            width: 180px; height: auto; border: 4px solid var(--card-bg-solid);
+            width: 240px; /* ИЗМЕНЕНИЕ 3: Увеличенный QR-код */
+            height: auto; border: 4px solid var(--card-bg-solid);
             border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .qr-code-section p { margin-top: 15px; color: var(--text-secondary); }
@@ -193,12 +179,9 @@
     <header class="hero">
         <div class="container">
             <img src="logo.png" alt="Логотип Конспектыш" class="hero-logo fade-in">
-            <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации<br><span class="gradient-text enlarged-text">без воды</span></h1>
-            <!-- ИЗМЕНЕНИЕ 1: Отдельный блок для анимации -->
-            <div class="typing-container fade-in">
-                <p>Я здесь, чтобы избавить тебя от занудных&nbsp;<span class="typing-effect"></span></p>
-            </div>
-            <p class="fade-in" style="margin-top: -20px;">Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
+            <!-- ИЗМЕНЕНИЕ 1: Возвращена оригинальная верстка заголовка с увеличенным текстом -->
+            <h1 class="fade-in">Я — Конспектыш. Твой проводник в мир любой информации <span class="gradient-text enlarged-text">без воды</span></h1>
+            <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect"></span> Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
             <a href="https://t.me/conspektishbot" class="cta-button fade-in">Я в Telegram</a>
         </div>
     </header>
@@ -206,7 +189,7 @@
     <main>
         <section id="personas">
             <div class="container">
-                <h2 class="fade-in">Если это про тебя, то мы <span class="gradient-text">точно подружимся:</span>🤗</h2>
+                <h2 class="fade-in">Если это про тебя, то мы <span class="gradient-text">точно подружимся</span>: 🤗</h2>
                 <div class="personas-grid">
                     <div class="glass-card fade-in">
                         <span class="emoji">🧐</span>
@@ -231,7 +214,7 @@
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 19L18 13M12 19L6 13" stroke="var(--gradient-start)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </div>
                         <div class="persona-response">
-                            <p><strong>Мой ответ:</strong> Мы идеальная пара: убираю весь шум и даю чистую суть, которую ты усвошь, не успев&nbsp;заскучать&nbsp;😊</p>
+                            <p><strong>Мой ответ:</strong> Мы идеальная пара: убираю весь шум и даю чистую суть, которую ты усвоишь, не успев&nbsp;заскучать&nbsp;😊. Ещё и рекомендации у меня как у тиктока 😉</p>
                         </div>
                     </div>
                     <div class="glass-card fade-in">
@@ -252,7 +235,7 @@
         </section>
         
         <!-- ИЗМЕНЕНИЕ 2: Заголовок с анимацией -->
-        <section id="features"> <div class="container"> <h2 class="fade-in">Я даю <span class="typing-effect"></span></h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊</strong>.</p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉.</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔.</p></div> </div> </div> </section>
+        <section id="features"> <div class="container"> <h2 class="fade-in">Я даю <span class="typing-effect"></span></h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊</strong></p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔</p></div> </div> </div> </section>
         
         <section id="screenshots"> <div class="container"> <h2 class="fade-in">А теперь посмотри <span class="gradient-text">как это выглядит</span></h2> <div class="screenshots-grid"> 
             <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-summary.jpg" alt="Скриншот готового конспекта в боте" class="screenshot-image"> </div> <h3>Готовый конспект</h3> </div> 
@@ -293,7 +276,8 @@
             </div>
         </section>
 
-        <section id="pricing"> <div class="container"> <h2 class="fade-in">А вот какие возможности у тебя есть</h2> <div class="pricing-grid"> <div class="pricing-card glass-card fade-in"> <h3>Стандарт</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Бесплатно</p> <ul> <li>✅ Все мои <strong>краткие</strong> конспекты</li> <li>✅ 2 бесплатных просмотра <strong>подробных</strong> конспектов и <strong>полезностей</strong> в неделю</li> <li>✅ Умная лента рекомендаций (прям как в тиктоке 😲)</li> </ul> </div> <div class="pricing-card glass-card highlight fade-in"> <h3>💎 Безлимит</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Навсегда</p> <ul> <li>🔥 <strong>Неограниченный</strong> доступ ко всей моей библиотеке подробных разборов и полезностей</li> <li>🔥 Лучший вклад в развитие самого себя!</li> </ul> </div> <div class="pricing-card glass-card fade-in"> <h3>📝 Заказы на конспект</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Отдельная покупка</p> <ul> <li>✅ Не нашел, что искал? Сделаю специально то, что ты хочешь!</li> <li>✅ Всё создаётся и проверяется лично мною, так что за качество можешь не переживать 😇</li> </ul> </div> </div> </div> </section>
+        <!-- ИЗМЕНЕНИЕ 5: Убран лишний текст -->
+        <section id="pricing"> <div class="container"> <h2 class="fade-in">А вот какие возможности у тебя есть</h2> <div class="pricing-grid"> <div class="pricing-card glass-card fade-in"> <h3>Стандарт</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Бесплатно</p> <ul> <li>✅ Все мои <strong>краткие</strong> конспекты</li> <li>✅ 2 бесплатных просмотра <strong>подробных</strong> конспектов и <strong>полезностей</strong> в неделю</li> <li>✅ Умная лента рекомендаций (прям как в тиктоке 😲)</li> </ul> </div> <div class="pricing-card glass-card highlight fade-in"> <h3>💎 Безлимит</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Навсегда</p> <ul> <li>🔥 <strong>Неограниченный</strong> доступ ко всей моей библиотеке подробных разборов и полезностей</li> <li>🔥 Лучший вклад в развитие самого себя! (ну и меня тоже ☺️)</li> </ul> </div> <div class="pricing-card glass-card fade-in"> <h3>📝 Заказы на конспект</h3> <p class="gradient-text" style="font-size: 1.5rem; font-weight: 700;">Отдельная покупка</p> <ul> <li>✅ Не нашел, что искал? Сделаю специально то, что ты хочешь!</li> <li>✅ Всё создаётся и проверяется лично мною, так что за качество можешь не переживать 😇</li> </ul> </div> </div> </div> </section>
     </main>
 
     <footer>
@@ -302,6 +286,7 @@
                 <img src="qr-code.jpg" alt="QR-код для перехода в Telegram-бот Конспектыш" class="qr-code-image">
                 <p>Сканируй QR-код, чтобы перейти ко мне!</p>
             </div>
+            <!-- ИЗМЕНЕНИЕ 6: Новый анимированный футер -->
             <h2 class="fade-in">Готов получать <span class="typing-effect"></span>, а не <span class="gradient-text">нудятину</span>?</h2>
             <a href="https://t.me/conspektishbot" class="cta-button fade-in">Тогда пошли в Телеграм</a>
         </div>
@@ -309,11 +294,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Анимация появления элементов при прокрутке
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
             
+            // Анимация зачеркивания при прокрутке
             const comparisonObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -332,7 +319,6 @@
                 const typingElement = document.querySelector(selector);
                 if (!typingElement) return;
 
-                // Если есть статический префикс, создаем для него отдельный элемент
                 if (staticPrefix) {
                     const parent = typingElement.parentNode;
                     const staticSpan = document.createElement('span');
@@ -354,10 +340,11 @@
                         charIndex++;
                     }
 
-                    // Убираем курсор и точку, когда слово полностью напечатано и перед паузой
-                    const isLastChar = charIndex === currentWord.length && !isDeleting;
-                    typingElement.style.borderRight = isLastChar ? '2px solid transparent' : '2px solid var(--text-secondary)';
                     typingElement.textContent = textToShow;
+                    
+                    // Убираем курсор, когда слово полностью напечатано
+                    const isLastChar = charIndex === currentWord.length && !isDeleting;
+                    typingElement.style.borderRight = isLastChar ? 'none' : '2px solid var(--text-secondary)';
 
                     let timeout = isDeleting ? 80 : 120;
 
@@ -375,9 +362,8 @@
                 setTimeout(type, 500);
             }
 
-            // ИЗМЕНЕНИЕ 2: Запускаем две независимые анимации
             setupTypingAnimation('.hero .typing-effect', ["лекций", "видео", "книг", "документов"]);
-            setupTypingAnimation('#features .typing-effect', ["время", "пользу", "комфорт", "продуктивность"], "Я даю ");
+            setupTypingAnimation('#features h2 .typing-effect', ["время", "пользу", "комфорт", "продуктивность"], "Я даю ");
             setupTypingAnimation('footer .typing-effect', ["то, что нужно", "суть", "главное", "интересное", "лучшее"]);
         });
     </script>
