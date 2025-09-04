@@ -195,7 +195,7 @@
         <div class="container">
             <img src="logo.png" alt="Логотип Конспектыш" class="hero-logo fade-in">
             <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации <span class="gradient-text enlarged-text">без воды</span></h1>
-            <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect"></span></p>
+            <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect-container"></span></p>
             <p class="fade-in" style="margin-top: -20px;">Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
             <a href="https://t.me/conspektishbot" class="cta-button fade-in">Я в Телеграме</a>
         </div>
@@ -206,7 +206,7 @@
             <div class="container">
                 <h2 class="fade-in">Если это про тебя, то мы...</h2>
                 <!-- Новый подзаголовок для анимации -->
-                <h3 class="fade-in animated-subtitle typing-effect gradient-text"></h3>
+                <h3 class="fade-in animated-subtitle"><span class="typing-effect-container"></span></h3>
                 <div class="personas-grid">
                     <!-- Карточки остаются без изменений, просто теперь они ниже нового подзаголовка -->
                     <div class="glass-card fade-in">
@@ -252,7 +252,7 @@
             </div>
         </section>
         
-        <section id="features"> <div class="container"> <h2 class="fade-in"><span class="typing-effect"></span></h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊</strong></p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔</p></div> </div> </div> </section>
+        <section id="features"> <div class="container"> <h2 class="fade-in"><span class="typing-effect-container"></span></h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊</strong></p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔</p></div> </div> </div> </section>
         
         <section id="screenshots"> <div class="container"> <h2 class="fade-in">А теперь посмотри <span class="gradient-text">как это выглядит</span></h2> <div class="screenshots-grid"> 
             <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-summary.jpg" alt="Скриншот готового конспекта в боте" class="screenshot-image"> </div> <h3>Готовый конспект</h3> </div> 
@@ -329,10 +329,31 @@
                 }
             });
 
-            // ПРОСТАЯ И НАДЕЖНАЯ ФУНКЦИЯ АНИМАЦИИ ПЕЧАТИ
-            function setupTypingAnimation(selector, words) {
-                const typingElement = document.querySelector(selector);
-                if (!typingElement) return;
+            // ФИНАЛЬНАЯ, НАДЕЖНАЯ ВЕРСИЯ ФУНКЦИИ АНИМАЦИИ
+            function setupTypingAnimation(selector, words, options = {}) {
+                const container = document.querySelector(selector);
+                if (!container) return;
+
+                // Очищаем контейнер перед запуском
+                container.innerHTML = '';
+
+                const { 
+                    staticPrefix = '', 
+                    isGradient = false 
+                } = options;
+
+                if (staticPrefix) {
+                    const staticSpan = document.createElement('span');
+                    staticSpan.textContent = staticPrefix;
+                    container.appendChild(staticSpan);
+                }
+                
+                const typingElement = document.createElement('span');
+                typingElement.className = 'typing-effect';
+                if (isGradient) {
+                    typingElement.classList.add('gradient-text');
+                }
+                container.appendChild(typingElement);
 
                 let wordIndex = 0, charIndex = 0, isDeleting = false;
 
@@ -342,7 +363,7 @@
                         ? currentWord.substring(0, charIndex - 1) 
                         : currentWord.substring(0, charIndex + 1);
                     
-                    typingElement.textContent = textToShow;
+                    typingElement.innerHTML = textToShow; // Используем innerHTML для обработки эмодзи
                     charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
 
                     const isCycleEnd = !isDeleting && charIndex > currentWord.length;
@@ -364,11 +385,11 @@
                 setTimeout(type, 500);
             }
 
-            // Вызываем все 4 анимации
-            setupTypingAnimation('.hero .typing-effect', ["лекций", "видео", "книг", "документов"]);
-            setupTypingAnimation('#features h2 .typing-effect', ["Я даю время", "Я даю пользу", "Я даю комфорт", "Я даю продуктивность"]);
-            setupTypingAnimation('#personas h3 .typing-effect', ["точно подружимся 🤗", "найдём общий язык 🤝", "не заскучаем 😉", "образуем симбиоз 🧠"]);
-            setupTypingAnimation('footer .typing-effect', ["то, что нужно", "суть", "главное", "интересное", "лучшее"]);
+            // Вызываем все 4 анимации с правильными параметрами
+            setupTypingAnimation('.hero .typing-effect-container', ["лекций", "видео", "книг", "документов"], { isGradient: true });
+            setupTypingAnimation('#features h2 .typing-effect-container', ["время", "пользу", "комфорт", "продуктивность"], { staticPrefix: 'Я даю ', isGradient: true });
+            setupTypingAnimation('#personas h3 .typing-effect-container', ["точно подружимся 🤗", "найдём общий язык 🤝", "не заскучаем 😉", "образуем симбиоз 🧠"], { isGradient: true });
+            setupTypingAnimation('footer .typing-effect', ["то, что нужно", "суть", "главное", "интересное", "лучшее"], { isGradient: true });
         });
     </script>
 </body>
