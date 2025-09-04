@@ -42,8 +42,18 @@
         .hero { text-align: center; padding: 100px 20px; }
         .hero-logo { width: 150px; height: 150px; margin: 0 auto 30px; display: block; }
         .hero h1 { font-size: 4rem; margin-bottom: 25px; line-height: 1.2; text-shadow: 0 0 20px rgba(255, 210, 63, 0.2); }
-        .hero h1 .enlarged-text { font-size: 130%; } /* ИЗМЕНЕНИЕ 1: Стили для увеличенного текста */
-        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto 40px; color: var(--text-secondary); }
+        .hero h1 .enlarged-text { font-size: 130%; }
+        /* ИЗМЕНЕНИЕ 1: Блок для анимации с фиксированной высотой */
+        .typing-container {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-secondary);
+            height: 60px; /* Фиксированная высота, чтобы верстка не прыгала */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .cta-button {
             display: inline-block; background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             color: #1A1A1A; padding: 18px 35px; border-radius: 50px; text-decoration: none;
@@ -93,22 +103,13 @@
         .persona-response { padding: 10px; }
         .persona-response strong { color: var(--gradient-start); }
 
-        /* ИЗМЕНЕНИЕ 3: Стили для подзаголовка */
-        .section-subtitle {
-            display: block; /* Заставляет текст быть на новой строке */
-            font-size: 120%; /* Увеличивает размер */
-            margin-top: -20px; /* Уменьшает отступ от основного заголовка */
-            margin-bottom: 40px; /* Добавляет отступ снизу */
-        }
-
         .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; } .feature-card p strong { color: var(--gradient-start); }
         
         .screenshots-grid {
             display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px;
         }
-        .screenshot-card:nth-child(1) { order: 2; } /* Умная лента в центре */
-        .screenshot-card:nth-child(2) { order: 1; } /* Готовый конспект */
-        .screenshot-card:nth-child(3) { order: 3; } /* Заказ */
+        .screenshot-card:nth-child(1) { order: 2; } .screenshot-card:nth-child(2) { order: 1; }
+        .screenshot-card:nth-child(3) { order: 3; }
         @media (max-width: 900px) {
             .screenshots-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
             .screenshot-card:nth-child(1), .screenshot-card:nth-child(2), .screenshot-card:nth-child(3) { order: initial; }
@@ -140,11 +141,19 @@
         .comparison-icon { font-size: 3rem; display: block; text-align: center; margin-bottom: 20px; }
         .comparison-line { margin-top: 25px; padding-left: 20px; border-left: 3px solid var(--border-color); }
         .comparison-line.original { opacity: 0.6; }
-        /* ИЗМЕНЕНИЕ 5: Меняем display: block на inline-block */
         .comparison-line span { display: inline-block; font-size: 2.5rem; font-weight: 800; line-height: 1.2; }
         .comparison-line p { font-size: 1rem; color: var(--text-secondary); }
         .final-value { color: var(--gradient-start); }
-        .promo-note { font-weight: 700; margin-top: 5px; color: var(--text-color); }
+        /* ИЗМЕНЕНИЕ 3: Стиль для акционной плашки */
+        .promo-note { 
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 15px;
+            background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: #1A1A1A;
+            border-radius: 8px;
+            font-weight: 700;
+        }
         .strikethrough { position: relative; }
         .strikethrough::after {
             content: ''; position: absolute; top: 50%; left: 0;
@@ -169,7 +178,7 @@
         footer h2 { font-size: 2.5rem; margin-bottom: 40px; }
         .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
-        .typing-effect { font-weight: bold; color: var(--gradient-start); border-right: 2px solid var(--text-secondary); animation: blink 0.7s step-end infinite; padding-right: 2px; }
+        .typing-effect { font-weight: bold; color: var(--gradient-start); border-right: 2px solid var(--text-secondary); animation: blink 0.7s step-end infinite; padding-right: 2px; display: inline-block; }
         @keyframes blink { from, to { border-color: transparent; } 50% { border-color: var(--text-secondary); } }
         
         @media (max-width: 768px) {
@@ -184,9 +193,12 @@
     <header class="hero">
         <div class="container">
             <img src="logo.png" alt="Логотип Конспектыш" class="hero-logo fade-in">
-            <!-- ИЗМЕНЕНИЕ 1: Убраны лишние <br> -->
-            <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации <span class="gradient-text enlarged-text">без воды</span></h1>
-            <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect"></span>. Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
+            <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации<br><span class="gradient-text enlarged-text">без воды</span></h1>
+            <!-- ИЗМЕНЕНИЕ 1: Отдельный блок для анимации -->
+            <div class="typing-container fade-in">
+                <p>Я здесь, чтобы избавить тебя от занудных&nbsp;<span class="typing-effect"></span></p>
+            </div>
+            <p class="fade-in" style="margin-top: -20px;">Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
             <a href="https://t.me/conspektishbot" class="cta-button fade-in">Я в Telegram</a>
         </div>
     </header>
@@ -209,7 +221,6 @@
                             <p><strong>Мой ответ:</strong> Я помогу тебе быстро во всём разобраться без школьной/университетской тягомотины в интересной живой&nbsp;манере&nbsp;🫂</p>
                         </div>
                     </div>
-        
                     <div class="glass-card fade-in">
                         <span class="emoji">🤪</span>
                         <h3>Ты — Легко отвлекаешься</h3>
@@ -220,10 +231,9 @@
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 19L18 13M12 19L6 13" stroke="var(--gradient-start)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </div>
                         <div class="persona-response">
-                            <p><strong>Мой ответ:</strong> Мы идеальная пара: убираю весь шум и даю чистую суть, которую ты усвоишь, не успев&nbsp;заскучать&nbsp;😊</p>
+                            <p><strong>Мой ответ:</strong> Мы идеальная пара: убираю весь шум и даю чистую суть, которую ты усвошь, не успев&nbsp;заскучать&nbsp;😊</p>
                         </div>
                     </div>
-        
                     <div class="glass-card fade-in">
                         <span class="emoji">🚀</span>
                         <h3>Ты — Амбициозный Предприниматель</h3>
@@ -241,7 +251,8 @@
             </div>
         </section>
         
-        <section id="features"> <div class="container"> <h2 class="fade-in">Я даю не просто конспекты.<br><span class="section-subtitle gradient-text">Я даю время и пользу</span></h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊.</strong></p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉.</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔.</p></div> </div> </div> </section>
+        <!-- ИЗМЕНЕНИЕ 2: Заголовок с анимацией -->
+        <section id="features"> <div class="container"> <h2 class="fade-in">Я даю <span class="typing-effect"></span></h2> <div class="features-grid"> <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊</strong>.</p></div> <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрели/прочитали оригинал 😉.</p></div> <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔.</p></div> </div> </div> </section>
         
         <section id="screenshots"> <div class="container"> <h2 class="fade-in">А теперь посмотри <span class="gradient-text">как это выглядит</span></h2> <div class="screenshots-grid"> 
             <div class="screenshot-card fade-in"> <div class="screenshot-image-wrapper"> <img src="screenshot-summary.jpg" alt="Скриншот готового конспекта в боте" class="screenshot-image"> </div> <h3>Готовый конспект</h3> </div> 
@@ -257,7 +268,7 @@
                         <span class="comparison-icon">⏳</span>
                         <h3>Твоё Время</h3>
                         <div class="comparison-line original">
-                            <span class="strikethrough">~500 часов</span>
+                            <span class="strikethrough">~800 часов</span>
                             <p>Нужно, чтобы прочитать/посмотреть все оригиналы в моей библиотеке</p>
                         </div>
                         <div class="comparison-line final">
@@ -269,7 +280,7 @@
                         <span class="comparison-icon">💸</span>
                         <h3>Твои Деньги</h3>
                         <div class="comparison-line original">
-                            <span class="strikethrough">~20 000 ₽</span>
+                            <span class="strikethrough">~30 000 ₽</span>
                             <p>Стоимость всех книг и материалов из моего каталога</p>
                         </div>
                         <div class="comparison-line final">
@@ -298,13 +309,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Анимация появления элементов при прокрутке
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
             
-            // Анимация зачеркивания при прокрутке
             const comparisonObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -318,10 +327,18 @@
                 }
             });
 
-            // ИЗМЕНЕНИЕ 2: Улучшенная функция для двух независимых анимаций печати
-            function setupTypingAnimation(selector, words) {
+            // Улучшенная функция для двух независимых анимаций печати
+            function setupTypingAnimation(selector, words, staticPrefix = '') {
                 const typingElement = document.querySelector(selector);
                 if (!typingElement) return;
+
+                // Если есть статический префикс, создаем для него отдельный элемент
+                if (staticPrefix) {
+                    const parent = typingElement.parentNode;
+                    const staticSpan = document.createElement('span');
+                    staticSpan.textContent = staticPrefix;
+                    parent.insertBefore(staticSpan, typingElement);
+                }
 
                 let wordIndex = 0, charIndex = 0, isDeleting = false;
 
@@ -337,13 +354,12 @@
                         charIndex++;
                     }
 
-                    const isLastChar = charIndex === currentWord.length && !isDeleting;
                     // Убираем курсор и точку, когда слово полностью напечатано и перед паузой
+                    const isLastChar = charIndex === currentWord.length && !isDeleting;
                     typingElement.style.borderRight = isLastChar ? '2px solid transparent' : '2px solid var(--text-secondary)';
-                    typingElement.textContent = textToShow + (isLastChar ? '' : '.');
+                    typingElement.textContent = textToShow;
 
-
-                    let timeout = isDeleting ? 100 : 150;
+                    let timeout = isDeleting ? 80 : 120;
 
                     if (!isDeleting && charIndex === currentWord.length) {
                         isDeleting = true;
@@ -359,7 +375,9 @@
                 setTimeout(type, 500);
             }
 
+            // ИЗМЕНЕНИЕ 2: Запускаем две независимые анимации
             setupTypingAnimation('.hero .typing-effect', ["лекций", "видео", "книг", "документов"]);
+            setupTypingAnimation('#features .typing-effect', ["время", "пользу", "комфорт", "продуктивность"], "Я даю ");
             setupTypingAnimation('footer .typing-effect', ["то, что нужно", "суть", "главное", "интересное", "лучшее"]);
         });
     </script>
