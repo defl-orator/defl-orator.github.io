@@ -843,18 +843,18 @@
             updateCards();
         }
         
-        // --- ФУНКЦИЯ АНИМАЦИИ "ВЫГЛЯДИТ" (единственная и правильная) ---
+        // --- ФУНКЦИЯ АНИМАЦИИ "ВЫГЛЯДИТ"
         function setupWaveAnimation() {
-            // Ищем правильный ID из вашего HTML
             const element = document.getElementById('animated-looks-word');
             if (!element) return;
 
             const originalText = element.innerText;
-            element.innerHTML = ''; // Очищаем его
-            // Разбиваем слово на буквы и присваиваем им РАБОЧИЙ класс
+            element.innerHTML = '';
             originalText.split('').forEach(char => {
                 const span = document.createElement('span');
-                span.className = char.trim() === '' ? '' : 'looks-wave-char';
+                // --- ИСПРАВЛЕННАЯ СТРОКА ---
+                // Мы присваиваем КАЖДОЙ букве ОБА класса: и для градиента, и для анимации.
+                span.className = 'gradient-text looks-wave-char';
                 span.textContent = char;
                 element.appendChild(span);
             });
@@ -862,7 +862,6 @@
             const chars = element.querySelectorAll('.looks-wave-char');
             if (chars.length === 0) return;
 
-            // Используем параметры, которые вы хотели: больше и быстрее
             const delay = 80;
             const animDuration = 300;
             const pause = 3000;
