@@ -723,8 +723,22 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    // --- [КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ] ---
+                    // Если видимым стал именно наш заголовок с "волной",
+                    // ТОЛЬКО ТОГДА мы запускаем для него анимацию.
+                    if (entry.target.id === 'wave-heading') {
+                        setupWaveAnimation();
+                        // Отписываемся от наблюдения, чтобы не запускать скрипт повторно
+                        // при прокрутке вверх-вниз.
+                        observer.unobserve(entry.target);
+                    }
+                }
+            });
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
 
