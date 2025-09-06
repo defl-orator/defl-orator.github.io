@@ -94,7 +94,17 @@
         .carousel-card .screenshot-image-wrapper { width: 100%; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3); aspect-ratio: 9 / 19.5; }
         .carousel-card .screenshot-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 50%; }
         .carousel-card.is-active { transform: scale(1) translateY(0); opacity: 1; z-index: 10; }
-        .carousel-card.is-active h3 { opacity: 1; }
+        .carousel-card h3 {
+            /* По умолчанию заголовки невидимы и сдвинуты вниз */
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .carousel-card.is-active h3 {
+            /* Для активной карточки делаем заголовок видимым и возвращаем на место */
+            opacity: 1;
+            transform: translateY(0);
+        }
         .carousel-card:not(.is-active) { pointer-events: none; }
         .carousel-card.prev-card { transform: scale(0.9) translateX(-20%) translateY(20px); opacity: 0.5; z-index: 9; }
         .carousel-card.next-card { transform: scale(0.9) translateX(20%) translateY(20px); opacity: 0.5; z-index: 9; }
@@ -109,6 +119,10 @@
         .comparison-line.original { opacity: 0.6; }
         .comparison-line span { display: inline-block; font-size: 2.5rem; font-weight: 800; line-height: 1.2; }
         .comparison-line p { font-size: 1rem; color: var(--text-secondary); }
+        /* --- Центрирование заголовков в секции сравнения --- */
+        #comparison .glass-card h3 {
+            text-align: center;
+        }
         .final-value { color: var(--gradient-start); }
         .promo-note {
             display: inline-block;
@@ -121,7 +135,7 @@
         }
 
         .promo-note strong {
-            color: #FFFFFF;
+            color: #000000;
         }
         .strikethrough { position: relative; }
         .strikethrough::after { content: ''; position: absolute; top: 50%; left: 0; height: 3px; background-color: #ff5f56; width: 0; transition: width 0.8s ease-out; transition-delay: 0.5s; }
@@ -166,22 +180,31 @@
         }
         #cycling-negative-container { display: inline-block; transition: opacity 0.3s ease-in-out; }
 
+        /* --- [ФИНАЛЬНАЯ ВЕРСИЯ] Бесшовная бегущая строка с восстановленными стилями --- */
+
         .ticker-wrapper {
             width: 100%;
             overflow: hidden;
-            position: relative;
-            margin-top: -20px;
-            margin-bottom: 30px;
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
             mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
         }
+
+        /* Лента, которая будет двигаться */
         .ticker-track {
-            display: flex;
-            white-space: nowrap;
-            will-change: transform;
+            display: inline-flex;
             animation: ticker-scroll 20s linear infinite;
         }
-        .ticker-track span {
+
+        /* Каждая из двух групп текста */
+        .ticker-content {
+            display: flex; /* <-- ВАЖНО: чтобы span'ы выстроились в ряд */
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        /* --- ВОТ СТИЛИ, КОТОРЫЕ Я СЛУЧАЙНО УДАЛИЛ --- */
+        /* Применяем их к span внутри новой структуры */
+        .ticker-content span {
             font-size: 3rem;
             padding: 0 30px;
             background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
@@ -191,9 +214,26 @@
             text-fill-color: transparent;
             font-weight: 800;
         }
+        /* --- КОНЕЦ ВОССТАНОВЛЕННОГО БЛОКА --- */
+
+
+        /* Сама анимация */
         @keyframes ticker-scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
+        from {
+            transform: translateX(0);
+        }
+        to {
+            /* Сдвигаем ленту влево на половину ее собственной ширины */
+            transform: translateX(-50%);
+        }
+        }
+
+        /* Адаптация для мобильных */
+        @media (max-width: 768px) {
+            /* Возвращаем уменьшенный размер шрифта для мобильных */
+            .ticker-content span {
+                font-size: 2.2rem;
+            }
         }
 
        /* --- [ИСПРАВЛЕНО] Стили для новой анимации --- */
@@ -508,6 +548,13 @@
                 font-size: 2.2rem;
             }
         }
+        /* --- Запрет горизонтального скролла на мобильных --- */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -527,41 +574,22 @@
                 <h2 class="fade-in">Если это про тебя, то мы</h2>
                 <div class="ticker-wrapper fade-in">
                     <div class="ticker-track">
-                        <span>поладим</span>
-                        <span>подходим друг другу</span>
-                        <span>не заскучаем</span>
-                        <span>точно подружимся</span>
-                        <span>найдём общий язык</span>
-                        <!-- Повтор для бесшовности -->
-                        <span>поладим</span>
-                        <span>подходим друг другу</span>
-                        <span>не заскучаем</span>
-                        <span>точно подружимся</span>
-                        <span>найдём общий язык</span>
-                        <!-- Повтор для бесшовности -->
-                        <span>поладим</span>
-                        <span>подходим друг другу</span>
-                        <span>не заскучаем</span>
-                        <span>точно подружимся</span>
-                        <span>найдём общий язык</span>
-                        <!-- Повтор для бесшовности -->
-                        <span>поладим</span>
-                        <span>подходим друг другу</span>
-                        <span>не заскучаем</span>
-                        <span>точно подружимся</span>
-                        <span>найдём общий язык</span>
-                        <!-- Повтор для бесшовности -->
-                        <span>поладим</span>
-                        <span>подходим друг другу</span>
-                        <span>не заскучаем</span>
-                        <span>точно подружимся</span>
-                        <span>найдём общий язык</span>
-                        <!-- Повтор для бесшовности -->
-                        <span>поладим</span>
-                        <span>подходим друг другу</span>
-                        <span>не заскучаем</span>
-                        <span>точно подружимся</span>
-                        <span>найдём общий язык</span>
+                        <!-- Группа №1 (Оригинал) -->
+                        <div class="ticker-content">
+                            <span>поладим</span>
+                            <span>подходим друг другу</span>
+                            <span>не заскучаем</span>
+                            <span>точно подружимся</span>
+                            <span>найдём общий язык</span>
+                        </div>
+                        <!-- Группа №2 (Копия для бесшовности) -->
+                        <div class="ticker-content" aria-hidden="true">
+                            <span>поладим</span>
+                            <span>подходим друг другу</span>
+                            <span>не заскучаем</span>
+                            <span>точно подружимся</span>
+                            <span>найдём общий язык</span>
+                        </div>
                     </div>
                 </div>
                 <div class="personas-grid">
@@ -613,7 +641,10 @@
 
         <section id="screenshots">
             <div class="container">
-                <h2 class="fade-in" id="wave-heading">А теперь посмотри <span class="gradient-text">как это выглядит</span></h2>
+                <h2 class="fade-in" id="wave-heading">
+                    А теперь посмотри <span class="gradient-text">как это</span><br>
+                    <span id="wave-word-container" class="gradient-text">выглядит</span>
+                </h2>
                 <div class="carousel-wrapper fade-in">
                     <div class="carousel-stack">
                         <div class="carousel-card">
@@ -872,41 +903,37 @@
             setTimeout(animateWords, 100);
         }
 
-        // [ИСПРАВЛЕНО - Финальная версия с плавной волной]
+        // [ИСПРАВЛЕНО - Финальная версия] Функция для анимации "Волна"
         function setupWaveAnimation() {
-            const heading = document.getElementById('wave-heading');
-            if (!heading) return;
+            // Теперь мы ищем не весь заголовок, а конкретный контейнер со словом
+            const wordContainer = document.getElementById('wave-word-container');
+            if (!wordContainer) return;
 
-            const targetSpan = heading.querySelector('.gradient-text');
-            if (!targetSpan) return;
+            const wordToAnimate = wordContainer.innerText.trim();
+            if (!wordToAnimate) return;
 
-            const wordToAnimate = "выглядит";
-            if (!targetSpan.textContent.includes(wordToAnimate)) return;
-
+            // Создаём HTML-код, где каждая буква обернута в свой span
             const animatedWordHTML = wordToAnimate.split('').map(char => `<span class="wave-char">${char}</span>`).join('');
-            targetSpan.innerHTML = targetSpan.innerHTML.replace(wordToAnimate, animatedWordHTML);
+            wordContainer.innerHTML = animatedWordHTML;
 
-            const chars = heading.querySelectorAll('.wave-char');
+            // --- Дальнейшая логика анимации остается прежней ---
+            const chars = wordContainer.querySelectorAll('.wave-char');
             if (chars.length === 0) return;
 
-            // Увеличиваем задержку между буквами, чтобы волна была медленнее
-            const delay = 120; 
+            const delay = 120;
 
             function playWave() {
                 chars.forEach((char, index) => {
                     setTimeout(() => {
                         char.classList.add('scaled');
-                        // Убираем класс через время, равное transition в CSS (0.6s = 600ms)
                         setTimeout(() => {
                             char.classList.remove('scaled');
-                        }, 600); 
+                        }, 600);
                     }, index * delay);
                 });
             }
 
-            // Запускаем анимацию в бесконечном цикле с комфортной паузой
             setInterval(playWave, 4000);
-            // Первый запуск с небольшой задержкой, чтобы страница успела прогрузиться
             setTimeout(playWave, 500);
         }
 
@@ -1133,7 +1160,7 @@
             setTimeout(type, 500);
         }
 
-        setupTypingAnimation('.hero .typing-effect-container', ["лекций", "видео", "книг", "документов"], { isGradient: true });
+        setupTypingAnimation('.hero .typing-effect-container', ["лекций", "видео", "книг", "документов", "подкастов"], { isGradient: true });
 
         setupWaveAnimation();
         setupMathAnimation();
@@ -1153,8 +1180,6 @@
             // "Готов получать" появляется СРАЗУ ЖЕ после того, как слово напечатано.
             if (positivePart) positivePart.classList.add('visible');
 
-            // "а не..." появится только через 1 секунду ПОСЛЕ этого.
-            // Визуально это и создаст эффект, что "Готов получать" было "на секунду раньше".
             setTimeout(() => {
                 if (negativePart) {
                     negativeWordContainer.textContent = negativeWords[negativeWordIndex];
