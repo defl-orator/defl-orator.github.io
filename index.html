@@ -202,7 +202,6 @@
             white-space: nowrap;
         }
 
-        /* --- ВОТ СТИЛИ, КОТОРЫЕ Я СЛУЧАЙНО УДАЛИЛ --- */
         /* Применяем их к span внутри новой структуры */
         .ticker-content span {
             font-size: 3rem;
@@ -214,7 +213,6 @@
             text-fill-color: transparent;
             font-weight: 800;
         }
-        /* --- КОНЕЦ ВОССТАНОВЛЕННОГО БЛОКА --- */
 
 
         /* Сама анимация */
@@ -304,21 +302,24 @@
             }
         }
 
+        /* Стили для каждой буквы в слове "выглядит" */
+        .looks-wave-char {
+            display: inline-block;
+            position: relative;
+            transform-origin: bottom;
+            /* УСКОРЕНО: Анимация будет длиться 0.3 секунды вместо 0.6с */
+            transition: transform 0.3s cubic-bezier(0.5, 0, 0.5, 1);
+        }
+
+        /* Состояние, когда буква увеличена */
+        .looks-wave-char.scaled {
+            /* УВЕЛИЧЕНО: Масштаб будет 1.35 вместо 1.15 */
+            transform: scaleY(1.35);
+        }
+
         /* --- [ДОБАВЛЕНО] Стили для анимации "Волна" --- */
         #wave-container {
             display: inline-block;
-        }
-
-        .wave-char {
-            display: inline-block;
-            /* Убираем transform-origin, он больше не нужен */
-            /* Время перехода можно сделать чуть быстрее для "прыжка" */
-            transition: transform 0.4s cubic-bezier(0.3, 0.7, 0.4, 1.5);
-        }
-
-        .wave-char.scaled {
-            /* ЗАМЕНЯЕМ scaleY на translateY. Буквы будут плавно подпрыгивать на 5 пикселей */
-            transform: translateY(-5px); 
         }
 
         /* --- [ИСПРАВЛЕНО] Анимация "Математика" с переносом строки --- */
@@ -643,7 +644,7 @@
             <div class="container">
                 <h2 class="fade-in" id="wave-heading">
                     А теперь посмотри <span class="gradient-text">как это</span><br>
-                    <span id="wave-word-container" class="gradient-text">выглядит</span>
+                    <span class="gradient-text" id="animated-looks-word">выглядит</span> <!-- НОВЫЙ ID, чтобы его легко найти -->
                 </h2>
                 <div class="carousel-wrapper fade-in">
                     <div class="carousel-stack">
@@ -723,23 +724,20 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- ОБЗЕРВЕР ДЛЯ FADE-IN ЭФФЕКТОВ ---
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Шаг 1: Запускаем родительскую fade-in анимацию (она длится 600мс)
                     entry.target.classList.add('visible');
 
-                    // --- [ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ] ---
+                    // --- [КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ] ---
+                    // Когда заголовок становится видимым...
                     if (entry.target.id === 'wave-heading') {
-                        
-                        // Шаг 2: ЖДЕМ, пока родительская анимация ПОЛНОСТЬЮ ЗАВЕРШИТСЯ.
-                        // Добавляем небольшой буфер (50мс) на всякий случай.
+                        // ...ждем завершения его fade-in анимации...
                         setTimeout(() => {
-                            // Шаг 3: Теперь, когда родитель h2 статичен и полностью видим,
-                            // мы можем безопасно запускать анимацию для его дочерних элементов.
-                            setupWaveAnimation();
-                        }, 650); // 600мс (длительность transition) + 50мс (буфер)
-
+                            // ...и ТОЛЬКО ТОГДА запускаем ЕДИНСТВЕННУЮ правильную функцию.
+                            setupWaveAnimation(); 
+                        }, 650);
                         // Отписываемся, чтобы не запускать скрипт повторно.
                         observer.unobserve(entry.target);
                     }
@@ -748,6 +746,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
 
+        // --- ОБЗЕРВЕР ДЛЯ АНИМАЦИИ СРАВНЕНИЯ ---
         const comparisonObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('comparison-card-animated'); } });
         }, { threshold: 0.8 });
@@ -755,6 +754,7 @@
             if (card.querySelector('.strikethrough')) { comparisonObserver.observe(card); }
         });
 
+        // --- ЛОГИКА КАРУСЕЛИ (без изменений) ---
         const stack = document.querySelector('.carousel-stack');
         if (stack) {
             const cards = Array.from(stack.children);
@@ -842,18 +842,52 @@
             stack.addEventListener('mouseleave', scheduleNextRotation);
             updateCards();
         }
+        
+        // --- ФУНКЦИЯ АНИМАЦИИ "ВЫГЛЯДИТ" (единственная и правильная) ---
+        function setupWaveAnimation() {
+            // Ищем правильный ID из вашего HTML
+            const element = document.getElementById('animated-looks-word');
+            if (!element) return;
 
-        // [ИСПРАВЛЕНО] Функция для новой плавной анимации
+            const originalText = element.innerText;
+            element.innerHTML = ''; // Очищаем его
+            // Разбиваем слово на буквы и присваиваем им РАБОЧИЙ класс
+            originalText.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = char.trim() === '' ? '' : 'looks-wave-char';
+                span.textContent = char;
+                element.appendChild(span);
+            });
+
+            const chars = element.querySelectorAll('.looks-wave-char');
+            if (chars.length === 0) return;
+
+            // Используем параметры, которые вы хотели: больше и быстрее
+            const delay = 80;
+            const animDuration = 300;
+            const pause = 3000;
+
+            function loopWave() {
+                chars.forEach((char, index) => {
+                    setTimeout(() => {
+                        char.classList.add('scaled');
+                        setTimeout(() => char.classList.remove('scaled'), animDuration);
+                    }, index * delay);
+                });
+                const totalDuration = (chars.length * delay) + animDuration + pause;
+                setTimeout(loopWave, totalDuration);
+            }
+            loopWave();
+        }
+
+        // --- ОСТАЛЬНЫЕ ФУНКЦИИ АНИМАЦИЙ (без изменений) ---
         function setupWordFlipper() {
             const leftContainer = document.getElementById('left-word-container');
             const rightContainer = document.getElementById('right-word-container');
             if (!leftContainer || !rightContainer) return;
-
             const leftWords = ["время", "пользу"];
             const rightWords = ["свободу", "выбор"];
             const allWords = [...leftWords, ...rightWords];
-
-            // --- Шаг 1: Измеряем самое длинное слово для стабильности контейнеров ---
             let maxWidth = 0;
             const tempSpan = document.createElement('span');
             tempSpan.style.position = 'absolute';
@@ -870,117 +904,57 @@
             document.body.removeChild(tempSpan);
             leftContainer.style.width = `${maxWidth}px`;
             rightContainer.style.width = `${maxWidth}px`;
-
-            // --- Шаг 2: Запускаем цикл анимации ---
             let leftIndex = 0;
             let rightIndex = 0;
             let isLeftTurn = true;
-
             function animateWords() {
-                // --- Этап A: Запускаем анимацию ВЫХОДА для старого слова ---
                 const currentVisible = document.querySelector('.word-anim.visible');
                 if (currentVisible) {
                     currentVisible.classList.remove('visible');
                     currentVisible.classList.add('exiting');
                 }
-
-                // --- Этап B: Ждём завершения выхода и создаём новое слово ---
                 setTimeout(() => {
                     const container = isLeftTurn ? leftContainer : rightContainer;
                     const words = isLeftTurn ? leftWords : rightWords;
                     let index = isLeftTurn ? leftIndex : rightIndex;
-
-                    // Очищаем контейнер, куда будем добавлять новое слово
                     container.innerHTML = '';
-
-                    // Создаем слово, добавляем базовые и начальные классы
                     const span = document.createElement('span');
                     span.textContent = words[index];
                     span.className = 'word-anim entering';
                     container.appendChild(span);
-
-                    // --- Этап C: Запускаем анимацию ВХОДА для нового слова ---
-                    // Небольшая задержка, чтобы браузер успел применить начальные стили
                     setTimeout(() => {
                         span.classList.add('visible');
                         span.classList.remove('entering');
                     }, 20);
-
-                    // Готовимся к следующему циклу
                     if (isLeftTurn) {
                         leftIndex = (leftIndex + 1) % leftWords.length;
                     } else {
                         rightIndex = (rightIndex + 1) % rightWords.length;
                     }
-                    isLeftTurn = !isLeftTurn; // Меняем сторону
-
-                }, 500); // Эта задержка должна быть чуть больше, чем transition в CSS
+                    isLeftTurn = !isLeftTurn;
+                }, 500);
             }
-
-            // Запускаем анимацию с интервалом
             setInterval(animateWords, 2500);
-            // Первый запуск делаем сразу, но с небольшой задержкой для инициализации
             setTimeout(animateWords, 100);
         }
 
-        // [ИСПРАВЛЕНО - Финальная версия] Функция для анимации "Волна"
-        function setupWaveAnimation() {
-            // Теперь мы ищем не весь заголовок, а конкретный контейнер со словом
-            const wordContainer = document.getElementById('wave-word-container');
-            if (!wordContainer) return;
-
-            const wordToAnimate = wordContainer.innerText.trim();
-            if (!wordToAnimate) return;
-
-            // Создаём HTML-код, где каждая буква обернута в свой span
-            const animatedWordHTML = wordToAnimate.split('').map(char => `<span class="wave-char">${char}</span>`).join('');
-            wordContainer.innerHTML = animatedWordHTML;
-
-            // --- Дальнейшая логика анимации остается прежней ---
-            const chars = wordContainer.querySelectorAll('.wave-char');
-            if (chars.length === 0) return;
-
-            const delay = 120;
-
-            function playWave() {
-                chars.forEach((char, index) => {
-                    setTimeout(() => {
-                        char.classList.add('scaled');
-                        setTimeout(() => {
-                            char.classList.remove('scaled');
-                        }, 600);
-                    }, index * delay);
-                });
-            }
-
-            setInterval(playWave, 4000);
-            setTimeout(playWave, 500);
-        }
-
-        // [ИСПРАВЛЕНО] Финальная версия: без задержки и с корректной шириной
         function setupMathAnimation() {
             const heading = document.getElementById('math-heading');
             const container = document.getElementById('math-container');
             if (!heading || !container) return;
-
             const syllables = ["ма", "те", "ма", "ти", "ки"];
             const fullWordText = "математики";
-
-            // --- ШАГ 1: Измеряем ширины с большим запасом, чтобы ничего не обрезалось ---
             const tempSpan = document.createElement('span');
             tempSpan.style.fontSize = '3rem'; tempSpan.style.fontWeight = '800';
             tempSpan.style.position = 'absolute'; tempSpan.style.opacity = '0';
             document.body.appendChild(tempSpan);
-            
             tempSpan.innerHTML = "ма<span class='math-plus'>+</span>те<span class='math-plus'>+</span>ма<span class='math-plus'>+</span>ти<span class='math-plus'>+</span>ки";
-            const plusVersionWidth = tempSpan.offsetWidth + 25; // Увеличили запас до 25px
+            const plusVersionWidth = tempSpan.offsetWidth + 25;
             tempSpan.textContent = fullWordText;
-            const finalWordWidth = tempSpan.offsetWidth + 25; // Увеличили запас до 25px
+            const finalWordWidth = tempSpan.offsetWidth + 25;
             document.body.removeChild(tempSpan);
-
             function runAnimationCycle() {
                 container.innerHTML = '';
-                
                 let parts = [];
                 syllables.forEach((syllable, i) => {
                     const s = document.createElement('span'); s.textContent = syllable; s.className = 'math-part math-syllable'; container.appendChild(s); parts.push(s);
@@ -988,36 +962,28 @@
                         const p = document.createElement('span'); p.textContent = '+'; p.className = 'math-part math-plus'; container.appendChild(p); parts.push(p);
                     }
                 });
-
                 requestAnimationFrame(() => {
                     heading.style.setProperty('--math-container-width', `${plusVersionWidth}px`);
                     heading.classList.add('is-animating');
-                    
                     let delay = 500;
                     const appearanceInterval = 250;
                     parts.forEach(part => {
                         setTimeout(() => part.classList.add('visible'), delay);
                         delay += appearanceInterval;
                     });
-
                     setTimeout(() => {
                         heading.style.setProperty('--math-container-width', `${finalWordWidth}px`);
-                        
                         const finalWordSpan = document.createElement('span');
                         finalWordSpan.textContent = fullWordText;
                         finalWordSpan.className = 'math-part math-syllable math-final-word';
                         container.appendChild(finalWordSpan);
-                        
                         parts.forEach(p => p.classList.remove('visible'));
                         setTimeout(() => finalWordSpan.classList.add('visible'), 50);
-
                     }, delay + 300);
-
-                    // --- ШАГ 5 (ИСПРАВЛЕНО): Стирание с правильным курсором ---
                     setTimeout(() => {
                         const finalWordSpan = container.querySelector('.math-final-word');
                         if (!finalWordSpan) return;
-                        finalWordSpan.classList.add('typing-cursor'); // <<< ПРАВИЛЬНО: добавляем класс к слову
+                        finalWordSpan.classList.add('typing-cursor');
                         let currentWord = fullWordText;
                         const backspaceInterval = setInterval(() => {
                             if (currentWord.length > 0) {
@@ -1025,7 +991,7 @@
                                 finalWordSpan.textContent = currentWord;
                             } else {
                                 clearInterval(backspaceInterval);
-                                finalWordSpan.classList.remove('typing-cursor'); // <<< ПРАВИЛЬНО: убираем класс со слова
+                                finalWordSpan.classList.remove('typing-cursor');
                                 heading.classList.remove('is-animating');
                                 setTimeout(runAnimationCycle, 200);
                             }
@@ -1033,16 +999,12 @@
                     }, delay + 2500);
                 });
             }
-
-            // Убираем setInterval, первый запуск делаем напрямую
-            runAnimationCycle(); 
+            runAnimationCycle();
         }
                 
-        // [ИСПРАВЛЕНО] Функция для непрерывной плавной волны
         function setupValueWaveAnimation(elementId) {
             const element = document.getElementById(elementId);
             if (!element) return;
-
             const originalText = element.innerText;
             element.innerHTML = '';
             originalText.split('').forEach(char => {
@@ -1051,13 +1013,11 @@
                 span.textContent = char;
                 element.appendChild(span);
             });
-
             const chars = element.querySelectorAll('.value-wave-char');
             if (chars.length === 0) return;
-            const delay = 120; // Задержка между буквами (медленнее)
-            const animDuration = 800; // Длительность CSS-анимации (дольше)
-            const pause = 2500; // Пауза между волнами (больше)
-
+            const delay = 120;
+            const animDuration = 800;
+            const pause = 2500;
             function loopWave() {
                 chars.forEach((char, index) => {
                     setTimeout(() => {
@@ -1070,75 +1030,6 @@
             }
             loopWave();
         }
-
-
-        // [ФИНАЛЬНАЯ ВЕРСИЯ] Стабильная и плавная анимация с отложенным измерением
-        function setupMagnifyAnimation() {
-            const wordContainer = document.getElementById('magnify-word');
-            if (!wordContainer) return;
-
-            const originalWord = wordContainer.innerText.trim();
-            wordContainer.innerHTML = originalWord.split('').map(char => `<span class="magnify-char">${char}</span>`).join('');
-
-            // CRUCIAL FIX: Мы не запускаем анимацию сразу.
-            // Мы ждем 100 миллисекунд, чтобы дать браузеру время 100% отрисовать
-            // кастомный шрифт и все стили. Это решает проблему тряски и неверных размеров.
-            setTimeout(initAnimation, 100);
-
-            function initAnimation() {
-                const chars = Array.from(wordContainer.querySelectorAll('.magnify-char'));
-                
-                // 1. СТАБИЛЬНОЕ ИЗМЕРЕНИЕ: Проводим замеры ОДИН РАЗ после отрисовки.
-                const letterPositions = chars.map(char => char.offsetLeft + (char.offsetWidth / 2));
-                const wordWidth = wordContainer.offsetWidth;
-
-                // 2. Параметры анимации для "дорогого" эффекта
-                const totalDuration = 8000; // 8 секунд - медленно и плавно
-                const maxScale = 1.5;
-                const falloff = wordWidth * 0.15; // Ширина "линзы"
-
-                const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-                let startTime = null;
-
-                function animate(timestamp) {
-                    if (!startTime) startTime = timestamp;
-                    const elapsed = (timestamp - startTime) % totalDuration;
-                    const progress = elapsed / totalDuration;
-
-                    // 3. Расчет положения "лупы" на основе стабильных данных
-                    let focalPointX;
-                    // Фазы были скорректированы для более плавного и полного движения
-                    if (progress < 0.45) { // Фаза 1: Вперед (45% времени)
-                        const phaseProgress = progress / 0.45;
-                        focalPointX = easeInOutCubic(phaseProgress) * wordWidth;
-                    } else if (progress < 0.7) { // Фаза 2: Назад до середины (25% времени)
-                        const phaseProgress = (progress - 0.45) / 0.25;
-                        focalPointX = wordWidth - (easeInOutCubic(phaseProgress) * (wordWidth / 2));
-                    } else if (progress < 0.95) { // Фаза 3: Вперед до конца (25% времени)
-                        const phaseProgress = (progress - 0.7) / 0.25;
-                        focalPointX = (wordWidth / 2) + (easeInOutCubic(phaseProgress) * (wordWidth / 2));
-                    } else { // Фаза 4: Пауза
-                        focalPointX = wordWidth; // Лупа остается в конце слова
-                    }
-
-                    // 4. Применяем стили к каждой букве на каждом кадре
-                    chars.forEach((char, index) => {
-                        const distance = Math.abs(letterPositions[index] - focalPointX);
-                        const scale = 1 + (maxScale - 1) * Math.exp(-(distance * distance) / (falloff * falloff));
-                        const shadowOpacity = 0.2 * Math.exp(-(distance * distance) / (falloff * falloff * 2));
-
-                        // Прямое применение стилей для максимальной производительности
-                        char.style.transform = `scale(${scale})`;
-                        char.style.textShadow = `0 0 8px rgba(255, 255, 255, ${shadowOpacity})`;
-                    });
-
-                    requestAnimationFrame(animate);
-                }
-
-                requestAnimationFrame(animate); // Начинаем плавную анимацию
-            }
-        }
-
 
         function setupTypingAnimation(selector, words, options = {}, onWordTyped = null, onStartDeleting = null) {
             const container = document.querySelector(selector);
@@ -1180,44 +1071,45 @@
             setTimeout(type, 500);
         }
 
+        // --- ФИНАЛЬНЫЙ СПИСОК ВЫЗОВОВ ФУНКЦИЙ ---
         setupTypingAnimation('.hero .typing-effect-container', ["лекций", "видео", "книг", "документов", "подкастов"], { isGradient: true });
-
-        setupWaveAnimation();
+        
+        // УДАЛЕНА СТАРАЯ ФУНКЦИЯ, ВЫЗЫВАЕТСЯ ТОЛЬКО ВНУТРИ IntersectionObserver
+        // setupWaveAnimation(); 
+        
         setupMathAnimation();
         setupWordFlipper();
         setupValueWaveAnimation('time-value'); 
         setupValueWaveAnimation('price-value');
-        setupMagnifyAnimation();
+        
+        // УДАЛЕНА, ТАК КАК ВЫ РЕШИЛИ ЗАМЕНИТЬ АНИМАЦИЮ
+        // setupMagnifyAnimation();
 
-        const positivePart = document.querySelector('#heading-positive-part'); // <-- Находим новый элемент
+        // --- ЛОГИКА АНИМАЦИИ В ФУТЕРЕ (без изменений) ---
+        const positivePart = document.querySelector('#heading-positive-part');
         const negativePart = document.querySelector('#heading-negative-part');
         const negativeWordContainer = document.querySelector('#cycling-negative-container');
         const negativeWords = ["нудятину?", "скуку?", "воду?", "шум?"];
         let negativeWordIndex = 0;
-
-        // Новая функция, которая показывает элементы с правильной последовательностью
         const showFooterStaticParts = () => {
-            // "Готов получать" появляется СРАЗУ ЖЕ после того, как слово напечатано.
             if (positivePart) positivePart.classList.add('visible');
-
             setTimeout(() => {
                 if (negativePart) {
                     negativeWordContainer.textContent = negativeWords[negativeWordIndex];
                     negativePart.classList.add('visible');
                     negativeWordIndex = (negativeWordIndex + 1) % negativeWords.length;
                 }
-            }, 1000); // Задержка в 1 секунду
+            }, 1000);
         };
-
-        // Новая функция, которая скрывает ОБА элемента
         const hideFooterStaticParts = () => {
             if (positivePart) positivePart.classList.remove('visible');
             if (negativePart) negativePart.classList.remove('visible');
         };
-
-        // Вызываем typing-анимацию с новыми функциями
         setupTypingAnimation('#typing-positive-container', ["суть,", "главное,", "интересное,", "лучшее,"], { isGradient: true }, showFooterStaticParts, hideFooterStaticParts);
+    
     });
     </script>
+</body>
+</html>
 </body>
 </html>
