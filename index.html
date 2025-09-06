@@ -311,14 +311,14 @@
 
         .wave-char {
             display: inline-block;
-            transform-origin: bottom;
-            /* Увеличиваем время для более плавной и медленной анимации */
-            transition: transform 0.6s cubic-bezier(0.5, 0, 0.5, 1);
+            /* Убираем transform-origin, он больше не нужен */
+            /* Время перехода можно сделать чуть быстрее для "прыжка" */
+            transition: transform 0.4s cubic-bezier(0.3, 0.7, 0.4, 1.5);
         }
 
         .wave-char.scaled {
-            /* Убираем подпрыгивание, оставляем только растяжение по вертикали */
-            transform: scaleY(1.25); 
+            /* ЗАМЕНЯЕМ scaleY на translateY. Буквы будут плавно подпрыгивать на 5 пикселей */
+            transform: translateY(-5px); 
         }
 
         /* --- [ИСПРАВЛЕНО] Анимация "Математика" с переносом строки --- */
