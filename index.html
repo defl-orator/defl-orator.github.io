@@ -726,20 +726,24 @@
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    // Шаг 1: Делаем родительский элемент видимым
                     entry.target.classList.add('visible');
 
-                    // --- [КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ] ---
-                    // Если видимым стал именно наш заголовок с "волной",
-                    // ТОЛЬКО ТОГДА мы запускаем для него анимацию.
+                    // --- [ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ] ---
                     if (entry.target.id === 'wave-heading') {
-                        setupWaveAnimation();
-                        // Отписываемся от наблюдения, чтобы не запускать скрипт повторно
-                        // при прокрутке вверх-вниз.
+                        // Шаг 2: ЖДЕМ 100 миллисекунд. Этого достаточно, чтобы браузер
+                        // начал fade-in переход, но слишком мало, чтобы заметить задержку.
+                        setTimeout(() => {
+                            // Шаг 3: ТОЛЬКО ТЕПЕРЬ запускаем анимацию.
+                            setupWaveAnimation();
+                        }, 100); // 100мс = 0.1 секунды
+
+                        // Отписываемся, чтобы не запускать скрипт повторно.
                         observer.unobserve(entry.target);
                     }
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.1 });;
         document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
 
         const comparisonObserver = new IntersectionObserver((entries) => {
