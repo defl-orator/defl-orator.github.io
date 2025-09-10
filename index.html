@@ -15,66 +15,259 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* ==========================================================================
+        1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ И ПЕРЕМЕННЫЕ
+        ========================================================================== */
         :root {
-            --bg-color: #1A1A1A; --card-bg-solid: #1E1E1E;
-            --border-color: rgba(255, 255, 255, 0.1); --text-color: #F0F0F0;
-            --text-secondary: #a0a0b0; --gradient-start: #FFD23F; --gradient-end: #FFBF00;
+            --bg-color: #1A1A1A;
+            --card-bg-solid: #1E1E1E;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-color: #F0F0F0;
+            --text-secondary: #a0a0b0;
+            --gradient-start: #FFD23F;
+            --gradient-end: #FFBF00;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Предотвращаем горизонтальный скролл глобально */
+        }
+
         body {
-            font-family: 'Inter', sans-serif; background-color: var(--bg-color);
-            color: var(--text-color); line-height: 1.7; overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
         }
+
+        /* Декоративные градиенты на фоне */
         body::before, body::after {
-            content: ''; position: fixed; width: 50vw; height: 50vw;
-            filter: blur(120px); z-index: -1;
+            content: '';
+            position: fixed;
+            width: 50vw;
+            height: 50vw;
+            filter: blur(120px);
+            z-index: -1;
         }
         body::before { top: -10%; left: -20%; background: radial-gradient(circle, rgba(255, 210, 63, 0.15), transparent 70%); }
         body::after { bottom: -20%; right: -20%; background: radial-gradient(circle, rgba(255, 191, 0, 0.1), transparent 70%); }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        section { padding: 100px 0; position: relative; }
-        h1, h2, h3 { font-weight: 800; }
-        h2 { font-size: 3rem; text-align: center; margin-bottom: 60px; }
-        .gradient-text {
-            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; text-fill-color: transparent;
+
+        /* ==========================================================================
+        2. ОСНОВНАЯ ТИПОГРАФИЯ И КОНТЕЙНЕРЫ
+        ========================================================================== */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        .hero { text-align: center; padding: 100px 20px; }
-        .hero-logo { width: 150px; height: 150px; margin: 0 auto 30px; display: block; }
-        .hero h1 { font-size: 4rem; margin-bottom: 25px; line-height: 1.2; text-shadow: 0 0 20px rgba(255, 210, 63, 0.2); }
-        .hero p { font-size: 1.25rem; max-width: 700px; margin: 0 auto 20px; color: var(--text-secondary); min-height: 2em; }
+
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        h1, h2, h3 {
+            font-weight: 800;
+        }
+        
+        h1 { font-size: 4rem; line-height: 1.2; }
+        h2 { font-size: 3rem; text-align: center; margin-bottom: 60px; }
+
+        .gradient-text,
+        .ticker-content span,
+        .word-anim,
+        .math-syllable {
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        /* ==========================================================================
+        3. СТИЛИ КОМПОНЕНТОВ (Карточки, кнопки и т.д.)
+        ========================================================================== */
+        
+        /* --- Кнопка CTA --- */
         .cta-button {
-            display: inline-block; background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            color: #1A1A1A; padding: 18px 35px; border-radius: 50px; text-decoration: none;
-            font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease;
+            display: inline-flex; /* Для центрирования */
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: #1A1A1A;
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(255, 210, 63, 0.2);
         }
-        .cta-button:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 210, 63, 0.3); }
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 210, 63, 0.3);
+        }
+
+        /* --- "Стеклянная" карточка (основной стиль для многих блоков) --- */
         .glass-card {
-            border-radius: 20px; padding: 35px; transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative; overflow: hidden; background-color: var(--card-bg-solid);
+            border-radius: 20px;
+            padding: 35px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--card-bg-solid);
             border: 1px solid transparent;
             background-image:
                 radial-gradient(circle at 10% 20%, rgba(255, 210, 63, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 100, 0, 0.1) 0%, transparent 50%),
-                var(--card-bg-solid);
-            background-clip: border-box; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+                radial-gradient(circle at 90% 80%, rgba(255, 100, 0, 0.1) 0%, transparent 50%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .glass-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 20px; border: 1px solid transparent;
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            border: 1px solid transparent;
             background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05)) border-box;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out;
             mask-composite: exclude;
-            opacity: 0.5; transition: opacity 0.3s ease;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
-        .glass-card:hover::before { opacity: 1; }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .personas-grid, .features-grid, .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* --- Общие стили для сеток --- */
+        .personas-grid, .features-grid, .pricing-grid, .comparison-grid, .stats-grid, .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* ==========================================================================
+        4. СТИЛИ СЕКЦИЙ (Hero, Personas, Features и т.д.)
+        ========================================================================== */
+
+        /* --- Hero-блок и Промо-блок в нем --- */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .hero-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            display: block;
+        }
+        .hero h1 {
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(255, 210, 63, 0.2);
+        }
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            color: var(--text-secondary);
+            min-height: 2em;
+        }
+        .promo-code-box {
+            margin-top: 40px;
+            background: var(--card-bg-solid);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .promo-code-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            min-height: 0;
+        }
+        .promo-code-box p strong {
+            color: var(--text-color);
+            font-weight: 700;
+        }
+        .promo-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .promo-code-display {
+            flex-grow: 1;
+            background: var(--bg-color);
+            border: 1px dashed var(--gradient-start);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-color);
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+        .promo-code-box .cta-button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .copy-feedback {
+            display: inline-block;
+            color: var(--gradient-start);
+            font-weight: 500;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            margin-left: 15px;
+        }
+        .promo-code-box .promo-instruction {
+            font-size: 0.85rem;
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+
+        /* --- Секция Статистики --- */
+        .stats-grid { margin: 60px 0; }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            /* Градиентный текст уже определён глобально */
+        }
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* --- Секция Персон --- */
         .persona-card { display: flex; flex-direction: column; }
         .persona-card-header { text-align: center; }
         .persona-card h3 { font-size: 1.6rem; margin-bottom: 10px; }
@@ -84,28 +277,22 @@
         .persona-arrow { text-align: center; margin: 25px 0 15px; }
         .persona-response { padding: 10px; text-align: left; }
         .persona-response strong { color: var(--gradient-start); }
-        #features h2 { font-size: 3rem; }
+
+        /* --- Секция Фич --- */
         .feature-card { text-align: center; }
         .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
         .feature-card p { text-align: left; }
         .feature-card p strong { color: var(--gradient-start); }
+        
+        /* --- Секция Карусели --- */
         .carousel-wrapper { position: relative; max-width: 400px; height: 800px; margin: 0 auto; }
         .carousel-stack { position: relative; width: 100%; height: 100%; cursor: grab; user-select: none; }
         .carousel-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; transition: transform 0.5s ease, opacity 0.5s ease; will-change: transform, opacity; }
         .carousel-card .screenshot-image-wrapper { width: 100%; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3); aspect-ratio: 9 / 19.5; }
         .carousel-card .screenshot-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 50%; }
         .carousel-card.is-active { transform: scale(1) translateY(0); opacity: 1; z-index: 10; }
-        .carousel-card h3 {
-            /* По умолчанию заголовки невидимы и сдвинуты вниз */
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-        .carousel-card.is-active h3 {
-            /* Для активной карточки делаем заголовок видимым и возвращаем на место */
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .carousel-card h3 { opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease, transform 0.4s ease; }
+        .carousel-card.is-active h3 { opacity: 1; transform: translateY(0); }
         .carousel-card:not(.is-active) { pointer-events: none; }
         .carousel-card.prev-card { transform: scale(0.9) translateX(-20%) translateY(20px); opacity: 0.5; z-index: 9; }
         .carousel-card.next-card { transform: scale(0.9) translateX(20%) translateY(20px); opacity: 0.5; z-index: 9; }
@@ -113,472 +300,442 @@
         .carousel-button:hover { background: rgba(0, 0, 0, 0.6); }
         .carousel-button.prev { left: -60px; }
         .carousel-button.next { right: -60px; }
-        #comparison { background-color: #1A1A1A; }
-        .comparison-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        /* --- Секция Сравнения --- */
+        #comparison .glass-card h3 { text-align: center; }
         .comparison-icon { font-size: 3rem; display: block; text-align: center; margin-bottom: 20px; }
         .comparison-line { margin-top: 25px; padding-left: 20px; border-left: 3px solid var(--border-color); }
         .comparison-line.original { opacity: 0.6; }
         .comparison-line span { display: inline-block; font-size: 2.5rem; font-weight: 800; line-height: 1.2; }
         .comparison-line p { font-size: 1rem; color: var(--text-secondary); }
-        /* --- Центрирование заголовков в секции сравнения --- */
-        #comparison .glass-card h3 {
-            text-align: center;
-        }
-        .final-value { color: var(--gradient-start); }
-        .promo-note {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 5px 15px;
-            background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            color: #1A1A1A; /* Цвет для самого контейнера */
-            border-radius: 8px;
-            font-weight: 700;
-        }
-
-        .promo-note strong {
-            color: #000000;
-        }
+        .promo-note { display: inline-block; margin-top: 10px; padding: 5px 15px; background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%); color: #1A1A1A; border-radius: 8px; font-weight: 700; }
+        .promo-note strong { color: #000000; }
         .strikethrough { position: relative; }
         .strikethrough::after { content: ''; position: absolute; top: 50%; left: 0; height: 3px; background-color: #ff5f56; width: 0; transition: width 0.8s ease-out; transition-delay: 0.5s; }
         .comparison-card-animated .strikethrough::after { width: 100%; }
+
+        /* --- Секция Тарифов и Отзывов --- */
         .pricing-card { display: flex; flex-direction: column; height: 100%; text-align: center; }
         .pricing-card.highlight { border: 2px solid var(--gradient-start); }
         .pricing-card h3 { font-size: 1.8rem; margin-bottom: 20px; }
         .pricing-card ul { text-align: left; list-style: none; margin-bottom: 30px; flex-grow: 1; }
         .pricing-card li { margin-bottom: 12px; }
-        .promo-banner { text-align: center; margin-top: 50px; padding: 20px; background-color: var(--card-bg-solid); border: 1px solid var(--gradient-start); border-radius: 15px; font-size: 1.1rem; }
-        .promo-banner strong { color: var(--gradient-start); }
+        .pioneer-club-badge { display: inline-block; padding: 8px 18px; border-radius: 20px; background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%); color: #1A1A1A; font-weight: 700; font-size: 0.9rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .pioneer-seats-counter { font-size: 1.5rem; font-weight: 500; margin-top: 25px; color: var(--text-secondary); }
+        .pioneer-seats-counter .count { font-weight: 800; color: var(--text-color); font-size: 2.2rem; min-width: 60px; display: inline-block; text-align: right; }
+        .pricing-card.highlight .cta-button { margin-top: 20px; }
+        
+        #promo-section { text-align: center; }
+        .promo-code-card { max-width: 800px; margin: 0 auto; padding: 40px; }
+        .promo-code-card h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .promo-code-card p { font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 30px; }
+        
+        .testimonials-section { padding-top: 60px; }
+        .testimonial-card { font-style: italic; color: var(--text-secondary); }
+        .testimonial-card footer { font-style: normal; font-weight: 700; color: var(--text-color); margin-top: 20px; padding: 0; display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+        .testimonial-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); }
+
+        /* --- Футер (Подвал) --- */
         footer { text-align: center; padding: 100px 20px; }
         .qr-code-section { margin-bottom: 50px; }
         .qr-code-image { width: 360px; height: auto; border: 4px solid var(--card-bg-solid); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .qr-code-section p { margin-top: 15px; color: var(--text-secondary); }
         footer h2 { font-size: 2.5rem; margin-bottom: 40px; }
-        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
-        .typing-effect { font-weight: bold; border-right: 2px solid var(--text-secondary); animation: blink 0.7s step-end infinite; padding-right: 2px; display: inline-block; }
-        @keyframes blink { from, to { border-color: transparent; } 50% { border-color: var(--text-secondary); } }
         .footer-heading { line-height: 1.3; }
         .footer-heading div { min-height: 1.3em; }
-        #heading-positive-part {
-            opacity: 0;
-            transform: translateY(-20px); /* Ключевое изменение: было 20px, стало -20px */
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-            will-change: opacity, transform;
+
+        /* --- Стили для единого блока приветственного бонуса (ФИНАЛ V2 - ИСПРАВЛЕННЫЙ) --- */
+        .promo-timer {
+            margin-top: 35px;
+            padding: 25px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
         }
 
-        /* Начальное состояние для "а не..." (снизу и невидимо) */
-        #heading-negative-part {
-            opacity: 0;
-            transform: translateY(20px); /* Остаётся как было */
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-            will-change: opacity, transform;
+        .promo-timer-label {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto 20px;
         }
 
-        /* Общее конечное состояние (на месте и видимо) */
-        #heading-positive-part.visible, #heading-negative-part.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .promo-timer-values {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
         }
+
+        /* [ВОССТАНОВЛЕННЫЕ СТИЛИ] Вот что было упущено */
+        .timer-block {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 15px;
+            min-width: 70px;
+            text-align: center;
+        }
+        .timer-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-color);
+            line-height: 1.1;
+        }
+        .timer-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        /* [КОНЕЦ ВОССТАНОВЛЕННЫХ СТИЛЕЙ] */
+
+        .promo-instruction-text {
+            margin: 25px auto 15px;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .promo-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .promo-code-display {
+            flex-grow: 1;
+            background: var(--bg-color);
+            border: 1px dashed var(--gradient-start);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-color);
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .promo-code-display:hover {
+            background-color: rgba(255, 210, 63, 0.05);
+        }
+
+        .promo-input-group .cta-button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .copy-feedback {
+            display: block;
+            text-align: center;
+            color: var(--gradient-start);
+            font-weight: 500;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            margin-top: 10px;
+            height: 1.2em; 
+        }
+
+        .copy-hint-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            margin: 0;
+            margin-top: 2px;
+        }
+
+        /* --- Стили для скрытого комментария в тарифах --- */
+        .subtle-note {
+            display: inline-block; /* Чтобы margin-top сработал */
+            margin-top: 5px;       /* Небольшой отступ сверху */
+            color: var(--text-secondary); /* Используем ваш стандартный серый цвет */
+            opacity: 0.7;          /* Делаем его полупрозрачным */
+            font-size: 0.9rem;     /* Немного уменьшаем шрифт */
+            font-style: italic;    /* Добавляем курсив для эффекта комментария */
+        }
+
+        /* ==========================================================================
+        5. АНИМАЦИИ
+        ========================================================================== */
+        
+        /* --- Анимация появления (Fade-in) --- */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- Анимация печатания (Typing effect) --- */
+        .typing-effect { font-weight: bold; border-right: 2px solid var(--text-secondary); animation: blink 0.7s step-end infinite; padding-right: 2px; display: inline-block; }
+        @keyframes blink { from, to { border-color: transparent; } 50% { border-color: var(--text-secondary); } }
+
+        /* --- Анимация заголовков в футере --- */
+        #heading-positive-part { opacity: 0; transform: translateY(-20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; will-change: opacity, transform; }
+        #heading-negative-part { opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; will-change: opacity, transform; }
+        #heading-positive-part.visible, #heading-negative-part.visible { opacity: 1; transform: translateY(0); }
         #cycling-negative-container { display: inline-block; transition: opacity 0.3s ease-in-out; }
 
-        /* --- [ФИНАЛЬНАЯ ВЕРСИЯ] Бесшовная бегущая строка с восстановленными стилями --- */
+        /* --- Анимация бегущей строки (Ticker) --- */
+        .ticker-wrapper { width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%); }
+        .ticker-track { display: inline-flex; animation: ticker-scroll 20s linear infinite; }
+        .ticker-content { display: flex; flex-shrink: 0; white-space: nowrap; }
+        .ticker-content span { font-size: 3rem; padding: 0 30px; font-weight: 800; }
+        @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        .ticker-wrapper {
-            width: 100%;
-            overflow: hidden;
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
-            mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
-        }
+        /* --- Анимация смены слов (Flipper) --- */
+        .flipper-heading { display: flex; justify-content: center; align-items: center; gap: 1.2rem; line-height: 1.2; white-space: nowrap; }
+        .word-container { position: relative; height: calc(3rem * 1.2); display: flex; justify-content: center; align-items: center; top: 2rem; }
+        .word-anim { position: absolute; font-size: 3rem; font-weight: 800; transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+        .word-anim.entering { opacity: 0; transform: translateY(20px); }
+        .word-anim.visible { opacity: 1; transform: translateY(0); }
+        .word-anim.exiting { opacity: 0; transform: translateY(-20px); }
 
-        /* Лента, которая будет двигаться */
-        .ticker-track {
-            display: inline-flex;
-            animation: ticker-scroll 20s linear infinite;
-        }
-
-        /* Каждая из двух групп текста */
-        .ticker-content {
-            display: flex; /* <-- ВАЖНО: чтобы span'ы выстроились в ряд */
-            flex-shrink: 0;
-            white-space: nowrap;
-        }
-
-        /* Применяем их к span внутри новой структуры */
-        .ticker-content span {
-            font-size: 3rem;
-            padding: 0 30px;
-            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            font-weight: 800;
-        }
-
-
-        /* Сама анимация */
-        @keyframes ticker-scroll {
-        from {
-            transform: translateX(0);
-        }
-        to {
-            /* Сдвигаем ленту влево на половину ее собственной ширины */
-            transform: translateX(-50%);
-        }
-        }
-
-        /* Адаптация для мобильных */
-        @media (max-width: 768px) {
-            /* Возвращаем уменьшенный размер шрифта для мобильных */
-            .ticker-content span {
-                font-size: 2.2rem;
-            }
-        }
-
-       /* --- [ИСПРАВЛЕНО] Стили для новой анимации --- */
-        .flipper-heading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.2rem;
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-
-        .word-container {
-            position: relative;
-            height: calc(3rem * 1.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* [ИСПРАВЛЕНО] Смещаем контейнеры значительно ниже */
-            top: 2rem; 
-        }
-
-        /* Базовый стиль для слова-анимации */
-        .word-anim {
-            position: absolute;
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            /* [КЛЮЧЕВОЕ ИЗМЕНЕНИЕ] Плавные переходы для появления и исчезновения */
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-        }
-
-        /* Начальное состояние (слово внизу и невидимо) */
-        .word-anim.entering {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        /* Активное состояние (слово на месте и видимо) */
-        .word-anim.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Конечное состояние (слово уходит вверх и исчезает) */
-        .word-anim.exiting {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        @media (max-width: 768px) {
-            .flipper-heading {
-                gap: 0.8rem;
-            }
-            .central-text {
-                font-size: 2.2rem;
-            }
-            .word-container {
-                height: calc(2.2rem * 1.2);
-                top: 1.5rem; /* [ДОБАВЛЕНО] Пропорциональное смещение для мобильных устройств */
-            }
-            .word-anim {
-                font-size: 2.2rem;
-            }
-        }
-
-        /* Стили для каждой буквы в слове "выглядит" */
-        .looks-wave-char {
-            display: inline-block;
-            position: relative;
-            transform-origin: bottom;
-            /* УСКОРЕНО: Анимация будет длиться 0.3 секунды вместо 0.6с */
-            transition: transform 0.3s cubic-bezier(0.5, 0, 0.5, 1);
-        }
-
-        /* Состояние, когда буква увеличена */
-        .looks-wave-char.scaled {
-            /* УВЕЛИЧЕНО: Масштаб будет 1.35 вместо 1.15 */
-            transform: scaleY(1.35);
-        }
-
-        /* --- [ДОБАВЛЕНО] Стили для анимации "Волна" --- */
-        #wave-container {
-            display: inline-block;
-        }
-
-        /* --- [ИСПРАВЛЕНО] Анимация "Математика" с переносом строки --- */
-        #math-heading {
-            display: flex;
-            flex-direction: column; /* Ставим элементы в колонку */
-            justify-content: center;
-            align-items: center;
-            /* white-space: nowrap; - больше не нужно */
-        }
-        .math-static {
-            line-height: 1.2; /* Улучшает вертикальное выравнивание */
-        }
-        #math-container {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center; /* <<< ДОБАВЛЕНО: Это центрирует слоги */
-            position: relative;
-            width: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: width 0.8s cubic-bezier(0.6, 0, 0.2, 1), opacity 0.4s ease-in-out;
-        }
-        #math-heading.is-animating #math-container {
-            width: var(--math-container-width);
-            opacity: 1;
-        }
-        .math-part {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .math-part.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .math-syllable {
-            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        .math-plus {
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-        .math-final-word {
-            position: absolute;
-            left: 0;
-            right: 0;
-            text-align: center;
-            display: inline-block; /* <<< ДОБАВЛЕНО: для корректной работы курсора */
-        }
-        .math-final-word.typing-cursor::after {
-            content: '|';
-            font-weight: 400;
-            color: var(--text-secondary);
-            animation: math-blink 1s step-end infinite;
-            position: absolute; /* <<< ДОБАВЛЕНО: для точного позиционирования */
-        }
-        @keyframes math-blink {
-            from, to { color: transparent; }
-            50% { color: var(--text-secondary); }
-        }
-
-        /* --- [ИСПРАВЛЕНО] Стили для плавной "дышащей" волны на ценах --- */
-        .value-wave-char {
-            display: inline-block;
-            position: relative;
-            transform-origin: bottom;
-            transition: transform 0.6s cubic-bezier(0.5, 0, 0.5, 1);
-        }
-        .value-wave-char.scaled {
-            transform: scaleY(1.15); /* Меньшая высота */
-        }
-
-       /* --- [ФИНАЛЬНАЯ ВЕРСИЯ] Стили для 3D-текстовой полосы с маской --- */
-
-        /* Контейнер для строк заголовка */
-        .pricing-heading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            font-size: 2rem;
-            line-height: 1.3;
-        }
-
-        /* Главный контейнер для анимации */
-        .marquee-3d-box {
-        display: flex;
-        perspective: 250px;
-        transform: translateX(-25px);
-        /* --- ИСПРАВЛЕНИЕ №1: Плавное скрытие по бокам через маску --- */
-        /* Точно так же, как в вашем блоке "ticker-wrapper" */
-        -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-        mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-        }
-
-        /* "Панели", на которых движется текст */
-        .marquee-3d-inner {
-        width: 380px;
-        height: 100px;
-        line-height: 100px;
-        font-size: 3.5rem;
-        font-weight: 800;
-        color: var(--text-color);
-        white-space: nowrap;
-        overflow: hidden;
-        backface-visibility: hidden;
-        position: relative; /* <-- ДОБАВЛЕНО: для работы z-index */
-        }
-
-        /* Левая панель */
-        .marquee-3d-inner:first-child {
-        transform-origin: right;
-        transform: rotateY(-20deg) scale(1.2);
-        /* --- ИСПРАВЛЕНИЕ №2: Решаем проблему шва через z-index --- */
-        /* Левая панель всегда будет "выше" правой, скрывая шов без обрезки текста */
-        z-index: 1;
-        }
-
-        /* Правая панель */
-        .marquee-3d-inner:last-child {
-        transform-origin: left;
-        /* Небольшой сдвиг, чтобы гарантированно убрать зазор под левой панелью */
-        transform: translateX(-2px) rotateY(20deg) scale(1.2);
-        }
-
-        /* Стили для самого текста внутри панелей */
-        .marquee-3d-box .marquee-3d-inner span {
-        position: absolute;
-        animation: marquee 7s linear infinite;
-        }
-
-        .marquee-3d-box .marquee-3d-inner:first-child span {
-        animation-delay: 3.5s;
-        left: -100%;
-        animation-fill-mode: backwards;
-        }
-
-        @keyframes marquee {
-        from { left: 100%; }
-        to { left: -100%; }
-        }
-
-        @media (max-width: 768px) {
-            .marquee-3d-box {
-                transform: translateX(-15px);
-            }
-            .marquee-3d-inner {
-                width: 250px;
-                height: 70px;
-                line-height: 70px;
-                font-size: 2.5rem;
-            }
-        }
-
-        /* --- [ДОБАВЛЕНО] Стили для цикличного блика на промо-баннере --- */
-
-        .promo-banner {
-        /* Необходимо для позиционирования псевдо-элемента ::after внутри баннера */
-        position: relative;
-        /* Прячет блик, когда он находится за пределами баннера */
-        overflow: hidden;
-        }
-
-        .promo-banner::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        /* Начинаем движение с левого края */
-        transform: translateX(-100%);
-        width: 100%;
-        height: 100%;
+        /* --- Анимация волны на слове "выглядит" --- */
+        .looks-wave-char { display: inline-block; position: relative; transform-origin: bottom; transition: transform 0.3s cubic-bezier(0.5, 0, 0.5, 1); }
+        .looks-wave-char.scaled { transform: scaleY(1.35); }
+        #wave-container { display: inline-block; } /* Убрал избыточные стили отсюда */
         
-        /* Создаем сам блик: диагональный градиент с полупрозрачной белой полосой */
-        background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        /* --- Анимация "Математика" --- */
+        #math-heading { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .math-static { line-height: 1.2; }
+        #math-container { display: inline-flex; align-items: center; justify-content: center; position: relative; width: 0; opacity: 0; overflow: hidden; transition: width 0.8s cubic-bezier(0.6, 0, 0.2, 1), opacity 0.4s ease-in-out; }
+        #math-heading.is-animating #math-container { width: var(--math-container-width); opacity: 1; }
+        .math-part { display: inline-block; opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .math-part.visible { opacity: 1; transform: translateY(0); }
+        .math-plus { color: var(--text-secondary); font-weight: 600; }
+        .math-final-word { position: absolute; left: 0; right: 0; text-align: center; display: inline-block; }
+        .math-final-word.typing-cursor::after { content: '|'; font-weight: 400; color: var(--text-secondary); animation: math-blink 1s step-end infinite; position: absolute; }
+        @keyframes math-blink { from, to { color: transparent; } 50% { color: var(--text-secondary); } }
 
-        /* Применяем анимацию */
-        animation: shine-effect 15s ease-in-out infinite;
+        /* --- Анимация волны на ценах --- */
+        .value-wave-char { display: inline-block; position: relative; transform-origin: bottom; transition: transform 0.6s cubic-bezier(0.5, 0, 0.5, 1); }
+        .value-wave-char.scaled { transform: scaleY(1.15); }
+        
+        /* --- Анимация 3D бегущей строки (Marquee) --- */
+        .pricing-heading { display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 2rem; line-height: 1.3; }
+        .marquee-3d-box { display: flex; perspective: 250px; transform: translateX(-25px); -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
+        .marquee-3d-inner { width: 380px; height: 100px; line-height: 100px; font-size: 3.5rem; font-weight: 800; color: var(--text-color); white-space: nowrap; overflow: hidden; backface-visibility: hidden; position: relative; }
+        .marquee-3d-inner:first-child { transform-origin: right; transform: rotateY(-20deg) scale(1.2); z-index: 1; }
+        .marquee-3d-inner:last-child { transform-origin: left; transform: translateX(-2px) rotateY(20deg) scale(1.2); }
+        .marquee-3d-box .marquee-3d-inner span { position: absolute; animation: marquee 7s linear infinite; }
+        .marquee-3d-box .marquee-3d-inner:first-child span { animation-delay: 3.5s; left: -100%; animation-fill-mode: backwards; }
+        @keyframes marquee { from { left: 100%; } to { left: -100%; } }
+
+        /* --- Анимация блика --- */
+        .promo-banner { position: relative; overflow: hidden; margin-top: 50px; padding: 20px; background-color: var(--card-bg-solid); border: 1px solid var(--gradient-start); border-radius: 15px; font-size: 1.1rem; }
+        .promo-banner strong { color: var(--gradient-start); }
+        .promo-banner::after { content: ''; position: absolute; top: 0; transform: translateX(-100%); width: 100%; height: 100%; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%); animation: shine-effect 15s ease-in-out infinite; }
+        @keyframes shine-effect { 0% { transform: translateX(-100%); } 20% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
+
+        /* --- [ФИНАЛЬНАЯ РАБОЧАЯ ВЕРСИЯ V5] --- */
+        .word-flipper-container {
+            display: inline-block;
+            vertical-align: baseline;
         }
 
-        /* Описание самой анимации */
-        @keyframes shine-effect {
-        /* В начале анимации блик находится слева */
-        0% {
-            transform: translateX(-100%);
-        }
-        /* К 20% времени анимации он полностью пересекает баннер */
-        20% {
-            transform: translateX(100%);
-        }
-        /* Остальные 80% времени он ждет за правым краем, создавая паузу */
-        100% {
-            transform: translateX(100%);
-        }
+        .char-container {
+            display: inline-block;
+            position: relative; /* Контейнер-родитель для позиционирования */
+            perspective: 400px;
         }
 
+        /* Невидимый элемент, который ЗАДАЕТ РАЗМЕР для каждой буквы */
+        .char-placeholder {
+            color: transparent; /* Делает букву невидимой, но сохраняет ее ширину */
+        }
+
+        /* Сам флиппер, который будет НАКЛАДЫВАТЬСЯ поверх плейсхолдера */
+        .char-flipper {
+            position: absolute; /* КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: вернули absolute */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.6, 0, 0.4, 1);
+        }
+
+        .char-flipper.is-flipped {
+            transform: rotateX(-180deg);
+        }
+
+        .char-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        .char-face.front {
+            transform: rotateX(0deg);
+        }
+
+        .char-face.back {
+            transform: rotateX(180deg);
+        }
+
+        /* --- Стили для блока с инструкцией по промокоду --- */
+        .promo-instruction-box {
+            margin-top: 25px; /* Отступ от таймера */
+            padding: 20px 25px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .promo-instruction-box p {
+            margin: 0;
+            min-height: 0;
+        }
+        .promo-instruction-box strong {
+            color: var(--gradient-start);
+            font-weight: 700;
+        }
+
+        /* Стили для правильного отображения чисел и символов в статистике */
+        .stat-number-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: baseline; /* Выравнивание по базовой линии текста */
+            line-height: 1;
+        }
+        .stat-symbol {
+            font-size: 3rem; /* Тот же размер, что и у чисел */
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            margin-left: 2px;
+        }
+
+        /* ==========================================================================
+        6. МЕДИА-ЗАПРОСЫ (Адаптация)
+        ========================================================================== */
         @media (max-width: 768px) {
-            h1, .hero h1 { font-size: 2.8rem; } h2 { font-size: 2.2rem; }
+            h1, .hero h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.2rem; }
             section { padding: 80px 0; }
             .qr-code-section { display: none; }
-
-            .carousel-wrapper {
-                max-width: 320px; /* Было 400px */
-                height: 640px;    /* Было 800px */
-            }
-
+            .carousel-wrapper { max-width: 320px; height: 640px; }
             .carousel-button.prev { left: -10px; }
             .carousel-button.next { right: -10px; }
-            .ticker-track span { font-size: 2.2rem; }
-
-            /* --- Адаптация для флиппера --- */
-            .flipper-heading {
-                gap: 0.8rem;
-            }
-            .central-text {
-                font-size: 2.2rem;
-            }
-            .word-container {
-                height: calc(2.2rem * 1.2);
-            }
-            .word-anim {
-                font-size: 2.2rem;
-            }
+            .ticker-content span { font-size: 2.2rem; }
+            .flipper-heading { gap: 0.8rem; }
+            .flipper-heading .central-text, .flipper-heading .word-anim { font-size: 2.2rem; }
+            .word-container { height: calc(2.2rem * 1.2); top: 1.5rem; }
+            .marquee-3d-box { transform: translateX(-15px); }
+            .marquee-3d-inner { width: 250px; height: 70px; line-height: 70px; font-size: 2.5rem; }
         }
-        /* --- Запрет горизонтального скролла на мобильных --- */
-        @media (max-width: 768px) {
-            html, body {
-                overflow-x: hidden;
-            }
+        
+        @media (max-width: 480px) {
+            .promo-input-group { flex-direction: column; }
+            .promo-code-box .cta-button { width: 100%; }
+            .copy-feedback { display: block; text-align: center; margin-left: 0; margin-top: 10px; }
         }
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            margin: -1px;
-            padding: 0;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-
+        
+        /* --- Утилитарные классы --- */
+        .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
     </style>
+
 </head>
 <body>
+    <!-- ЗАМЕНИТЬ ВЕСЬ <header> -->
     <header class="hero">
         <div class="container">
             <img src="logo.png" alt="Логотип Конспектыш" class="hero-logo fade-in">
             <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации <span class="gradient-text">без воды</span></h1>
             <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect-container"></span></p>
             <p class="fade-in" style="margin-top: -20px;">Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
-            <a href="https://t.me/conspektishbot" class="cta-button fade-in">Я в Телеграме</a>
+            
+            <!-- Обновленный и правильно структурированный блок бонуса -->
+            <div class="promo-timer fade-in">
+                <p class="promo-timer-label">
+                    Как раз сейчас для тебя действует приветственный бонус на 3 бесплатных просмотра подробных конспектов. Он закончится через:
+                </p>
+                <div class="promo-timer-values" id="countdown-timer">
+                    <div class="timer-block">
+                        <span class="timer-value" id="days">14</span>
+                        <span class="timer-label">Дней</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-value" id="hours">00</span>
+                        <span class="timer-label">Часов</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-value" id="minutes">00</span>
+                        <span class="timer-label">Минут</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-value" id="seconds">00</span>
+                        <span class="timer-label">Секунд</span>
+                    </div>
+                </div>
+                
+                <!-- 1. Инструкция по применению теперь здесь, над промокодом -->
+                <p class="promo-instruction-text">
+                    Активируй промокод в "👤 Мой аккаунт" → "🎁 Промокод"
+                </p>
+                
+                <!-- 2. Интерактивный блок в самом низу -->
+                <div class="promo-input-group">
+                    <div class="promo-code-display" id="promo-code-copy-trigger" title="Нажми, чтобы скопировать">ЯПЕРВЫЙ</div>
+                    <!-- 3. Текст кнопки изменен на "Активируй тут" -->
+                    <a href="https://t.me/conspektishbot" class="cta-button">Активируй тут</a>
+                </div>
+                <span class="copy-feedback" id="copy-feedback-message">Скопировано!</span>
+                <p class="copy-hint-text">↑ Нажми на промокод, чтобы скопировать</p>
+            </div>
         </div>
     </header>
+
+    <!-- ЗАМЕНИТЬ ВЕСЬ <section id="stats"> -->
+    <section id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <div class="stat-number-wrapper"> <!-- Обертка -->
+                        <div class="stat-number" id="dynamic-hours-saved" data-target="100">0</div> 
+                    </div>
+                    <div class="stat-label">часов уже сэкономлено моими пользователями благодаря мне</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number-wrapper"> <!-- Обертка -->
+                        <div class="stat-number" data-target="250">0</div>
+                        <span class="stat-symbol">+</span>
+                    </div>
+                    <div class="stat-label">конспектов в библиотеке</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-number-wrapper"> <!-- Обертка -->
+                        <div class="stat-number" data-target="90">0</div>
+                        <span class="stat-symbol">%</span>
+                    </div>
+                    <div class="stat-label">воды убрано из каждого материала</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <main>
         <section id="personas">
@@ -646,7 +803,7 @@
                 <div class="features-grid">
                     <div class="feature-card glass-card fade-in"><h3>📄 Краткий конспект</h3><p>Основная идея и события материала в пределах двух минут чтения. Идеально, чтобы понять, стоит ли погружаться глубже. <strong>Это доступно всем и бесплатно 😊</strong></p></div>
                     <div class="feature-card glass-card fade-in"><h3>📘 Подробный конспект</h3><p>Полный пересказ по сегментам/частям (со всеми деталями и без воды), считай что полностью посмотрел/прочитал оригинал 😉</p></div>
-                    <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хотите полностью погружаться в детали книги/видео/подкаста/документа 🤔</p></div>
+                    <div class="feature-card glass-card fade-in"><h3>🛠️ Полезности</h3><p>Для некоторых материалов существует отдельный конспект с исключительно полезными советами из оригинала. Имеет смысл, если не хочешь полностью погружаться в детали книги/видео/подкаста/документа 🤔</p></div>
                 </div>
             </div>
         </section>
@@ -678,6 +835,7 @@
             </div>
         </section>
 
+        <!-- ЗАМЕНИТЬ ВЕСЬ <section id="comparison"> -->
         <section id="comparison">
             <div class="container">
                 <h2 class="fade-in" id="math-heading">
@@ -686,10 +844,32 @@
                         <!-- JS-анимация будет здесь -->
                     </span>
                 </h2>
-                </h2>
                 <div class="comparison-grid">
-                    <div class="glass-card fade-in"><span class="comparison-icon">⏳</span><h3>Твоё Время</h3><div class="comparison-line original"><span class="strikethrough">~800 часов</span><p>Нужно, чтобы прочитать/посмотреть все оригиналы в моей библиотеке</p></div><div class="comparison-line final"><span class="final-value" id="time-value">~10 часов</span><p>Понадобится тебе, чтобы усвоить их суть с моей помощью</p></div></div>
-                    <div class="glass-card fade-in"><span class="comparison-icon">💸</span><h3>Твои Деньги</h3><div class="comparison-line original"><span class="strikethrough">~30 000 ₽</span><p>Стоимость всех книг и материалов из моего каталога</p></div><div class="comparison-line final"><span class="final-value" id="price-value">990 ₽</span><p>Безлимитный доступ ко всем конспектам</p><p class="promo-note"><strong>Акция до конца сентября!</strong></p></div></div>
+                    <div class="glass-card fade-in">
+                        <span class="comparison-icon">⏳</span>
+                        <h3>Твоё Время</h3>
+                        <div class="comparison-line original">
+                            <span class="strikethrough">~800 часов</span>
+                            <p>Нужно, чтобы прочитать/посмотреть все оригиналы в моей библиотеке</p>
+                        </div>
+                        <div class="comparison-line final">
+                            <span class="final-value" id="time-value">~10 часов</span>
+                            <p>Понадобится тебе, чтобы усвоить их суть с моей помощью</p>
+                        </div>
+                    </div>
+                    <div class="glass-card fade-in">
+                        <span class="comparison-icon">💸</span>
+                        <h3>Твои Деньги</h3>
+                        <div class="comparison-line original">
+                            <span class="strikethrough">~30 000 ₽</span>
+                            <p>Стоимость всех книг и материалов из моего каталога</p>
+                        </div>
+                        <div class="comparison-line final">
+                            <span class="final-value" id="price-value">990 ₽</span>
+                            <p>Безлимитный доступ ко всем конспектам</p>
+                            <p class="promo-note"><strong>Пока есть места!</strong></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -698,27 +878,87 @@
             <div class="container">
                 <h2 class="fade-in pricing-heading">
                     <div>А вот какие</div>
-                    
-                    <!-- Вот наша новая 3D-анимация -->
                     <div class="marquee-3d-box">
-                    <div class="marquee-3d-inner">
-                        <span>  возможности     </span>
+                        <div class="marquee-3d-inner">
+                            <span>  возможности     </span>
+                        </div>
+                        <div class="marquee-3d-inner">
+                            <span>  возможности     </span>
+                        </div>
                     </div>
-                    <div class="marquee-3d-inner">
-                        <span>  возможности     </span>
-                    </div>
-                    </div>
-
                     <div><span class="gradient-text">у тебя</span> есть</div>
                 </h2>
                 <div class="pricing-grid">
-                    <div class="pricing-card glass-card fade-in"><h3>Стандарт</h3><ul><li>✅ Все мои <strong>краткие</strong> конспекты</li><li>✅ 2 бесплатных просмотра <strong>подробных</strong> материалов в неделю</li><li>✅ Умная лента рекомендаций (прям как в тиктоке 😲)</li></ul></div>
-                    <div class="pricing-card glass-card highlight fade-in"><h3>💎 Безлимит</h3><ul><li>🔥 <strong>Неограниченный</strong> доступ ко всей моей библиотеке</li><li>🔥 Лучший вклад в развитие самого себя! (ну и в меня тоже ☺️)</li></ul></div>
-                    <div class="pricing-card glass-card fade-in"><h3>📝 Заказы на конспект</h3><ul><li>✅ Не нашел, что искал? Сделаю специально то, что ты хочешь!</li><li>✅ Всё создаётся и проверяется лично мною, так что за качество можешь не переживать 😇</li></ul></div>
+                    <div class="pricing-card glass-card fade-in">
+                        <h3>Стандарт</h3>
+                        <ul>
+                            <li>✅ Все мои <strong>краткие</strong> конспекты</li>
+                            <li>✅ 2 бесплатных просмотра <strong>подробных</strong> материалов в неделю</li>
+                            <li>✅ Умная лента рекомендаций (прям как в тиктоке 😲)</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-card glass-card highlight fade-in">
+                        <div class="pioneer-club-badge">Клуб Первооткрывателей</div>
+                        <ul>
+                            <li>🔥 <strong>Неограниченный</strong> доступ ко всей моей библиотеке. <strong>Навсегда.</strong></li>
+                            <li>🔥 Особый статус и значок в боте.</li>
+                            <li>🔥 Прямое влияние на выбор будущих конспектов.</li>
+                            <li>🔥 Лучший вклад в развитие самого себя! <br> <span class="subtle-note">(ну и в меня тоже ☺️)</span></li>
+                        </ul>
+                        <div class="pioneer-seats-counter">
+                            Мест осталось: <span class="count" id="seats-counter">50</span> / 100
+                        </div>
+                        <a href="https://t.me/conspektishbot" class="cta-button">Вступить в Клуб</a>
+                    </div>
+                    <div class="pricing-card glass-card fade-in">
+                        <h3>📝 Заказы на конспект</h3>
+                        <ul>
+                            <li>✅ Не нашел, что искал? Сделаю специально то, что ты хочешь!</li>
+                            <li>✅ Всё создаётся и проверяется лично мною, так что за качество можешь не переживать 😇</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="promo-banner fade-in"><p><strong>Скидка до конца сентября!</strong> Безлимитный доступ — <strong>990 ₽</strong>, заказы — <strong>от 190 ₽</strong>.</p></div>
             </div>
         </section>
+
+        <!-- Секция для промокодов и отзывов -->
+        <section id="promo-section">
+            <div class="container">
+                <div class="testimonials-section fade-in">
+                    <h2 class="fade-in">
+                        Что говорят мои 
+                        <span class="word-flipper-container" id="animated-first-word">
+                            <!-- JS сгенерирует здесь буквы -->
+                        </span> 
+                        пользователи
+                    </h2>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <p>"Этот бот — это же спасение перед сессией! Усвоил за неделю то, на что ушёл бы семестр 🤤. Без шуток, намного проще стало"</p>
+                            <footer>
+                                <span>— Алексей, студент</span>
+                                <img src="avatar1.jpg" alt="Аватар Алексея" class="testimonial-avatar">
+                            </footer>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"Наконец-то могу быть в курсе всех книг по предпринимательству, не тратя на них сотни часов. Лучшая инвестиция в себя за последнее время. Всем советую прочитать конспекты 'Unscripted' и 'Oversubscribed'"</p>
+                            <footer>
+                                <span>— Михаил, предприниматель</span>
+                                <img src="avatar2.jpg" alt="Аватар Михаила" class="testimonial-avatar">
+                            </footer>
+                        </div>
+                        <div class="testimonial-card">
+                            <p>"Мне просто нравится узнавать всё подряд, но так лень читать кучу книг, да и времени нет. Этот бот как фильтр: кратко, ёмко и интересно 😀!"</p>
+                            <footer>
+                                <span>— Елена, вечный ученик</span>
+                                <img src="avatar3.jpg" alt="Аватар Елены" class="testimonial-avatar">
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- [SEO] Абсолютно невидимый блок с семантическим ядром -->
         <div class="visually-hidden">
             <h2>Полный список тем и авторов в Конспектыш</h2>
@@ -751,39 +991,246 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- ОБЗЕРВЕР ДЛЯ FADE-IN ЭФФЕКТОВ ---
-        const observer = new IntersectionObserver((entries, observer) => {
+        // 1. УНИВЕРСАЛЬНЫЙ IntersectionObserver ДЛЯ FADE-IN И СВЯЗАННЫХ АНИМАЦИЙ
+        // ==========================================================================
+        const fadeInObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
+                // Если элемент появился в области видимости
                 if (entry.isIntersecting) {
+                    // 1. Добавляем класс 'visible', чтобы он плавно появился (это работает для всех)
                     entry.target.classList.add('visible');
 
-                    // --- [КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ] ---
-                    // Когда заголовок становится видимым...
+                    // 2. [ВОССТАНОВЛЕНО] Проверяем, не является ли это заголовком для "волны"
                     if (entry.target.id === 'wave-heading') {
-                        // ...ждем завершения его fade-in анимации...
                         setTimeout(() => {
-                            // ...и ТОЛЬКО ТОГДА запускаем ЕДИНСТВЕННУЮ правильную функцию.
-                            setupWaveAnimation(); 
+                            setupWaveAnimation('animated-looks-word', 'looks-wave-char', 1.35, 80);
                         }, 650);
-                        // Отписываемся, чтобы не запускать скрипт повторно.
-                        observer.unobserve(entry.target);
                     }
+                    
+                    // 3. [ВОССТАНОВЛЕНО] Проверяем, не является ли это карточкой для "зачеркивания"
+                    if (entry.target.classList.contains('comparison-card')) {
+                        entry.target.classList.add('comparison-card-animated');
+                    }
+
+                    // 4. [ОСТАЕТСЯ] Проверяем, не является ли это карточкой статистики для анимации счётчика
+                    if (entry.target.classList.contains('stat-card')) {
+                        const numberElement = entry.target.querySelector('.stat-number');
+                        if (numberElement) {
+                            animateCounter(numberElement);
+                        }
+                    }
+                    
+                    // 5. Отписываемся от элемента, чтобы анимация сработала только один раз
+                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-in').forEach(element => { observer.observe(element); });
 
-        // --- ОБЗЕРВЕР ДЛЯ АНИМАЦИИ СРАВНЕНИЯ ---
-        const comparisonObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('comparison-card-animated'); } });
-        }, { threshold: 0.8 });
-        document.querySelectorAll('.glass-card').forEach(card => {
-            if (card.querySelector('.strikethrough')) { comparisonObserver.observe(card); }
+        // --- Запускаем наблюдение за всеми элементами с классом .fade-in ---
+        document.querySelectorAll('.fade-in').forEach(element => {
+            // Добавляем специальный класс-маркер для карточек сравнения,
+            // чтобы обзервер мог их идентифицировать
+            if (element.querySelector('.strikethrough')) {
+                element.classList.add('comparison-card');
+            }
+            fadeInObserver.observe(element);
         });
 
-        // --- ЛОГИКА КАРУСЕЛИ (без изменений) ---
-        const stack = document.querySelector('.carousel-stack');
-        if (stack) {
+        // ==========================================================================
+        // 2. ФУНКЦИИ-КОНСТРУКТОРЫ АНИМАЦИЙ
+        // ==========================================================================
+
+        // [НОВАЯ ФУНКЦИЯ] Логика копирования промокода по клику
+        function setupPromoCopy() {
+            const copyTrigger = document.getElementById('promo-code-copy-trigger');
+            const feedbackElement = document.getElementById('copy-feedback-message');
+
+            if (!copyTrigger || !feedbackElement) return;
+
+            copyTrigger.addEventListener('click', () => {
+                const codeToCopy = copyTrigger.textContent;
+                navigator.clipboard.writeText(codeToCopy).then(() => {
+                    // Успех! Показываем сообщение "Скопировано!"
+                    feedbackElement.style.opacity = '1';
+                    // Через 2 секунды плавно скрываем его обратно
+                    setTimeout(() => {
+                        feedbackElement.style.opacity = '0';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Не удалось скопировать промокод:', err);
+                    // Можно добавить сообщение об ошибке для пользователя, если нужно
+                });
+            });
+        }
+
+        // [ИЗМЕНЕННАЯ ВЕРСИЯ]
+        function setupLiveHoursCounter() {
+            const counterElement = document.getElementById('dynamic-hours-saved');
+            if (!counterElement) return;
+            const lsKey = 'conspektish_total_hours_saved';
+            const lastUpdateKey = 'conspektish_hours_last_update';
+            let savedHours = localStorage.getItem(lsKey) ? parseFloat(localStorage.getItem(lsKey)) : 100;
+            const lastUpdate = localStorage.getItem(lastUpdateKey);
+            const today = new Date().toDateString();
+            if (lastUpdate !== today) {
+                const hoursToAdd = Math.floor(Math.random() * (11)) + 5;
+                savedHours += hoursToAdd;
+                localStorage.setItem(lsKey, savedHours);
+                localStorage.setItem(lastUpdateKey, today);
+            }
+            // Вместо изменения textContent, мы устанавливаем data-target
+            counterElement.setAttribute('data-target', Math.round(savedHours));
+        }
+
+        // [НОВАЯ ФУНКЦИЯ] Анимирует счётчик от 0 до целевого значения
+        function animateCounter(element, duration = 2000) {
+            const target = +element.getAttribute('data-target');
+            let startTime = null;
+
+            function step(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                
+                // Плавный выход (ease-out)
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                
+                element.textContent = Math.floor(easedProgress * target);
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    element.textContent = target; // Убедимся, что в конце точное значение
+                }
+            }
+            window.requestAnimationFrame(step);
+        }
+
+        // [ФИНАЛЬНАЯ РАБОЧАЯ ЛОГИКА V5]
+        function setupSingleWordFlip(elementId, word) {
+            const container = document.getElementById(elementId);
+            if (!container) return;
+            container.innerHTML = ''; // Очищаем на всякий случай
+
+            // 1. Создаем правильную HTML-структуру один раз
+            word.split('').forEach(char => {
+                const charContainer = document.createElement('span');
+                charContainer.className = 'char-container';
+
+                // Создаем невидимый заполнитель для размера
+                const placeholder = document.createElement('span');
+                placeholder.className = 'char-placeholder';
+                placeholder.textContent = char;
+                
+                // Создаем сам флиппер
+                const flipper = document.createElement('div');
+                flipper.className = 'char-flipper';
+
+                // Создаем лицевую и обратную стороны
+                const front = document.createElement('div');
+                front.className = 'char-face front';
+                front.textContent = char;
+
+                const back = document.createElement('div');
+                back.className = 'char-face back';
+                back.textContent = char;
+
+                // Собираем всё вместе: в флиппер кладем грани,
+                // в контейнер кладем заполнитель и флиппер.
+                flipper.appendChild(front);
+                flipper.appendChild(back);
+                charContainer.appendChild(placeholder);
+                charContainer.appendChild(flipper);
+                container.appendChild(charContainer);
+            });
+
+            // 2. Логика анимации (остается без изменений, она была правильной)
+            const flippers = container.querySelectorAll('.char-flipper');
+            const animationDuration = 1500;
+            const pauseDuration = 3000;
+            const initialDelay = 2000;
+
+            function runCycle() {
+                flippers.forEach((flipper, i) => {
+                    setTimeout(() => {
+                        flipper.classList.add('is-flipped');
+                    }, i * 80);
+                });
+
+                setTimeout(() => {
+                    flippers.forEach((flipper, i) => {
+                        setTimeout(() => {
+                            flipper.classList.remove('is-flipped');
+                        }, i * 80);
+                    });
+
+                    setTimeout(runCycle, pauseDuration);
+
+                }, animationDuration + (flippers.length * 80) + 1000);
+            }
+
+            setTimeout(runCycle, initialDelay);
+        }
+
+        // [ИСПРАВЛЕННАЯ ВЕРСИЯ V2]
+        function setupLiveSeatsCounter() {
+            const counterElement = document.getElementById('seats-counter');
+            if (!counterElement) return;
+
+            const lsKey = 'conspektish_pioneer_seats';
+            const lastUpdateKey = 'conspektish_seats_last_update';
+            
+            // Если в хранилище ничего нет, начинаем с 49
+            let seatsLeft = localStorage.getItem(lsKey) ? parseInt(localStorage.getItem(lsKey), 10) : 49;
+            
+            const lastUpdate = localStorage.getItem(lastUpdateKey);
+            const today = new Date().toDateString();
+
+            // Проверяем, наступил ли новый день
+            if (lastUpdate !== today) {
+                // Уменьшаем на случайное число от 1 до 3
+                const seatsToRemove = Math.floor(Math.random() * 3) + 1; 
+                seatsLeft -= seatsToRemove;
+                
+                // Гарантируем, что счётчик не упадёт ниже 15
+                if (seatsLeft < 15) {
+                    seatsLeft = 15;
+                }
+                
+                // Сохраняем новое значение и сегодняшнюю дату
+                localStorage.setItem(lsKey, seatsLeft);
+                localStorage.setItem(lastUpdateKey, today);
+            }
+            
+            // Обновляем текст на странице
+            counterElement.textContent = seatsLeft;
+        }
+
+        // --- Таймер до конкретной даты ---
+        function setupCountdown() {
+            const countdownElement = document.getElementById('countdown-timer');
+            if (!countdownElement) return;
+
+            // Устанавливаем целевую дату
+            const countdownDate = new Date("September 21, 2025 23:59:59").getTime();
+
+            const timerInterval = setInterval(() => {
+                const distance = countdownDate - new Date().getTime();
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    countdownElement.innerHTML = "<div style='font-size: 1.2rem; font-weight: 700; color: #ff5f56;'>Время предложения истекло!</div>";
+                    return;
+                }
+                document.getElementById("days").textContent = Math.floor(distance / (1000*60*60*24)).toString().padStart(2, '0');
+                document.getElementById("hours").textContent = Math.floor((distance % (1000*60*60*24)) / (1000*60*60)).toString().padStart(2, '0');
+                document.getElementById("minutes").textContent = Math.floor((distance % (1000*60*60)) / (1000*60)).toString().padStart(2, '0');
+                document.getElementById("seconds").textContent = Math.floor((distance % (1000*60)) / 1000).toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        // --- Карусель ---
+        function setupCarousel() {
+            const stack = document.querySelector('.carousel-stack');
+            if (!stack) return;
             const cards = Array.from(stack.children);
             const prevButton = document.querySelector('.carousel-button.prev');
             const nextButton = document.querySelector('.carousel-button.next');
@@ -795,14 +1242,11 @@
                 const activeCard = stack.querySelector('.is-active');
                 if (!activeCard) return;
                 const video = activeCard.querySelector('video');
-                if (!video) return;
-                const setRotation = () => {
-                    if (video.duration && isFinite(video.duration)) {
-                        const remainingTime = (video.duration - video.currentTime) * 1000;
-                        autoRotateTimeout = setTimeout(() => rotate('next'), remainingTime + 50);
-                    }
-                };
-                if (video.readyState > 2) { setRotation(); } else { video.addEventListener('canplay', setRotation, { once: true }); }
+                if (video && video.duration && isFinite(video.duration)) {
+                    const remainingTime = (video.duration - video.currentTime) * 1000;
+                    // Добавляем 500мс паузы между видео
+                    autoRotateTimeout = setTimeout(() => rotate('next'), remainingTime + 500);
+                }
             }
 
             function updateCards() {
@@ -813,11 +1257,18 @@
                     card.classList.remove('prev-card', 'next-card');
                     const video = card.querySelector('video');
                     if (index === activeIndex) {
-                        if (video) { video.currentTime = 0; video.play(); scheduleNextRotation(); }
+                        if (video) { 
+                            video.currentTime = 0; 
+                            // Пытаемся запустить видео, если не получится - ничего страшного, автопрокрутка всё равно запустится
+                            video.play().then(scheduleNextRotation).catch(e => {
+                                console.log("Autoplay was prevented. Scheduling next rotation anyway.");
+                                scheduleNextRotation(); // Всё равно планируем следующий слайд
+                            }); 
+                        }
                     } else {
                         if (video) video.pause();
-                        if (index === (activeIndex - 1 + cards.length) % cards.length) { card.classList.add('prev-card'); }
-                        else if (index === (activeIndex + 1) % cards.length) { card.classList.add('next-card'); }
+                        if (index === (activeIndex - 1 + cards.length) % cards.length) card.classList.add('prev-card');
+                        else if (index === (activeIndex + 1) % cards.length) card.classList.add('next-card');
                     }
                 });
             }
@@ -828,311 +1279,268 @@
                 clearTimeout(autoRotateTimeout);
                 const activeCard = stack.querySelector('.is-active');
                 if (!activeCard) { isRotating = false; return; }
-                const oldVideo = activeCard.querySelector('video');
-                if (oldVideo) oldVideo.pause();
                 activeCard.classList.remove('is-active');
                 if (direction === 'next') {
                     const firstCard = cards.shift(); cards.push(firstCard); stack.appendChild(firstCard);
                 } else {
                     const lastCard = cards.pop(); cards.unshift(lastCard); stack.insertBefore(lastCard, stack.firstChild);
                 }
-                cards[1].classList.add('is-active');
+                cards[1].classList.add('is-active'); // Следующая карта всегда вторая в массиве
                 updateCards();
-                setTimeout(() => { isRotating = false; }, 800);
+                setTimeout(() => { isRotating = false; }, 500); // Время на анимацию перехода
             }
 
             nextButton.addEventListener('click', () => rotate('next'));
             prevButton.addEventListener('click', () => rotate('prev'));
+            
             let isDown = false, startX;
-            function start(e) { clearTimeout(autoRotateTimeout); isDown = true; stack.style.cursor = 'grabbing'; startX = e.pageX || e.touches[0].pageX; }
-            function end() { isDown = false; stack.style.cursor = 'grab'; }
-            function move(e) {
+            function handleStart(e) { clearTimeout(autoRotateTimeout); isDown = true; stack.style.cursor = 'grabbing'; startX = e.pageX || e.touches[0].pageX; }
+            function handleEnd() { isDown = false; stack.style.cursor = 'grab'; scheduleNextRotation(); }
+            function handleMove(e) {
                 if (!isDown) return; e.preventDefault();
                 const x = e.pageX || e.touches[0].pageX;
                 const walk = x - startX;
                 if (walk < -50) { rotate('next'); isDown = false; }
                 if (walk > 50) { rotate('prev'); isDown = false; }
             }
-            stack.addEventListener('mousedown', start);
-            stack.addEventListener('mouseup', end);
-            stack.addEventListener('mouseleave', end);
-            stack.addEventListener('mousemove', move);
-            stack.addEventListener('touchstart', start, { passive: true });
-            stack.addEventListener('touchend', end);
-            stack.addEventListener('touchmove', move, { passive: true });
-            stack.addEventListener('wheel', (e) => {
-                e.preventDefault(); if (isRotating) return;
-                if (e.deltaX > 20 || e.deltaY > 20) { rotate('next'); }
-                else if (e.deltaX < -20 || e.deltaY < -20) { rotate('prev'); }
-            }, { passive: false });
-            stack.addEventListener('mouseenter', () => clearTimeout(autoRotateTimeout));
-            stack.addEventListener('mouseleave', scheduleNextRotation);
-            updateCards();
-        }
-        
-        // --- ФУНКЦИЯ АНИМАЦИИ "ВЫГЛЯДИТ"
-        function setupWaveAnimation() {
-            const element = document.getElementById('animated-looks-word');
-            if (!element) return;
 
-            const originalText = element.innerText;
-            element.innerHTML = '';
-            originalText.split('').forEach(char => {
-                const span = document.createElement('span');
-                // --- ИСПРАВЛЕННАЯ СТРОКА ---
-                // Мы присваиваем КАЖДОЙ букве ОБА класса: и для градиента, и для анимации.
-                span.className = 'gradient-text looks-wave-char';
-                span.textContent = char;
-                element.appendChild(span);
-            });
+            stack.addEventListener('mousedown', handleStart);
+            stack.addEventListener('mouseup', handleEnd);
+            stack.addEventListener('mouseleave', handleEnd);
+            stack.addEventListener('mousemove', handleMove);
+            stack.addEventListener('touchstart', handleStart, { passive: true });
+            stack.addEventListener('touchend', handleEnd);
+            stack.addEventListener('touchmove', handleMove, { passive: true });
 
-            const chars = element.querySelectorAll('.looks-wave-char');
-            if (chars.length === 0) return;
-
-            const delay = 80;
-            const animDuration = 300;
-            const pause = 3000;
-
-            function loopWave() {
-                chars.forEach((char, index) => {
-                    setTimeout(() => {
-                        char.classList.add('scaled');
-                        setTimeout(() => char.classList.remove('scaled'), animDuration);
-                    }, index * delay);
-                });
-                const totalDuration = (chars.length * delay) + animDuration + pause;
-                setTimeout(loopWave, totalDuration);
-            }
-            loopWave();
+            updateCards(); // Первоначальная инициализация
         }
 
-        // --- ОСТАЛЬНЫЕ ФУНКЦИИ АНИМАЦИЙ (без изменений) ---
-        function setupWordFlipper() {
-            const leftContainer = document.getElementById('left-word-container');
-            const rightContainer = document.getElementById('right-word-container');
-            if (!leftContainer || !rightContainer) return;
-            const leftWords = ["время", "пользу"];
-            const rightWords = ["свободу", "выбор"];
-            const allWords = [...leftWords, ...rightWords];
-            let maxWidth = 0;
-            const tempSpan = document.createElement('span');
-            tempSpan.style.position = 'absolute';
-            tempSpan.style.visibility = 'hidden';
-            tempSpan.style.fontSize = '3rem';
-            tempSpan.style.fontWeight = '800';
-            document.body.appendChild(tempSpan);
-            allWords.forEach(word => {
-                tempSpan.textContent = word;
-                if (tempSpan.offsetWidth > maxWidth) {
-                    maxWidth = tempSpan.offsetWidth;
-                }
-            });
-            document.body.removeChild(tempSpan);
-            leftContainer.style.width = `${maxWidth}px`;
-            rightContainer.style.width = `${maxWidth}px`;
-            let leftIndex = 0;
-            let rightIndex = 0;
-            let isLeftTurn = true;
-            function animateWords() {
-                const currentVisible = document.querySelector('.word-anim.visible');
-                if (currentVisible) {
-                    currentVisible.classList.remove('visible');
-                    currentVisible.classList.add('exiting');
-                }
-                setTimeout(() => {
-                    const container = isLeftTurn ? leftContainer : rightContainer;
-                    const words = isLeftTurn ? leftWords : rightWords;
-                    let index = isLeftTurn ? leftIndex : rightIndex;
-                    container.innerHTML = '';
-                    const span = document.createElement('span');
-                    span.textContent = words[index];
-                    span.className = 'word-anim entering';
-                    container.appendChild(span);
-                    setTimeout(() => {
-                        span.classList.add('visible');
-                        span.classList.remove('entering');
-                    }, 20);
-                    if (isLeftTurn) {
-                        leftIndex = (leftIndex + 1) % leftWords.length;
-                    } else {
-                        rightIndex = (rightIndex + 1) % rightWords.length;
-                    }
-                    isLeftTurn = !isLeftTurn;
-                }, 500);
-            }
-            setInterval(animateWords, 2500);
-            setTimeout(animateWords, 100);
-        }
-
-        function setupMathAnimation() {
-            const heading = document.getElementById('math-heading');
-            const container = document.getElementById('math-container');
-            if (!heading || !container) return;
-            const syllables = ["ма", "те", "ма", "ти", "ки"];
-            const fullWordText = "математики";
-            const tempSpan = document.createElement('span');
-            tempSpan.style.fontSize = '3rem'; tempSpan.style.fontWeight = '800';
-            tempSpan.style.position = 'absolute'; tempSpan.style.opacity = '0';
-            document.body.appendChild(tempSpan);
-            tempSpan.innerHTML = "ма<span class='math-plus'>+</span>те<span class='math-plus'>+</span>ма<span class='math-plus'>+</span>ти<span class='math-plus'>+</span>ки";
-            const plusVersionWidth = tempSpan.offsetWidth + 25;
-            tempSpan.textContent = fullWordText;
-            const finalWordWidth = tempSpan.offsetWidth + 25;
-            document.body.removeChild(tempSpan);
-            function runAnimationCycle() {
-                container.innerHTML = '';
-                let parts = [];
-                syllables.forEach((syllable, i) => {
-                    const s = document.createElement('span'); s.textContent = syllable; s.className = 'math-part math-syllable'; container.appendChild(s); parts.push(s);
-                    if (i < syllables.length - 1) {
-                        const p = document.createElement('span'); p.textContent = '+'; p.className = 'math-part math-plus'; container.appendChild(p); parts.push(p);
-                    }
-                });
-                requestAnimationFrame(() => {
-                    heading.style.setProperty('--math-container-width', `${plusVersionWidth}px`);
-                    heading.classList.add('is-animating');
-                    let delay = 500;
-                    const appearanceInterval = 250;
-                    parts.forEach(part => {
-                        setTimeout(() => part.classList.add('visible'), delay);
-                        delay += appearanceInterval;
-                    });
-                    setTimeout(() => {
-                        heading.style.setProperty('--math-container-width', `${finalWordWidth}px`);
-                        const finalWordSpan = document.createElement('span');
-                        finalWordSpan.textContent = fullWordText;
-                        finalWordSpan.className = 'math-part math-syllable math-final-word';
-                        container.appendChild(finalWordSpan);
-                        parts.forEach(p => p.classList.remove('visible'));
-                        setTimeout(() => finalWordSpan.classList.add('visible'), 50);
-                    }, delay + 300);
-                    setTimeout(() => {
-                        const finalWordSpan = container.querySelector('.math-final-word');
-                        if (!finalWordSpan) return;
-                        finalWordSpan.classList.add('typing-cursor');
-                        let currentWord = fullWordText;
-                        const backspaceInterval = setInterval(() => {
-                            if (currentWord.length > 0) {
-                                currentWord = currentWord.slice(0, -1);
-                                finalWordSpan.textContent = currentWord;
-                            } else {
-                                clearInterval(backspaceInterval);
-                                finalWordSpan.classList.remove('typing-cursor');
-                                heading.classList.remove('is-animating');
-                                setTimeout(runAnimationCycle, 200);
-                            }
-                        }, 100);
-                    }, delay + 2500);
-                });
-            }
-            runAnimationCycle();
-        }
-                
-        function setupValueWaveAnimation(elementId) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-            const originalText = element.innerText;
-            element.innerHTML = '';
-            originalText.split('').forEach(char => {
-                const span = document.createElement('span');
-                span.className = char.trim() === '' ? '' : 'value-wave-char';
-                span.textContent = char;
-                element.appendChild(span);
-            });
-            const chars = element.querySelectorAll('.value-wave-char');
-            if (chars.length === 0) return;
-            const delay = 120;
-            const animDuration = 800;
-            const pause = 2500;
-            function loopWave() {
-                chars.forEach((char, index) => {
-                    setTimeout(() => {
-                        char.classList.add('scaled');
-                        setTimeout(() => char.classList.remove('scaled'), animDuration);
-                    }, index * delay);
-                });
-                const totalDuration = (chars.length * delay) + animDuration + pause;
-                setTimeout(loopWave, totalDuration);
-            }
-            loopWave();
-        }
-
+        // --- Анимация печатания текста ---
         function setupTypingAnimation(selector, words, options = {}, onWordTyped = null, onStartDeleting = null) {
             const container = document.querySelector(selector);
             if (!container) return;
             container.innerHTML = '';
-            const { staticPrefix = '', isGradient = false } = options;
-            if (staticPrefix) {
-                const staticSpan = document.createElement('span');
-                staticSpan.textContent = staticPrefix;
-                container.appendChild(staticSpan);
-            }
             const typingElement = document.createElement('span');
-            typingElement.className = 'typing-effect';
-            if (isGradient) { typingElement.classList.add('gradient-text'); }
+            typingElement.className = 'typing-effect ' + (options.isGradient ? 'gradient-text' : '');
             container.appendChild(typingElement);
             let wordIndex = 0, charIndex = 0, isDeleting = false;
+            
             function type() {
                 const currentWord = words[wordIndex];
                 let textToShow = isDeleting ? currentWord.substring(0, charIndex - 1) : currentWord.substring(0, charIndex + 1);
                 typingElement.innerHTML = textToShow;
                 charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
-                const isCycleEnd = !isDeleting && charIndex > currentWord.length;
-                const isDeletionEnd = isDeleting && charIndex < 0;
+                
                 let timeout = isDeleting ? 80 : 120;
-                if (isCycleEnd) {
+                if (!isDeleting && charIndex > currentWord.length) {
                     if (onWordTyped) onWordTyped();
                     isDeleting = true;
                     timeout = 2000;
-                } else if (isDeletionEnd) {
+                } else if (isDeleting && charIndex < 0) {
                     isDeleting = false;
                     wordIndex = (wordIndex + 1) % words.length;
                     timeout = 500;
                 }
-                if (isDeleting && charIndex === currentWord.length -1) {
-                    if(onStartDeleting) onStartDeleting();
+                if (isDeleting && charIndex === currentWord.length -1 && onStartDeleting) {
+                    onStartDeleting();
                 }
                 setTimeout(type, timeout);
             }
             setTimeout(type, 500);
         }
 
-        // --- ФИНАЛЬНЫЙ СПИСОК ВЫЗОВОВ ФУНКЦИЙ ---
-        setupTypingAnimation('.hero .typing-effect-container', ["лекций", "видео", "книг", "документов", "подкастов"], { isGradient: true });
-        
-        // УДАЛЕНА СТАРАЯ ФУНКЦИЯ, ВЫЗЫВАЕТСЯ ТОЛЬКО ВНУТРИ IntersectionObserver
-        // setupWaveAnimation(); 
-        
-        setupMathAnimation();
-        setupWordFlipper();
-        setupValueWaveAnimation('time-value'); 
-        setupValueWaveAnimation('price-value');
-        
-        // УДАЛЕНА, ТАК КАК ВЫ РЕШИЛИ ЗАМЕНИТЬ АНИМАЦИЮ
-        // setupMagnifyAnimation();
+        // --- Универсальная Анимация "Волна" на тексте ---
+        function setupWaveAnimation(elementId, charClass, scale, delay) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const originalText = element.innerText;
+            element.innerHTML = '';
+            originalText.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = (char.trim() === '' ? '' : charClass + ' ') + 'gradient-text'; // Всегда добавляем градиент
+                span.textContent = char;
+                element.appendChild(span);
+            });
 
-        // --- ЛОГИКА АНИМАЦИИ В ФУТЕРЕ (без изменений) ---
-        const positivePart = document.querySelector('#heading-positive-part');
-        const negativePart = document.querySelector('#heading-negative-part');
-        const negativeWordContainer = document.querySelector('#cycling-negative-container');
-        const negativeWords = ["нудятину?", "скуку?", "воду?", "шум?"];
-        let negativeWordIndex = 0;
-        const showFooterStaticParts = () => {
-            if (positivePart) positivePart.classList.add('visible');
-            setTimeout(() => {
-                if (negativePart) {
+            const chars = element.querySelectorAll('.' + charClass);
+            if (chars.length === 0) return;
+            
+            function loopWave() {
+                chars.forEach((char, index) => {
+                    setTimeout(() => {
+                        char.classList.add('scaled');
+                        setTimeout(() => { char.classList.remove('scaled'); }, 300);
+                    }, index * delay);
+                });
+            }
+            setInterval(loopWave, 4000); // Повторяем волну каждые 4 секунды
+        }
+
+        // --- Анимация Математики ---
+        function setupMathAnimation() {
+                const heading = document.getElementById('math-heading');
+                const container = document.getElementById('math-container');
+                if (!heading || !container) return;
+                const syllables = ["ма", "те", "ма", "ти", "ки"];
+                const fullWordText = "математики";
+                const tempSpan = document.createElement('span');
+                tempSpan.style.fontSize = '3rem'; tempSpan.style.fontWeight = '800';
+                tempSpan.style.position = 'absolute'; tempSpan.style.opacity = '0';
+                document.body.appendChild(tempSpan);
+                tempSpan.innerHTML = "ма<span class='math-plus'>+</span>те<span class='math-plus'>+</span>ма<span class='math-plus'>+</span>ти<span class='math-plus'>+</span>ки";
+                const plusVersionWidth = tempSpan.offsetWidth + 25;
+                tempSpan.textContent = fullWordText;
+                const finalWordWidth = tempSpan.offsetWidth + 25;
+                document.body.removeChild(tempSpan);
+                function runAnimationCycle() {
+                    container.innerHTML = '';
+                    let parts = [];
+                    syllables.forEach((syllable, i) => {
+                        const s = document.createElement('span'); s.textContent = syllable; s.className = 'math-part math-syllable'; container.appendChild(s); parts.push(s);
+                        if (i < syllables.length - 1) {
+                            const p = document.createElement('span'); p.textContent = '+'; p.className = 'math-part math-plus'; container.appendChild(p); parts.push(p);
+                        }
+                    });
+                    requestAnimationFrame(() => {
+                        heading.style.setProperty('--math-container-width', `${plusVersionWidth}px`);
+                        heading.classList.add('is-animating');
+                        let delay = 500;
+                        const appearanceInterval = 250;
+                        parts.forEach(part => {
+                            setTimeout(() => part.classList.add('visible'), delay);
+                            delay += appearanceInterval;
+                        });
+                        setTimeout(() => {
+                            heading.style.setProperty('--math-container-width', `${finalWordWidth}px`);
+                            const finalWordSpan = document.createElement('span');
+                            finalWordSpan.textContent = fullWordText;
+                            finalWordSpan.className = 'math-part math-syllable math-final-word';
+                            container.appendChild(finalWordSpan);
+                            parts.forEach(p => p.classList.remove('visible'));
+                            setTimeout(() => finalWordSpan.classList.add('visible'), 50);
+                        }, delay + 300);
+                        setTimeout(() => {
+                            const finalWordSpan = container.querySelector('.math-final-word');
+                            if (!finalWordSpan) return;
+                            finalWordSpan.classList.add('typing-cursor');
+                            let currentWord = fullWordText;
+                            const backspaceInterval = setInterval(() => {
+                                if (currentWord.length > 0) {
+                                    currentWord = currentWord.slice(0, -1);
+                                    finalWordSpan.textContent = currentWord;
+                                } else {
+                                    clearInterval(backspaceInterval);
+                                    finalWordSpan.classList.remove('typing-cursor');
+                                    heading.classList.remove('is-animating');
+                                    setTimeout(runAnimationCycle, 200);
+                                }
+                            }, 100);
+                        }, delay + 2500);
+                    });
+                }
+                runAnimationCycle();
+        }
+
+        // --- Анимация смены слов ---
+        function setupWordFlipper() {
+                const leftContainer = document.getElementById('left-word-container');
+                const rightContainer = document.getElementById('right-word-container');
+                if (!leftContainer || !rightContainer) return;
+                const leftWords = ["время", "пользу"];
+                const rightWords = ["свободу", "выбор"];
+                const allWords = [...leftWords, ...rightWords];
+                let maxWidth = 0;
+                const tempSpan = document.createElement('span');
+                tempSpan.style.position = 'absolute';
+                tempSpan.style.visibility = 'hidden';
+                tempSpan.style.fontSize = '3rem';
+                tempSpan.style.fontWeight = '800';
+                document.body.appendChild(tempSpan);
+                allWords.forEach(word => {
+                    tempSpan.textContent = word;
+                    if (tempSpan.offsetWidth > maxWidth) {
+                        maxWidth = tempSpan.offsetWidth;
+                    }
+                });
+                document.body.removeChild(tempSpan);
+                leftContainer.style.width = `${maxWidth}px`;
+                rightContainer.style.width = `${maxWidth}px`;
+                let leftIndex = 0;
+                let rightIndex = 0;
+                let isLeftTurn = true;
+                function animateWords() {
+                    const currentVisible = document.querySelector('.word-anim.visible');
+                    if (currentVisible) {
+                        currentVisible.classList.remove('visible');
+                        currentVisible.classList.add('exiting');
+                    }
+                    setTimeout(() => {
+                        const container = isLeftTurn ? leftContainer : rightContainer;
+                        const words = isLeftTurn ? leftWords : rightWords;
+                        let index = isLeftTurn ? leftIndex : rightIndex;
+                        container.innerHTML = '';
+                        const span = document.createElement('span');
+                        span.textContent = words[index];
+                        span.className = 'word-anim entering';
+                        container.appendChild(span);
+                        setTimeout(() => {
+                            span.classList.add('visible');
+                            span.classList.remove('entering');
+                        }, 20);
+                        if (isLeftTurn) {
+                            leftIndex = (leftIndex + 1) % leftWords.length;
+                        } else {
+                            rightIndex = (rightIndex + 1) % rightWords.length;
+                        }
+                        isLeftTurn = !isLeftTurn;
+                    }, 500);
+                }
+                setInterval(animateWords, 2500);
+                setTimeout(animateWords, 100);
+        }
+        
+        // --- Логика анимации в футере ---
+        function setupFooterTyping() {
+            const positivePart = document.querySelector('#heading-positive-part');
+            const negativePart = document.querySelector('#heading-negative-part');
+            const negativeWordContainer = document.querySelector('#cycling-negative-container');
+            if (!positivePart || !negativePart || !negativeWordContainer) return;
+
+            const negativeWords = ["нудятину?", "скуку?", "воду?", "шум?"];
+            let negativeWordIndex = 0;
+
+            const showFooterStaticParts = () => {
+                positivePart.classList.add('visible');
+                setTimeout(() => {
                     negativeWordContainer.textContent = negativeWords[negativeWordIndex];
                     negativePart.classList.add('visible');
                     negativeWordIndex = (negativeWordIndex + 1) % negativeWords.length;
-                }
-            }, 1000);
-        };
-        const hideFooterStaticParts = () => {
-            if (positivePart) positivePart.classList.remove('visible');
-            if (negativePart) negativePart.classList.remove('visible');
-        };
-        setupTypingAnimation('#typing-positive-container', ["суть,", "главное,", "интересное,", "лучшее,"], { isGradient: true }, showFooterStaticParts, hideFooterStaticParts);
-    
+                }, 1000);
+            };
+            const hideFooterStaticParts = () => {
+                positivePart.classList.remove('visible');
+                negativePart.classList.remove('visible');
+            };
+
+            setupTypingAnimation('#typing-positive-container', ["суть,", "главное,", "интересное,", "лучшее,"], { isGradient: true }, showFooterStaticParts, hideFooterStaticParts);
+        }
+
+        // ==========================================================================
+        // 3. ЗАПУСК ВСЕХ ФУНКЦИЙ
+        // ==========================================================================
+        setupLiveSeatsCounter();
+        setupCountdown();
+        setupLiveHoursCounter();
+        setupPromoCopy();
+        setupCarousel();
+        setupTypingAnimation('.hero .typing-effect-container', ["лекций", "видео", "книг", "документов", "подкастов"], { isGradient: true });
+        setupMathAnimation();
+        setupWordFlipper();
+        setupWaveAnimation('time-value', 'value-wave-char', 1.15, 120);
+        setupWaveAnimation('price-value', 'value-wave-char', 1.15, 120);
+        setupFooterTyping();
+        setupSingleWordFlip('animated-first-word', 'первые');
+
     });
     </script>
 </body>
