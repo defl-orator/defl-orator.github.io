@@ -26,6 +26,7 @@
             --text-secondary: #a0a0b0;
             --gradient-start: #FFD23F;
             --gradient-end: #FFBF00;
+            --card-border-radius: 24px;
         }
 
         * {
@@ -48,16 +49,17 @@
         }
 
         /* Декоративные градиенты на фоне */
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            width: 50vw;
-            height: 50vw;
-            filter: blur(120px);
-            z-index: -1;
+        body {
+            background-image:
+                /* Верхний левый градиент (SVG) */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3Cfilter id='b' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='120'/%3E%3C/filter%3E%3CradialGradient id='g' r='50%25' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='rgb(255,210,63)' stop-opacity='0.15'/%3E%3Cstop offset='70%25' stop-color='rgb(255,210,63)' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='transparent'/%3E%3Ccircle r='400' cx='400' cy='400' fill='url(%23g)' filter='url(%23b)'/%3E%3C/svg%3E"),
+                /* Нижний правый градиент (SVG) */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3Cfilter id='b' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='120'/%3E%3C/filter%3E%3CradialGradient id='g' r='50%25' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='rgb(255,191,0)' stop-opacity='0.1'/%3E%3Cstop offset='70%25' stop-color='rgb(255,191,0)' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='transparent'/%3E%3Ccircle r='400' cx='400' cy='400' fill='url(%23g)' filter='url(%23b)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: top -10% left -20%, bottom -20% right -20%;
+            background-size: 50vw 50vw, 50vw 50vw;
         }
-        body::before { top: -10%; left: -20%; background: radial-gradient(circle, rgba(255, 210, 63, 0.15), transparent 70%); }
-        body::after { bottom: -20%; right: -20%; background: radial-gradient(circle, rgba(255, 191, 0, 0.1), transparent 70%); }
 
         /* ==========================================================================
         2. ОСНОВНАЯ ТИПОГРАФИЯ И КОНТЕЙНЕРЫ
@@ -117,7 +119,7 @@
 
         /* --- "Стеклянная" карточка (основной стиль для многих блоков) --- */
         .glass-card {
-            border-radius: 20px;
+            border-radius: var(--card-border-radius);
             padding: 35px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
@@ -134,7 +136,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 20px;
+            border-radius: var(--card-border-radius);
             border: 1px solid transparent;
             background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05)) border-box;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -190,7 +192,7 @@
             margin-top: 40px;
             background: var(--card-bg-solid);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: var(--card-border-radius);
             padding: 25px;
             max-width: 550px;
             margin-left: auto;
@@ -217,7 +219,7 @@
             flex-grow: 1;
             background: var(--bg-color);
             border: 1px dashed var(--gradient-start);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 15px 20px;
             font-size: 1.3rem;
             font-weight: 700;
@@ -251,7 +253,7 @@
         .stat-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: var(--card-border-radius);
             border: 1px solid var(--border-color);
             text-align: center;
         }
@@ -272,7 +274,7 @@
         .persona-card-header { text-align: center; }
         .persona-card h3 { font-size: 1.6rem; margin-bottom: 10px; }
         .persona-card .emoji { font-size: 3rem; margin-bottom: 15px; }
-        .persona-comment { background: var(--bg-color); padding: 20px; border-radius: 15px; border: 1px solid var(--border-color); font-style: italic; color: var(--text-secondary); position: relative; flex-grow: 1; }
+        .persona-comment { background: var(--bg-color); padding: 20px; border-radius: var(--card-border-radius); border: 1px solid var(--border-color); font-style: italic; color: var(--text-secondary); position: relative; flex-grow: 1; }
         .persona-comment::after { content: ''; position: absolute; bottom: -10px; left: 30px; width: 0; height: 0; border: 10px solid transparent; border-top-color: var(--bg-color); border-bottom: 0; }
         .persona-arrow { text-align: center; margin: 25px 0 15px; }
         .persona-response { padding: 10px; text-align: left; }
@@ -288,7 +290,7 @@
         .carousel-wrapper { position: relative; max-width: 400px; height: 800px; margin: 0 auto; }
         .carousel-stack { position: relative; width: 100%; height: 100%; cursor: grab; user-select: none; }
         .carousel-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; transition: transform 0.5s ease, opacity 0.5s ease; will-change: transform, opacity; }
-        .carousel-card .screenshot-image-wrapper { width: 100%; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3); aspect-ratio: 9 / 19.5; }
+        .carousel-card .screenshot-image-wrapper { width: 100%; border-radius: var(--card-border-radius); overflow: hidden; position: relative; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.3); aspect-ratio: 9 / 19.5; }
         .carousel-card .screenshot-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 50%; }
         .carousel-card.is-active { transform: scale(1) translateY(0); opacity: 1; z-index: 10; }
         .carousel-card h3 { opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease, transform 0.4s ease; }
@@ -320,7 +322,7 @@
         .pricing-card h3 { font-size: 1.8rem; margin-bottom: 20px; }
         .pricing-card ul { text-align: left; list-style: none; margin-bottom: 30px; flex-grow: 1; }
         .pricing-card li { margin-bottom: 12px; }
-        .pioneer-club-badge { display: inline-block; padding: 8px 18px; border-radius: 20px; background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%); color: #1A1A1A; font-weight: 700; font-size: 0.9rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .pioneer-club-badge { display: inline-block; padding: 8px 18px; border-radius: var(--card-border-radius); background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%); color: #1A1A1A; font-weight: 700; font-size: 0.9rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
         .pioneer-seats-counter { font-size: 1.5rem; font-weight: 500; margin-top: 25px; color: var(--text-secondary); }
         .pioneer-seats-counter .count { font-weight: 800; color: var(--text-color); font-size: 2.2rem; min-width: 60px; display: inline-block; text-align: right; }
         .pricing-card.highlight .cta-button { margin-top: 20px; }
@@ -338,7 +340,7 @@
         /* --- Футер (Подвал) --- */
         footer { text-align: center; padding: 100px 20px; }
         .qr-code-section { margin-bottom: 50px; }
-        .qr-code-image { width: 360px; height: auto; border: 4px solid var(--card-bg-solid); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .qr-code-image { width: 360px; height: auto; border: 4px solid var(--card-bg-solid); border-radius: var(--card-border-radius); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .qr-code-section p { margin-top: 15px; color: var(--text-secondary); }
         footer h2 { font-size: 2.5rem; margin-bottom: 40px; }
         .footer-heading { line-height: 1.3; }
@@ -348,19 +350,21 @@
         .promo-timer {
             margin-top: 35px;
             padding: 25px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
+            background-color: var(--card-bg-solid); 
+            border: 2px solid var(--gradient-start); 
+            border-radius: var(--card-border-radius);
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
             text-align: center;
+            box-shadow: 0 0 25px rgba(255, 210, 63, 0.15);
         }
 
         .promo-timer-label {
             display: block;
-            font-size: 1rem;
-            color: var(--text-secondary);
+            font-size: 1.05rem; /* Немного увеличим размер для акцента */
+            font-weight: 700; /* Делаем текст жирным */
+            color: var(--text-color); /* Меняем цвет с серого на основной белый */
             line-height: 1.6;
             max-width: 500px;
             margin: 0 auto 20px;
@@ -377,7 +381,7 @@
         .timer-block {
             background: rgba(0,0,0,0.2);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 10px 15px;
             min-width: 70px;
             text-align: center;
@@ -394,7 +398,6 @@
             color: var(--text-secondary);
             letter-spacing: 0.5px;
         }
-        /* [КОНЕЦ ВОССТАНОВЛЕННЫХ СТИЛЕЙ] */
 
         .promo-instruction-text {
             margin: 25px auto 15px;
@@ -416,7 +419,7 @@
             flex-grow: 1;
             background: var(--bg-color);
             border: 1px dashed var(--gradient-start);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 15px 20px;
             font-size: 1.3rem;
             font-weight: 700;
@@ -522,7 +525,7 @@
         
         /* --- Анимация 3D бегущей строки (Marquee) --- */
         .pricing-heading { display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 2rem; line-height: 1.3; }
-        .marquee-3d-box { display: flex; perspective: 250px; transform: translateX(-25px); -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
+        .marquee-3d-box { display: flex; perspective: 250px; -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent); }
         .marquee-3d-inner { width: 380px; height: 100px; line-height: 100px; font-size: 3.5rem; font-weight: 800; color: var(--text-color); white-space: nowrap; overflow: hidden; backface-visibility: hidden; position: relative; }
         .marquee-3d-inner:first-child { transform-origin: right; transform: rotateY(-20deg) scale(1.2); z-index: 1; }
         .marquee-3d-inner:last-child { transform-origin: left; transform: translateX(-2px) rotateY(20deg) scale(1.2); }
@@ -531,7 +534,7 @@
         @keyframes marquee { from { left: 100%; } to { left: -100%; } }
 
         /* --- Анимация блика --- */
-        .promo-banner { position: relative; overflow: hidden; margin-top: 50px; padding: 20px; background-color: var(--card-bg-solid); border: 1px solid var(--gradient-start); border-radius: 15px; font-size: 1.1rem; }
+        .promo-banner { position: relative; overflow: hidden; margin-top: 50px; padding: 20px; background-color: var(--card-bg-solid); border: 1px solid var(--gradient-start); border-radius: var(--card-border-radius); font-size: 1.1rem; }
         .promo-banner strong { color: var(--gradient-start); }
         .promo-banner::after { content: ''; position: absolute; top: 0; transform: translateX(-100%); width: 100%; height: 100%; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%); animation: shine-effect 15s ease-in-out infinite; }
         @keyframes shine-effect { 0% { transform: translateX(-100%); } 20% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
@@ -644,8 +647,11 @@
             .flipper-heading { gap: 0.8rem; }
             .flipper-heading .central-text, .flipper-heading .word-anim { font-size: 2.2rem; }
             .word-container { height: calc(2.2rem * 1.2); top: 1.5rem; }
-            .marquee-3d-box { transform: translateX(-15px); }
             .marquee-3d-inner { width: 250px; height: 70px; line-height: 70px; font-size: 2.5rem; }
+            .glass-card {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
         }
         
         @media (max-width: 480px) {
@@ -709,13 +715,13 @@
         </div>
     </header>
 
-    <!-- ЗАМЕНИТЬ ВЕСЬ <section id="stats"> -->
     <section id="stats">
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-card fade-in">
-                    <div class="stat-number-wrapper"> <!-- Обертка -->
-                        <div class="stat-number" id="dynamic-hours-saved" data-target="100">0</div> 
+                    <div class="stat-number-wrapper">
+                        <div class="stat-number" id="dynamic-hours-saved" data-target="100">0</div>
+                        <span class="stat-symbol">+</span>
                     </div>
                     <div class="stat-label">часов уже сэкономлено моими пользователями благодаря мне</div>
                 </div>
@@ -785,7 +791,7 @@
                             <div class="emoji">🧑‍💼</div>
                             <h3>Ты — Амбициозный Предприниматель</h3>
                         </div>
-                        <div class="persona-comment"> <p>"Мне нужна не куча бумаги, а рабочие идеи и методы, которые можно применить хоть уже&nbsp;завтра&nbsp;👔."</p> </div>
+                        <div class="persona-comment"> <p>"Мне нужна не куча бумаги, а рабочие идеи и методы, которые можно применить хоть уже&nbsp;завтра&nbsp;👔"</p> </div>
                         <div class="persona-arrow"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 19L18 13M12 19L6 13" stroke="var(--gradient-start)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> </div>
                         <div class="persona-response"> <p><strong>Мой ответ:</strong> Я достаю из книг и видео всё что тебе нужно: все этапы, примеры и практические советы для твоего&nbsp;роста&nbsp;🤓</p> </div>
                     </div>
@@ -1250,28 +1256,60 @@
             }
 
             function updateCards() {
-                const activeCard = stack.querySelector('.is-active');
-                if (!activeCard) return;
-                const activeIndex = cards.indexOf(activeCard);
-                cards.forEach((card, index) => {
-                    card.classList.remove('prev-card', 'next-card');
-                    const video = card.querySelector('video');
-                    if (index === activeIndex) {
-                        if (video) { 
-                            video.currentTime = 0; 
-                            // Пытаемся запустить видео, если не получится - ничего страшного, автопрокрутка всё равно запустится
-                            video.play().then(scheduleNextRotation).catch(e => {
-                                console.log("Autoplay was prevented. Scheduling next rotation anyway.");
-                                scheduleNextRotation(); // Всё равно планируем следующий слайд
-                            }); 
-                        }
-                    } else {
-                        if (video) video.pause();
-                        if (index === (activeIndex - 1 + cards.length) % cards.length) card.classList.add('prev-card');
-                        else if (index === (activeIndex + 1) % cards.length) card.classList.add('next-card');
+            const activeCard = stack.querySelector('.is-active');
+            if (!activeCard) return;
+            const activeIndex = cards.indexOf(activeCard);
+
+            cards.forEach((card, index) => {
+                card.classList.remove('prev-card', 'next-card');
+                const video = card.querySelector('video');
+
+                if (video) {
+                    // Сразу ставим на паузу и сбрасываем все неактивные видео
+                    if (index !== activeIndex) {
+                        video.pause();
+                        video.currentTime = 0;
                     }
-                });
-            }
+                }
+
+                // Логика только для активной карточки
+                if (index === activeIndex) {
+                    if (video) {
+                        video.currentTime = 0; // Сбрасываем время
+                        
+                        // Функция, которая запускает видео
+                        const playVideo = () => {
+                            const playPromise = video.play();
+                            if (playPromise !== undefined) {
+                                playPromise.then(() => {
+                                    scheduleNextRotation();
+                                }).catch(error => {
+                                    console.warn("Autoplay was prevented by browser:", error);
+                                    clearTimeout(autoRotateTimeout);
+                                    autoRotateTimeout = setTimeout(() => rotate('next'), 5000);
+                                });
+                            }
+                        };
+
+                        // ПРОВЕРКА: Готово ли видео к воспроизведению прямо сейчас?
+                        // readyState 4 (`HAVE_ENOUGH_DATA`) - идеальное состояние
+                        if (video.readyState >= 3) {
+                            playVideo();
+                        } else {
+                            // Если не готово, мы ДОБАВЛЯЕМ СЛУШАТЕЛЯ и ждем, пока оно скажет "готов!"
+                            video.addEventListener('canplay', playVideo, { once: true });
+                        }
+                    }
+                } else {
+                    // Стили для соседних карточек
+                    if (index === (activeIndex - 1 + cards.length) % cards.length) {
+                        card.classList.add('prev-card');
+                    } else if (index === (activeIndex + 1) % cards.length) {
+                        card.classList.add('next-card');
+                    }
+                }
+            });
+        }
 
             function rotate(direction) {
                 if (isRotating) return;
@@ -1365,15 +1403,32 @@
             const chars = element.querySelectorAll('.' + charClass);
             if (chars.length === 0) return;
             
-            function loopWave() {
+            let startTime = null;
+            const loopDuration = 4000; // Повторяем волну каждые 4 секунды
+
+            function waveLoop(currentTime) {
+                if (!startTime) {
+                    startTime = currentTime;
+                }
+                const elapsedTime = currentTime - startTime;
+
+                if (elapsedTime > loopDuration) {
+                    startTime = currentTime; // Сбрасываем таймер для нового цикла
+                }
+
                 chars.forEach((char, index) => {
-                    setTimeout(() => {
+                    // Запускаем анимацию для каждой буквы в начале цикла
+                    if (elapsedTime >= index * delay && elapsedTime < index * delay + 600) { // 600 = длительность анимации
                         char.classList.add('scaled');
-                        setTimeout(() => { char.classList.remove('scaled'); }, 300);
-                    }, index * delay);
+                    } else {
+                        char.classList.remove('scaled');
+                    }
                 });
+
+                requestAnimationFrame(waveLoop); // Планируем следующий кадр
             }
-            setInterval(loopWave, 4000); // Повторяем волну каждые 4 секунды
+
+            requestAnimationFrame(waveLoop); // Запускаем цикл 
         }
 
         // --- Анимация Математики ---
