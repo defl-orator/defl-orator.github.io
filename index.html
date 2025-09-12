@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конспектыш: Конспекты книг (например Unscripted, Богатый Папа), видео (в том числе вДудь), лекций, документов и подкастов</title>
+    <title>Конспектыш: Конспекты книг (например Unscripted, Богатый Папа), видео (вДудь, Послезавтра), лекций, документов и подкастов</title>
     <meta name="description" content="Готовые конспекты на сотни книг и видео: от бизнес-литературы (Unscripted, Роберт Кийосаки) до интервью (вДудь, Кац) и классики. Получи суть без воды в Телеграма!">
     <meta name="google-site-verification" content="RDgs41WF5XWoTKLg6RhCpXjHpBK6rBe1JOoEF6CP3zM" />
     <meta name="yandex-verification" content="3d5a31c64480f2e6" />
@@ -319,7 +319,52 @@
         .pricing-card h3 { font-size: 1.8rem; margin-bottom: 20px; }
         .pricing-card ul { text-align: left; list-style: none; margin-bottom: 30px; flex-grow: 1; }
         .pricing-card li { margin-bottom: 12px; }
-        .pioneer-club-badge { display: inline-block; padding: 8px 18px; border-radius: var(--card-border-radius); background-image: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-end) 100%); color: #1A1A1A; font-weight: 700; font-size: 0.9rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* [НОВЫЙ СТИЛЬ] Для примечания о будущей подписке */
+        .subscription-notice {
+            color: var(--text-secondary); /* Приглушенный серый цвет */
+            font-size: 0.9rem;          /* Немного меньше основного текста */
+            font-style: italic;         /* Курсив для эффекта примечания */
+            opacity: 0.8;               /* Легкая полупрозрачность */
+            max-width: 280px;           /* Ограничиваем ширину для лучшей читаемости */
+            margin: 15px auto 25px;     /* Отступы: 15px сверху, 25px снизу до кнопки */
+            line-height: 1.5;
+        }
+        /* Стилизуем значок с новым, реверсивным градиентом */
+        .pioneer-club-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: var(--card-border-radius);
+            /* Новый градиент: от оранжевого к желтому */
+            background-image: linear-gradient(90deg, var(--gradient-end), var(--gradient-start));
+            /* Темный текст для контраста со светлым градиентом */
+            color: #1A1A1A;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 15px rgba(255, 191, 0, 0.2);
+        }
+
+        /* Позиционируем корону ВНУТРИ карточки, а не над ней */
+        .pricing-card.highlight {
+            position: relative; /* Необходимо для позиционирования короны */
+            /* Добавляем отступ сверху, чтобы освободить место для короны */
+            padding-top: 60px;
+        }
+
+        /* Стилизуем саму корону */
+        .crown-icon {
+            position: absolute;
+            /* Позиционируем вверху, но с отступом */
+            top: 25px;
+            left: 50%;
+            /* Используем только translateX для горизонтального центрирования */
+            transform: translateX(-50%);
+            font-size: 2.5rem; /* Немного уменьшим для гармонии */
+            line-height: 1;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
         .pioneer-seats-counter { font-size: 1.5rem; font-weight: 500; margin-top: 25px; color: var(--text-secondary); }
         .pioneer-seats-counter .count { font-weight: 800; color: var(--text-color); font-size: 2.2rem; min-width: 60px; display: inline-block; text-align: right; }
         .pricing-card.highlight .cta-button { margin-top: 20px; }
@@ -367,6 +412,15 @@
             margin: 0 auto 20px;
         }
 
+        .promo-highlight-text {
+            display: block;      /* Ставит текст на новую строку */
+            font-size: 1.8rem;   /* Увеличиваем размер для акцента */
+            font-weight: 800;    /* Делаем очень жирным */
+            margin: 15px auto;   /* Добавляем вертикальные отступы */
+            line-height: 1.2;
+            text-align: center;  /* Центрируем выделенный текст */
+        }
+
         .promo-timer-values {
             display: flex;
             justify-content: center;
@@ -374,29 +428,34 @@
             margin-top: 10px;
         }
 
-        /* [ВОССТАНОВЛЕННЫЕ СТИЛИ] Вот что было упущено */
+        /* --- Стили для таймера --- */
         .timer-block {
             background: rgba(0,0,0,0.2);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 10px 15px;
-            min-width: 70px;
+            /* [ИЗМЕНЕНО] Увеличиваем отступы, чтобы дать тексту больше места */
+            padding: 15px 20px;
+            /* [ИЗМЕНЕНО] Увеличиваем минимальную ширину для солидности */
+            min-width: 90px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
         .timer-value {
-            font-size: 2rem;
+            /* [ИЗМЕНЕНО] Делаем цифры значительно крупнее */
+            font-size: 3rem;
             font-weight: 800;
             color: var(--text-color);
             line-height: 1.1;
         }
         .timer-label {
-            font-size: 0.8rem;
+            /* [ИЗМЕНЕНО] Увеличиваем размер подписей */
+            font-size: 1rem;
             text-transform: uppercase;
             color: var(--text-secondary);
             letter-spacing: 0.5px;
+            margin-top: 5px; /* Добавляем небольшой отступ сверху */
         }
 
         .promo-instruction-text {
@@ -515,9 +574,26 @@
         .math-part { display: inline-block; opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .math-part.visible { opacity: 1; transform: translateY(0); }
         .math-plus { color: var(--text-secondary); font-weight: 600; }
-        .math-final-word { position: absolute; left: 0; right: 0; text-align: center; display: inline-block; }
-        .math-final-word.typing-cursor::after { content: '|'; font-weight: 400; color: var(--text-secondary); animation: math-blink 1s step-end infinite; position: absolute; }
-        @keyframes math-blink { from, to { color: transparent; } 50% { color: var(--text-secondary); } }
+
+        /* Контейнер для позиционирования */
+        .math-final-word {
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            display: inline-block;
+        }
+
+        /* Стиль курсора теперь применяется к ВЛОЖЕННОМУ span */
+        .math-final-word span.is-deleting {
+            border-right: 2px solid var(--text-secondary);
+            animation: math-blink 1s step-end infinite;
+            padding-right: 3px; /* Небольшой отступ от последней буквы */
+        }
+        @keyframes math-blink {
+            from, to { border-right-color: transparent; }
+            50% { border-right-color: var(--text-secondary); }
+        }
 
         /* --- Анимация волны на ценах --- */
         .value-wave-char { display: inline-block; position: relative; transform-origin: bottom; transition: transform 0.6s cubic-bezier(0.5, 0, 0.5, 1); }
@@ -632,6 +708,130 @@
             margin-left: 2px;
         }
 
+       /* ==========================================================================
+        [ФИНАЛЬНОЕ РАБОЧЕЕ РЕШЕНИЕ V7] СТИЛИ ДЛЯ СКРЫТИЯ/ПОКАЗА ЭЛЕМЕНТОВ
+        ========================================================================== */
+
+        /* --- 1. Настройка Header --- */
+        body > header.hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .hero-main-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            padding-top: 5vh;
+        }
+        .hero-initial-content { 
+            text-align: center; 
+            /* Добавляем transition, чтобы сдвиг был плавным при изменении размера окна */
+            transition: transform 0.3s ease-out;
+        }
+
+        /* --- 2. Стилизация промо-блока --- */
+        .promo-timer-wrapper {
+            width: 100%;
+            opacity: 0;
+            transform: translateY(50px);
+            pointer-events: none;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            padding: 20px 0;
+            margin-top: auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        /* --- 3. Стилизация Footer --- */
+        body > footer {
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 10vh 0;
+            box-sizing: border-box;
+        }
+
+        /* --- 4. Стилизация стрелок --- */
+        .scroll-arrow {
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            animation: blink-fade 2.2s infinite ease-in-out;
+        }
+        #arrow-down {
+            position: relative;
+            margin-top: 5vh;
+            opacity: 1;
+            transform: translateY(0);
+            z-index: 10;
+        }
+        #arrow-up {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transform: translate(-50%, -100px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        @keyframes blink-fade { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+        /* --- 5. Классы видимости (управляются JS) --- */
+        body.scrolled-past-hero .promo-timer-wrapper {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        body.is-at-page-end #promo-section {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+        body.is-at-page-end #arrow-up {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        /* --- 6. Адаптация --- */
+        @media (max-width: 768px) {
+            body > header.hero {
+                min-height: 100vh;
+                justify-content: center;
+            }
+            .hero-main-group {
+                padding-top: 0;
+            }
+            
+            /* Сдвигаем ТОЛЬКО текстовый блок, а не всю группу */
+            .hero-initial-content {
+                transform: translateY(-8vh);
+            }
+
+            /* [ИСПРАВЛЕНО] Компенсируем сдвиг текста отрицательным отступом,
+            чтобы подтянуть стрелку вверх, прямо под подзаголовок */
+            #arrow-down {
+                margin-top: -10vh;
+            }
+
+            /* Центрируем футер на мобильных */
+            body > footer { 
+                align-items: center; 
+            }
+        }
+        @media (min-width: 769px) {
+            #arrow-up { 
+                display: none; 
+            }
+        }
         /* ==========================================================================
         6. МЕДИА-ЗАПРОСЫ (Адаптация)
         ========================================================================== */
@@ -682,53 +882,54 @@
 
 </head>
 <body>
-    <!-- ЗАМЕНИТЬ ВЕСЬ <header> -->
+
     <header class="hero">
-        <div class="container">
-            <img src="logo.png" alt="Логотип Конспектыш" class="hero-logo fade-in">
-            <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации <span class="gradient-text">без воды</span></h1>
-            <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect-container"></span></p>
-            <p class="fade-in" style="margin-top: -20px;">Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
-            
-            <!-- Обновленный и правильно структурированный блок бонуса -->
-            <div class="promo-timer fade-in">
-                <p class="promo-timer-label">
-                    Как раз сейчас для тебя действует приветственный бонус на 3 бесплатных просмотра подробных конспектов. Он закончится через:
-                </p>
-                <div class="promo-timer-values" id="countdown-timer">
-                    <div class="timer-block">
-                        <span class="timer-value" id="days">14</span>
-                        <span class="timer-label">Дней</span>
+        <!-- НОВАЯ ОБЕРТКА для центрирования текста и стрелки вместе -->
+        <div class="hero-main-group">
+            <!-- Основной контент хедера -->
+            <div class="container hero-initial-content">
+                <img src="logo.png" alt="Логотип Конспектыш" class="hero-logo fade-in">
+                <h1 class="fade-in">Я — Конспектыш.<br>Твой проводник в мир любой информации <span class="gradient-text">без воды</span></h1>
+                <p class="fade-in">Я здесь, чтобы избавить тебя от занудных <span class="typing-effect-container"></span></p>
+                <p class="fade-in" style="margin-top: -20px;">Я отбираю всё самое необходимое из любого материала, чтобы ты получал исключительно суть.</p>
+            </div>
+
+            <!-- Стрелка "вниз" теперь внутри этой группы, чтобы быть сразу под текстом -->
+            <svg id="arrow-down" class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 19V5M12 19L18 13M12 19L6 13" stroke="var(--gradient-start)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- Промо-блок -->
+        <div class="promo-timer-wrapper">
+            <div class="container">
+                <div class="promo-timer">
+                    <p class="promo-timer-label">
+                        Как раз сейчас для тебя действует приветственный бонус на
+                        <span class="promo-highlight-text gradient-text">3 бесплатных просмотра</span>
+                        подробных конспектов. Он закончится через:
+                    </p>
+                    <div class="promo-timer-values" id="countdown-timer">
+                        <div class="timer-block">
+                            <span class="timer-value" id="minutes">00</span>
+                            <span class="timer-label">Минут</span>
+                        </div>
+                        <div class="timer-block">
+                            <span class="timer-value" id="seconds">00</span>
+                            <span class="timer-label">Секунд</span>
+                        </div>
                     </div>
-                    <div class="timer-block">
-                        <span class="timer-value" id="hours">00</span>
-                        <span class="timer-label">Часов</span>
+                    <p class="promo-instruction-text">Активируй промокод в "👤 Мой аккаунт" → "🎁 Промокод"</p>
+                    <div class="promo-input-group">
+                        <div class="promo-code-display" id="promo-code-copy-trigger" title="Нажми, чтобы скопировать">ЯПЕРВЫЙ</div>
+                        <a href="https://t.me/conspektishbot" class="cta-button">Активируй тут</a>
                     </div>
-                    <div class="timer-block">
-                        <span class="timer-value" id="minutes">00</span>
-                        <span class="timer-label">Минут</span>
-                    </div>
-                    <div class="timer-block">
-                        <span class="timer-value" id="seconds">00</span>
-                        <span class="timer-label">Секунд</span>
-                    </div>
+                    <span class="copy-feedback" id="copy-feedback-message">Скопировано!</span>
+                    <p class="copy-hint-text">↑ Нажми на промокод, чтобы скопировать</p>
                 </div>
-                
-                <!-- 1. Инструкция по применению теперь здесь, над промокодом -->
-                <p class="promo-instruction-text">
-                    Активируй промокод в "👤 Мой аккаунт" → "🎁 Промокод"
-                </p>
-                
-                <!-- 2. Интерактивный блок в самом низу -->
-                <div class="promo-input-group">
-                    <div class="promo-code-display" id="promo-code-copy-trigger" title="Нажми, чтобы скопировать">ЯПЕРВЫЙ</div>
-                    <!-- 3. Текст кнопки изменен на "Активируй тут" -->
-                    <a href="https://t.me/conspektishbot" class="cta-button">Активируй тут</a>
-                </div>
-                <span class="copy-feedback" id="copy-feedback-message">Скопировано!</span>
-                <p class="copy-hint-text">↑ Нажми на промокод, чтобы скопировать</p>
             </div>
         </div>
+
     </header>
 
     <section id="stats">
@@ -920,16 +1121,20 @@
                         </ul>
                     </div>
                     <div class="pricing-card glass-card highlight fade-in">
+                        <span class="crown-icon">👑</span>
+
                         <div class="pioneer-club-badge">Клуб Первооткрывателей</div>
                         <ul>
                             <li>🔥 <strong>Неограниченный</strong> доступ ко всей моей библиотеке. <strong>Навсегда.</strong></li>
                             <li>🔥 Особый статус и значок в боте.</li>
-                            <li>🔥 Прямое влияние на выбор будущих конспектов.</li>
                             <li>🔥 Лучший вклад в развитие самого себя! <br> <span class="subtle-note">(ну и в меня тоже ☺️)</span></li>
                         </ul>
                         <div class="pioneer-seats-counter">
                             Мест осталось: <span class="count" id="seats-counter">50</span> / 100
                         </div>
+                        <p class="subscription-notice">
+                            Когда места закончатся, доступ будет только по месячной подписке.
+                        </p>
                         <a href="https://t.me/conspektishbot" class="cta-button">Вступить в Клуб</a>
                     </div>
                     <div class="pricing-card glass-card fade-in">
@@ -1000,92 +1205,130 @@
     </main>
 
     <footer>
-        <div class="container">
-            <div class="qr-code-section fade-in"><img src="qr-code.png" alt="QR-код для перехода в Telegram-бот Конспектыш" class="qr-code-image"><p>Сканируй QR-код, чтобы перейти ко мне!</p></div>
-            <h2 class="fade-in footer-heading">
-                <div id="heading-positive-part">Готов получать</div>
-                <div><span id="typing-positive-container" class="gradient-text"></span></div>
-                <div id="heading-negative-part">а не <span id="cycling-negative-container" class="gradient-text"></span></div>
-            </h2>
-            <a href="https://t.me/conspektishbot" class="cta-button fade-in">Тогда пошли в Телеграм</a>
+        <div class="footer-content-wrapper">
+            <div class="container">
+                <div class="qr-code-section fade-in"><img src="qr-code.png" alt="QR-код для перехода в Telegram-бот Конспектыш" class="qr-code-image"><p>Сканируй QR-код, чтобы перейти ко мне!</p></div>
+                <h2 class="fade-in footer-heading">
+                    <div id="heading-positive-part">Готов получать</div>
+                    <div><span id="typing-positive-container" class="gradient-text"></span></div>
+                    <div id="heading-negative-part">а не <span id="cycling-negative-container" class="gradient-text"></span></div>
+                </h2>
+                <a href="https://t.me/conspektishbot" class="cta-button fade-in">Тогда пошли в Телеграм</a>
+            </div>
         </div>
     </footer>
 
+    <svg id="arrow-up" class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5V19M12 5L18 11M12 5L6 11" stroke="var(--gradient-start)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 1. УНИВЕРСАЛЬНЫЙ IntersectionObserver ДЛЯ FADE-IN И СВЯЗАННЫХ АНИМАЦИЙ
+
         // ==========================================================================
+        // [ФИНАЛЬНОЕ РАБОЧЕЕ РЕШЕНИЕ] ЛОГИКА ДЛЯ СКРОЛЛА
+        // ==========================================================================
+        function setupScrollBehavior() {
+            const body = document.body;
+            // Получаем ссылку на стрелку один раз, чтобы не искать ее постоянно
+            const arrowDown = document.getElementById('arrow-down');
+
+            function handleScroll() {
+                const scrollY = window.scrollY;
+
+                // --- Логика для промо-блока (остается без изменений) ---
+                if (scrollY > 10) {
+                    body.classList.add('scrolled-past-hero');
+                } else {
+                    body.classList.remove('scrolled-past-hero');
+                }
+
+                // --- [ИСПРАВЛЕНО ПУНКТ 1] Новая логика для плавной анимации стрелки "вниз" ---
+                if (arrowDown) {
+                    // Рассчитываем новую позицию и прозрачность на основе положения скролла
+                    const scrollThreshold = 150; // Дистанция в пикселях, за которую стрелка полностью исчезнет
+                    
+                    if (scrollY < scrollThreshold) {
+                        // Коэффициент 1.5 заставляет стрелку двигаться чуть быстрее скролла (эффект параллакса)
+                        const moveDistance = scrollY * 1.5;
+                        // Прозрачность плавно уменьшается от 1 до 0 по мере скролла
+                        const opacity = 1 - (scrollY / scrollThreshold);
+
+                        // Применяем стили напрямую к элементу
+                        arrowDown.style.opacity = opacity;
+                        arrowDown.style.transform = `translateY(${moveDistance}px)`;
+                    } else {
+                        // Если прокрутили дальше порога, просто скрываем стрелку
+                        arrowDown.style.opacity = 0;
+                    }
+                }
+
+                // --- Логика для футера (остается без изменений) ---
+                const isAtBottom = (window.innerHeight + scrollY) >= document.documentElement.offsetHeight - 5;
+                if (isAtBottom) {
+                    body.classList.add('is-at-page-end');
+                } else {
+                    body.classList.remove('is-at-page-end');
+                }
+            }
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll(); // Вызываем для установки начального состояния
+        }
+
+        // Вызываем новую функцию для скролла
+        setupScrollBehavior();
+        
+        // --- IntersectionObserver для анимаций появления ---
         const fadeInObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
-                // Если элемент появился в области видимости
                 if (entry.isIntersecting) {
-                    // 1. Добавляем класс 'visible', чтобы он плавно появился (это работает для всех)
                     entry.target.classList.add('visible');
-
-                    // 2. [ВОССТАНОВЛЕНО] Проверяем, не является ли это заголовком для "волны"
                     if (entry.target.id === 'wave-heading') {
                         setTimeout(() => {
                             setupWaveAnimation('animated-looks-word', 'looks-wave-char', 1.35, 80);
                         }, 650);
                     }
-                    
-                    // 3. [ВОССТАНОВЛЕНО] Проверяем, не является ли это карточкой для "зачеркивания"
                     if (entry.target.classList.contains('comparison-card')) {
                         entry.target.classList.add('comparison-card-animated');
                     }
-
-                    // 4. [ОСТАЕТСЯ] Проверяем, не является ли это карточкой статистики для анимации счётчика
                     if (entry.target.classList.contains('stat-card')) {
                         const numberElement = entry.target.querySelector('.stat-number');
                         if (numberElement) {
                             animateCounter(numberElement);
                         }
                     }
-                    
-                    // 5. Отписываемся от элемента, чтобы анимация сработала только один раз
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        // --- Запускаем наблюдение за всеми элементами с классом .fade-in ---
         document.querySelectorAll('.fade-in').forEach(element => {
-            // Добавляем специальный класс-маркер для карточек сравнения,
-            // чтобы обзервер мог их идентифицировать
             if (element.querySelector('.strikethrough')) {
                 element.classList.add('comparison-card');
             }
             fadeInObserver.observe(element);
         });
 
-        // ==========================================================================
-        // 2. ФУНКЦИИ-КОНСТРУКТОРЫ АНИМАЦИЙ
-        // ==========================================================================
-
-        // [НОВАЯ ФУНКЦИЯ] Логика копирования промокода по клику
+        // --- Все функции для анимаций ---
         function setupPromoCopy() {
             const copyTrigger = document.getElementById('promo-code-copy-trigger');
             const feedbackElement = document.getElementById('copy-feedback-message');
-
             if (!copyTrigger || !feedbackElement) return;
-
             copyTrigger.addEventListener('click', () => {
                 const codeToCopy = copyTrigger.textContent;
                 navigator.clipboard.writeText(codeToCopy).then(() => {
-                    // Успех! Показываем сообщение "Скопировано!"
                     feedbackElement.style.opacity = '1';
-                    // Через 2 секунды плавно скрываем его обратно
                     setTimeout(() => {
                         feedbackElement.style.opacity = '0';
                     }, 2000);
                 }).catch(err => {
                     console.error('Не удалось скопировать промокод:', err);
-                    // Можно добавить сообщение об ошибке для пользователя, если нужно
                 });
             });
         }
 
-        // [ИЗМЕНЕННАЯ ВЕРСИЯ]
         function setupLiveHoursCounter() {
             const counterElement = document.getElementById('dynamic-hours-saved');
             if (!counterElement) return;
@@ -1100,156 +1343,132 @@
                 localStorage.setItem(lsKey, savedHours);
                 localStorage.setItem(lastUpdateKey, today);
             }
-            // Вместо изменения textContent, мы устанавливаем data-target
             counterElement.setAttribute('data-target', Math.round(savedHours));
         }
 
-        // [НОВАЯ ФУНКЦИЯ] Анимирует счётчик от 0 до целевого значения
         function animateCounter(element, duration = 2000) {
             const target = +element.getAttribute('data-target');
             let startTime = null;
-
             function step(currentTime) {
                 if (!startTime) startTime = currentTime;
                 const progress = Math.min((currentTime - startTime) / duration, 1);
-                
-                // Плавный выход (ease-out)
                 const easedProgress = 1 - Math.pow(1 - progress, 3);
-                
                 element.textContent = Math.floor(easedProgress * target);
-
                 if (progress < 1) {
                     window.requestAnimationFrame(step);
                 } else {
-                    element.textContent = target; // Убедимся, что в конце точное значение
+                    element.textContent = target;
                 }
             }
             window.requestAnimationFrame(step);
         }
 
-        // [ФИНАЛЬНАЯ РАБОЧАЯ ЛОГИКА V5]
         function setupSingleWordFlip(elementId, word) {
             const container = document.getElementById(elementId);
             if (!container) return;
-            container.innerHTML = ''; // Очищаем на всякий случай
-
-            // 1. Создаем правильную HTML-структуру один раз
+            container.innerHTML = '';
             word.split('').forEach(char => {
                 const charContainer = document.createElement('span');
                 charContainer.className = 'char-container';
-
-                // Создаем невидимый заполнитель для размера
                 const placeholder = document.createElement('span');
                 placeholder.className = 'char-placeholder';
                 placeholder.textContent = char;
-                
-                // Создаем сам флиппер
                 const flipper = document.createElement('div');
                 flipper.className = 'char-flipper';
-
-                // Создаем лицевую и обратную стороны
                 const front = document.createElement('div');
                 front.className = 'char-face front';
                 front.textContent = char;
-
                 const back = document.createElement('div');
                 back.className = 'char-face back';
                 back.textContent = char;
-
-                // Собираем всё вместе: в флиппер кладем грани,
-                // в контейнер кладем заполнитель и флиппер.
                 flipper.appendChild(front);
                 flipper.appendChild(back);
                 charContainer.appendChild(placeholder);
                 charContainer.appendChild(flipper);
                 container.appendChild(charContainer);
             });
-
-            // 2. Логика анимации (остается без изменений, она была правильной)
             const flippers = container.querySelectorAll('.char-flipper');
             const animationDuration = 1500;
             const pauseDuration = 3000;
             const initialDelay = 2000;
-
             function runCycle() {
                 flippers.forEach((flipper, i) => {
                     setTimeout(() => {
                         flipper.classList.add('is-flipped');
                     }, i * 80);
                 });
-
                 setTimeout(() => {
                     flippers.forEach((flipper, i) => {
                         setTimeout(() => {
                             flipper.classList.remove('is-flipped');
                         }, i * 80);
                     });
-
                     setTimeout(runCycle, pauseDuration);
-
                 }, animationDuration + (flippers.length * 80) + 1000);
             }
-
             setTimeout(runCycle, initialDelay);
         }
 
-        // [ИСПРАВЛЕННАЯ ВЕРСИЯ V2]
         function setupLiveSeatsCounter() {
             const counterElement = document.getElementById('seats-counter');
             if (!counterElement) return;
-
             const lsKey = 'conspektish_pioneer_seats';
             const lastUpdateKey = 'conspektish_seats_last_update';
-            
-            // Если в хранилище ничего нет, начинаем с 49
             let seatsLeft = localStorage.getItem(lsKey) ? parseInt(localStorage.getItem(lsKey), 10) : 49;
-            
             const lastUpdate = localStorage.getItem(lastUpdateKey);
             const today = new Date().toDateString();
-
-            // Проверяем, наступил ли новый день
             if (lastUpdate !== today) {
-                // Уменьшаем на случайное число от 1 до 3
-                const seatsToRemove = Math.floor(Math.random() * 3) + 1; 
+                const seatsToRemove = Math.floor(Math.random() * 3) + 1;
                 seatsLeft -= seatsToRemove;
-                
-                // Гарантируем, что счётчик не упадёт ниже 15
                 if (seatsLeft < 15) {
                     seatsLeft = 15;
                 }
-                
-                // Сохраняем новое значение и сегодняшнюю дату
                 localStorage.setItem(lsKey, seatsLeft);
                 localStorage.setItem(lastUpdateKey, today);
             }
-            
-            // Обновляем текст на странице
             counterElement.textContent = seatsLeft;
         }
 
-        // --- Таймер до конкретной даты ---
-        function setupCountdown() {
-            const countdownElement = document.getElementById('countdown-timer');
-            if (!countdownElement) return;
+        // --- [ЗАМЕНА] Динамический таймер для каждого пользователя (без дней и часов) ---
+        function setupDynamicCountdown() {
+            // Находим ключевые элементы
+            const promoWrapper = document.querySelector('.promo-timer-wrapper') || document.querySelector('.promo-sticky-container');
+            // [УДАЛЕНО] Убрали поиск дней и часов
+            const minutesEl = document.getElementById("minutes");
+            const secondsEl = document.getElementById("seconds");
 
-            // Устанавливаем целевую дату
-            const countdownDate = new Date("September 21, 2025 23:59:59").getTime();
+            if (!promoWrapper || !minutesEl || !secondsEl) return;
+
+            const storageKey = 'promoExpiryTimestamp';
+            let expiryTimestamp = localStorage.getItem(storageKey);
+
+            if (!expiryTimestamp) {
+                const now = new Date();
+                const randomMinutes = Math.floor(Math.random() * (60 - 30 + 1)) + 30;
+                now.setMinutes(now.getMinutes() + randomMinutes);
+                expiryTimestamp = now.getTime();
+                localStorage.setItem(storageKey, expiryTimestamp);
+            }
 
             const timerInterval = setInterval(() => {
-                const distance = countdownDate - new Date().getTime();
+                const now = new Date().getTime();
+                const distance = expiryTimestamp - now;
+
                 if (distance < 0) {
                     clearInterval(timerInterval);
-                    countdownElement.innerHTML = "<div style='font-size: 1.2rem; font-weight: 700; color: #ff5f56;'>Время предложения истекло!</div>";
+                    promoWrapper.style.display = 'none';
                     return;
                 }
-                document.getElementById("days").textContent = Math.floor(distance / (1000*60*60*24)).toString().padStart(2, '0');
-                document.getElementById("hours").textContent = Math.floor((distance % (1000*60*60*24)) / (1000*60*60)).toString().padStart(2, '0');
-                document.getElementById("minutes").textContent = Math.floor((distance % (1000*60*60)) / (1000*60)).toString().padStart(2, '0');
-                document.getElementById("seconds").textContent = Math.floor((distance % (1000*60)) / 1000).toString().padStart(2, '0');
+
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                secondsEl.textContent = seconds.toString().padStart(2, '0');
+
             }, 1000);
         }
-
-        // --- Карусель ---
+        
         function setupCarousel() {
             const stack = document.querySelector('.carousel-stack');
             if (!stack) return;
@@ -1258,7 +1477,6 @@
             const nextButton = document.querySelector('.carousel-button.next');
             let isRotating = false;
             let autoRotateTimeout;
-
             function scheduleNextRotation() {
                 clearTimeout(autoRotateTimeout);
                 const activeCard = stack.querySelector('.is-active');
@@ -1266,67 +1484,52 @@
                 const video = activeCard.querySelector('video');
                 if (video && video.duration && isFinite(video.duration)) {
                     const remainingTime = (video.duration - video.currentTime) * 1000;
-                    // Добавляем 500мс паузы между видео
                     autoRotateTimeout = setTimeout(() => rotate('next'), remainingTime + 500);
                 }
             }
-
             function updateCards() {
-            const activeCard = stack.querySelector('.is-active');
-            if (!activeCard) return;
-            const activeIndex = cards.indexOf(activeCard);
-
-            cards.forEach((card, index) => {
-                card.classList.remove('prev-card', 'next-card');
-                const video = card.querySelector('video');
-
-                if (video) {
-                    // Сразу ставим на паузу и сбрасываем все неактивные видео
-                    if (index !== activeIndex) {
-                        video.pause();
-                        video.currentTime = 0;
-                    }
-                }
-
-                // Логика только для активной карточки
-                if (index === activeIndex) {
+                const activeCard = stack.querySelector('.is-active');
+                if (!activeCard) return;
+                const activeIndex = cards.indexOf(activeCard);
+                cards.forEach((card, index) => {
+                    card.classList.remove('prev-card', 'next-card');
+                    const video = card.querySelector('video');
                     if (video) {
-                        video.currentTime = 0; // Сбрасываем время
-                        
-                        // Функция, которая запускает видео
-                        const playVideo = () => {
-                            const playPromise = video.play();
-                            if (playPromise !== undefined) {
-                                playPromise.then(() => {
-                                    scheduleNextRotation();
-                                }).catch(error => {
-                                    console.warn("Autoplay was prevented by browser:", error);
-                                    clearTimeout(autoRotateTimeout);
-                                    autoRotateTimeout = setTimeout(() => rotate('next'), 5000);
-                                });
-                            }
-                        };
-
-                        // ПРОВЕРКА: Готово ли видео к воспроизведению прямо сейчас?
-                        // readyState 4 (`HAVE_ENOUGH_DATA`) - идеальное состояние
-                        if (video.readyState >= 3) {
-                            playVideo();
-                        } else {
-                            // Если не готово, мы ДОБАВЛЯЕМ СЛУШАТЕЛЯ и ждем, пока оно скажет "готов!"
-                            video.addEventListener('canplay', playVideo, { once: true });
+                        if (index !== activeIndex) {
+                            video.pause();
+                            video.currentTime = 0;
                         }
                     }
-                } else {
-                    // Стили для соседних карточек
-                    if (index === (activeIndex - 1 + cards.length) % cards.length) {
-                        card.classList.add('prev-card');
-                    } else if (index === (activeIndex + 1) % cards.length) {
-                        card.classList.add('next-card');
+                    if (index === activeIndex) {
+                        if (video) {
+                            video.currentTime = 0;
+                            const playVideo = () => {
+                                const playPromise = video.play();
+                                if (playPromise !== undefined) {
+                                    playPromise.then(() => {
+                                        scheduleNextRotation();
+                                    }).catch(error => {
+                                        console.warn("Autoplay was prevented by browser:", error);
+                                        clearTimeout(autoRotateTimeout);
+                                        autoRotateTimeout = setTimeout(() => rotate('next'), 5000);
+                                    });
+                                }
+                            };
+                            if (video.readyState >= 3) {
+                                playVideo();
+                            } else {
+                                video.addEventListener('canplay', playVideo, { once: true });
+                            }
+                        }
+                    } else {
+                        if (index === (activeIndex - 1 + cards.length) % cards.length) {
+                            card.classList.add('prev-card');
+                        } else if (index === (activeIndex + 1) % cards.length) {
+                            card.classList.add('next-card');
+                        }
                     }
-                }
-            });
-        }
-
+                });
+            }
             function rotate(direction) {
                 if (isRotating) return;
                 isRotating = true;
@@ -1339,14 +1542,12 @@
                 } else {
                     const lastCard = cards.pop(); cards.unshift(lastCard); stack.insertBefore(lastCard, stack.firstChild);
                 }
-                cards[1].classList.add('is-active'); // Следующая карта всегда вторая в массиве
+                cards[1].classList.add('is-active');
                 updateCards();
-                setTimeout(() => { isRotating = false; }, 500); // Время на анимацию перехода
+                setTimeout(() => { isRotating = false; }, 500);
             }
-
             nextButton.addEventListener('click', () => rotate('next'));
             prevButton.addEventListener('click', () => rotate('prev'));
-            
             let isDown = false, startX;
             function handleStart(e) { clearTimeout(autoRotateTimeout); isDown = true; stack.style.cursor = 'grabbing'; startX = e.pageX || e.touches[0].pageX; }
             function handleEnd() { isDown = false; stack.style.cursor = 'grab'; scheduleNextRotation(); }
@@ -1357,7 +1558,6 @@
                 if (walk < -50) { rotate('next'); isDown = false; }
                 if (walk > 50) { rotate('prev'); isDown = false; }
             }
-
             stack.addEventListener('mousedown', handleStart);
             stack.addEventListener('mouseup', handleEnd);
             stack.addEventListener('mouseleave', handleEnd);
@@ -1365,11 +1565,9 @@
             stack.addEventListener('touchstart', handleStart, { passive: true });
             stack.addEventListener('touchend', handleEnd);
             stack.addEventListener('touchmove', handleMove, { passive: true });
-
-            updateCards(); // Первоначальная инициализация
+            updateCards();
         }
 
-        // --- Анимация печатания текста ---
         function setupTypingAnimation(selector, words, options = {}, onWordTyped = null, onStartDeleting = null) {
             const container = document.querySelector(selector);
             if (!container) return;
@@ -1378,13 +1576,11 @@
             typingElement.className = 'typing-effect ' + (options.isGradient ? 'gradient-text' : '');
             container.appendChild(typingElement);
             let wordIndex = 0, charIndex = 0, isDeleting = false;
-            
             function type() {
                 const currentWord = words[wordIndex];
                 let textToShow = isDeleting ? currentWord.substring(0, charIndex - 1) : currentWord.substring(0, charIndex + 1);
                 typingElement.innerHTML = textToShow;
                 charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
-                
                 let timeout = isDeleting ? 80 : 120;
                 if (!isDeleting && charIndex > currentWord.length) {
                     if (onWordTyped) onWordTyped();
@@ -1395,7 +1591,7 @@
                     wordIndex = (wordIndex + 1) % words.length;
                     timeout = 500;
                 }
-                if (isDeleting && charIndex === currentWord.length -1 && onStartDeleting) {
+                if (isDeleting && charIndex === currentWord.length - 1 && onStartDeleting) {
                     onStartDeleting();
                 }
                 setTimeout(type, timeout);
@@ -1403,7 +1599,6 @@
             setTimeout(type, 500);
         }
 
-        // --- Универсальная Анимация "Волна" на тексте ---
         function setupWaveAnimation(elementId, charClass, scale, delay) {
             const element = document.getElementById(elementId);
             if (!element) return;
@@ -1411,166 +1606,166 @@
             element.innerHTML = '';
             originalText.split('').forEach(char => {
                 const span = document.createElement('span');
-                span.className = (char.trim() === '' ? '' : charClass + ' ') + 'gradient-text'; // Всегда добавляем градиент
+                span.className = (char.trim() === '' ? '' : charClass + ' ') + 'gradient-text';
                 span.textContent = char;
                 element.appendChild(span);
             });
-
             const chars = element.querySelectorAll('.' + charClass);
             if (chars.length === 0) return;
-            
             let startTime = null;
-            const loopDuration = 4000; // Повторяем волну каждые 4 секунды
-
+            const loopDuration = 4000;
             function waveLoop(currentTime) {
                 if (!startTime) {
                     startTime = currentTime;
                 }
                 const elapsedTime = currentTime - startTime;
-
                 if (elapsedTime > loopDuration) {
-                    startTime = currentTime; // Сбрасываем таймер для нового цикла
+                    startTime = currentTime;
                 }
-
                 chars.forEach((char, index) => {
-                    // Запускаем анимацию для каждой буквы в начале цикла
-                    if (elapsedTime >= index * delay && elapsedTime < index * delay + 600) { // 600 = длительность анимации
+                    if (elapsedTime >= index * delay && elapsedTime < index * delay + 600) {
                         char.classList.add('scaled');
                     } else {
                         char.classList.remove('scaled');
                     }
                 });
-
-                requestAnimationFrame(waveLoop); // Планируем следующий кадр
+                requestAnimationFrame(waveLoop);
             }
-
-            requestAnimationFrame(waveLoop); // Запускаем цикл 
+            requestAnimationFrame(waveLoop);
         }
-
+        
         // --- Анимация Математики ---
         function setupMathAnimation() {
-                const heading = document.getElementById('math-heading');
-                const container = document.getElementById('math-container');
-                if (!heading || !container) return;
-                const syllables = ["ма", "те", "ма", "ти", "ки"];
-                const fullWordText = "математики";
-                const tempSpan = document.createElement('span');
-                tempSpan.style.fontSize = '3rem'; tempSpan.style.fontWeight = '800';
-                tempSpan.style.position = 'absolute'; tempSpan.style.opacity = '0';
-                document.body.appendChild(tempSpan);
-                tempSpan.innerHTML = "ма<span class='math-plus'>+</span>те<span class='math-plus'>+</span>ма<span class='math-plus'>+</span>ти<span class='math-plus'>+</span>ки";
-                const plusVersionWidth = tempSpan.offsetWidth + 25;
-                tempSpan.textContent = fullWordText;
-                const finalWordWidth = tempSpan.offsetWidth + 25;
-                document.body.removeChild(tempSpan);
-                function runAnimationCycle() {
-                    container.innerHTML = '';
-                    let parts = [];
-                    syllables.forEach((syllable, i) => {
-                        const s = document.createElement('span'); s.textContent = syllable; s.className = 'math-part math-syllable'; container.appendChild(s); parts.push(s);
-                        if (i < syllables.length - 1) {
-                            const p = document.createElement('span'); p.textContent = '+'; p.className = 'math-part math-plus'; container.appendChild(p); parts.push(p);
-                        }
+            const heading = document.getElementById('math-heading');
+            const container = document.getElementById('math-container');
+            if (!heading || !container) return;
+            const syllables = ["ма", "те", "ма", "ти", "ки"];
+            const fullWordText = "математики";
+            const tempSpan = document.createElement('span');
+            tempSpan.style.fontSize = '3rem'; tempSpan.style.fontWeight = '800';
+            tempSpan.style.position = 'absolute'; tempSpan.style.opacity = '0';
+            document.body.appendChild(tempSpan);
+            tempSpan.innerHTML = "ма<span class='math-plus'>+</span>те<span class='math-plus'>+</span>ма<span class='math-plus'>+</span>ти<span class='math-plus'>+</span>ки";
+            const plusVersionWidth = tempSpan.offsetWidth + 25;
+            tempSpan.textContent = fullWordText;
+            const finalWordWidth = tempSpan.offsetWidth + 25;
+            document.body.removeChild(tempSpan);
+
+            function runAnimationCycle() {
+                container.innerHTML = '';
+                let parts = [];
+                syllables.forEach((syllable, i) => {
+                    const s = document.createElement('span'); s.textContent = syllable; s.className = 'math-part math-syllable'; container.appendChild(s); parts.push(s);
+                    if (i < syllables.length - 1) {
+                        const p = document.createElement('span'); p.textContent = '+'; p.className = 'math-part math-plus'; container.appendChild(p); parts.push(p);
+                    }
+                });
+                requestAnimationFrame(() => {
+                    heading.style.setProperty('--math-container-width', `${plusVersionWidth}px`);
+                    heading.classList.add('is-animating');
+                    let delay = 500;
+                    const appearanceInterval = 250;
+                    parts.forEach(part => {
+                        setTimeout(() => part.classList.add('visible'), delay);
+                        delay += appearanceInterval;
                     });
-                    requestAnimationFrame(() => {
-                        heading.style.setProperty('--math-container-width', `${plusVersionWidth}px`);
-                        heading.classList.add('is-animating');
-                        let delay = 500;
-                        const appearanceInterval = 250;
-                        parts.forEach(part => {
-                            setTimeout(() => part.classList.add('visible'), delay);
-                            delay += appearanceInterval;
-                        });
+                    setTimeout(() => {
+                        heading.style.setProperty('--math-container-width', `${finalWordWidth}px`);
+                        const finalWordContainer = document.createElement('span');
+                        finalWordContainer.className = 'math-part math-syllable math-final-word';
+                        const textSpan = document.createElement('span');
+                        textSpan.textContent = fullWordText;
+                        finalWordContainer.appendChild(textSpan);
+                        container.appendChild(finalWordContainer);
+                        parts.forEach(p => p.classList.remove('visible'));
+                        setTimeout(() => finalWordContainer.classList.add('visible'), 50);
+                    }, delay + 300);
+                    setTimeout(() => {
+                        const textElement = container.querySelector('.math-final-word span');
+                        if (!textElement) return;
+
+                        // СНАЧАЛА мы добавляем курсор
+                        textElement.classList.add('is-deleting');
+
+                        // [ИСПРАВЛЕНО] А ПОТОМ, через полсекунды, начинаем стирать
                         setTimeout(() => {
-                            heading.style.setProperty('--math-container-width', `${finalWordWidth}px`);
-                            const finalWordSpan = document.createElement('span');
-                            finalWordSpan.textContent = fullWordText;
-                            finalWordSpan.className = 'math-part math-syllable math-final-word';
-                            container.appendChild(finalWordSpan);
-                            parts.forEach(p => p.classList.remove('visible'));
-                            setTimeout(() => finalWordSpan.classList.add('visible'), 50);
-                        }, delay + 300);
-                        setTimeout(() => {
-                            const finalWordSpan = container.querySelector('.math-final-word');
-                            if (!finalWordSpan) return;
-                            finalWordSpan.classList.add('typing-cursor');
                             let currentWord = fullWordText;
                             const backspaceInterval = setInterval(() => {
                                 if (currentWord.length > 0) {
                                     currentWord = currentWord.slice(0, -1);
-                                    finalWordSpan.textContent = currentWord;
+                                    textElement.textContent = currentWord;
                                 } else {
                                     clearInterval(backspaceInterval);
-                                    finalWordSpan.classList.remove('typing-cursor');
+                                    textElement.classList.remove('is-deleting');
                                     heading.classList.remove('is-animating');
                                     setTimeout(runAnimationCycle, 200);
                                 }
                             }, 100);
-                        }, delay + 2500);
-                    });
-                }
-                runAnimationCycle();
+                        }, 500); // Вот наша задержка в 500 миллисекунд (полсекунды)
+
+                    }, delay + 2500);
+                });
+            }
+            runAnimationCycle();
         }
 
-        // --- Анимация смены слов ---
         function setupWordFlipper() {
-                const leftContainer = document.getElementById('left-word-container');
-                const rightContainer = document.getElementById('right-word-container');
-                if (!leftContainer || !rightContainer) return;
-                const leftWords = ["время", "пользу"];
-                const rightWords = ["свободу", "выбор"];
-                const allWords = [...leftWords, ...rightWords];
-                let maxWidth = 0;
-                const tempSpan = document.createElement('span');
-                tempSpan.style.position = 'absolute';
-                tempSpan.style.visibility = 'hidden';
-                tempSpan.style.fontSize = '3rem';
-                tempSpan.style.fontWeight = '800';
-                document.body.appendChild(tempSpan);
-                allWords.forEach(word => {
-                    tempSpan.textContent = word;
-                    if (tempSpan.offsetWidth > maxWidth) {
-                        maxWidth = tempSpan.offsetWidth;
-                    }
-                });
-                document.body.removeChild(tempSpan);
-                leftContainer.style.width = `${maxWidth}px`;
-                rightContainer.style.width = `${maxWidth}px`;
-                let leftIndex = 0;
-                let rightIndex = 0;
-                let isLeftTurn = true;
-                function animateWords() {
-                    const currentVisible = document.querySelector('.word-anim.visible');
-                    if (currentVisible) {
-                        currentVisible.classList.remove('visible');
-                        currentVisible.classList.add('exiting');
-                    }
-                    setTimeout(() => {
-                        const container = isLeftTurn ? leftContainer : rightContainer;
-                        const words = isLeftTurn ? leftWords : rightWords;
-                        let index = isLeftTurn ? leftIndex : rightIndex;
-                        container.innerHTML = '';
-                        const span = document.createElement('span');
-                        span.textContent = words[index];
-                        span.className = 'word-anim entering';
-                        container.appendChild(span);
-                        setTimeout(() => {
-                            span.classList.add('visible');
-                            span.classList.remove('entering');
-                        }, 20);
-                        if (isLeftTurn) {
-                            leftIndex = (leftIndex + 1) % leftWords.length;
-                        } else {
-                            rightIndex = (rightIndex + 1) % rightWords.length;
-                        }
-                        isLeftTurn = !isLeftTurn;
-                    }, 500);
+            const leftContainer = document.getElementById('left-word-container');
+            const rightContainer = document.getElementById('right-word-container');
+            if (!leftContainer || !rightContainer) return;
+            const leftWords = ["время", "пользу"];
+            const rightWords = ["свободу", "выбор"];
+            const allWords = [...leftWords, ...rightWords];
+            let maxWidth = 0;
+            const tempSpan = document.createElement('span');
+            tempSpan.style.position = 'absolute';
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.fontSize = '3rem';
+            tempSpan.style.fontWeight = '800';
+            document.body.appendChild(tempSpan);
+            allWords.forEach(word => {
+                tempSpan.textContent = word;
+                if (tempSpan.offsetWidth > maxWidth) {
+                    maxWidth = tempSpan.offsetWidth;
                 }
-                setInterval(animateWords, 2500);
-                setTimeout(animateWords, 100);
+            });
+            document.body.removeChild(tempSpan);
+            leftContainer.style.width = `${maxWidth}px`;
+            rightContainer.style.width = `${maxWidth}px`;
+            let leftIndex = 0;
+            let rightIndex = 0;
+            let isLeftTurn = true;
+            function animateWords() {
+                const currentVisible = document.querySelector('.word-anim.visible');
+                if (currentVisible) {
+                    currentVisible.classList.remove('visible');
+                    currentVisible.classList.add('exiting');
+                }
+                setTimeout(() => {
+                    const container = isLeftTurn ? leftContainer : rightContainer;
+                    const words = isLeftTurn ? leftWords : rightWords;
+                    let index = isLeftTurn ? leftIndex : rightIndex;
+                    container.innerHTML = '';
+                    const span = document.createElement('span');
+                    span.textContent = words[index];
+                    span.className = 'word-anim entering';
+                    container.appendChild(span);
+                    setTimeout(() => {
+                        span.classList.add('visible');
+                        span.classList.remove('entering');
+                    }, 20);
+                    if (isLeftTurn) {
+                        leftIndex = (leftIndex + 1) % leftWords.length;
+                    } else {
+                        rightIndex = (rightIndex + 1) % rightWords.length;
+                    }
+                    isLeftTurn = !isLeftTurn;
+                }, 500);
+            }
+            setInterval(animateWords, 2500);
+            setTimeout(animateWords, 100);
         }
         
-        // --- Логика анимации в футере ---
         function setupFooterTyping() {
             const positivePart = document.querySelector('#heading-positive-part');
             const negativePart = document.querySelector('#heading-negative-part');
@@ -1596,11 +1791,9 @@
             setupTypingAnimation('#typing-positive-container', ["суть,", "главное,", "интересное,", "лучшее,"], { isGradient: true }, showFooterStaticParts, hideFooterStaticParts);
         }
 
-        // ==========================================================================
-        // 3. ЗАПУСК ВСЕХ ФУНКЦИЙ
-        // ==========================================================================
+        // --- Вызов всех остальных функций ---
         setupLiveSeatsCounter();
-        setupCountdown();
+        setupDynamicCountdown();
         setupLiveHoursCounter();
         setupPromoCopy();
         setupCarousel();
